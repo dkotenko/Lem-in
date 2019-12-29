@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="edrowzee"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edrowzee">
+				<Option output="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/edrowzee" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/clala/Desktop/REPOs/edrowzee/."/>
+					<Add directory="/Users/clala/Desktop/REPOs/edrowzee/libft"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 edrowzee"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edrowzee/fast">
+				<Option output="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/edrowzee" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/clala/Desktop/REPOs/edrowzee/."/>
+					<Add directory="/Users/clala/Desktop/REPOs/edrowzee/libft"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 edrowzee/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/clala/Desktop/REPOs/edrowzee/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/lem-in.h">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_atoi.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_btree_apply_infix.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_btree_apply_prefix.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_btree_apply_suffix.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_btree_create_node.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_btree_insert_data.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_bzero.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_isalnum.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_isalpha.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_isascii.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_isdigit.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_isprint.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_itoa.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_lstadd.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_lstdel.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_lstdelone.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_lstiter.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_lstmap.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_lstnew.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memalloc.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memccpy.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memchr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memcmp.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memcpy.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memdel.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memmove.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_memset.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putchar.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putchar_fd.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putendl.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putendl_fd.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putnbr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putnbr_fd.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putstr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_putstr_fd.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strcat.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strchr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strclr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strcmp.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strcpy.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strdel.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strdup.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strequ.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_striter.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_striteri.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strjoin.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strlcat.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strlen.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strmap.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strmapi.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strncat.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strncmp.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strncpy.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strnequ.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strnew.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strnstr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strrchr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strsplit.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strstr.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strsub.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_strtrim.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_tolower.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/ft_toupper.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/get_next_line.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/libft/libft.h">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/main.c">
+			<Option target="edrowzee"/>
+		</Unit>
+		<Unit filename="/Users/clala/Desktop/REPOs/edrowzee/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

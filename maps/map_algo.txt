@@ -1,0 +1,25 @@
+3
+zero 9 5
+##start
+one 23 3
+second 16 7
+thrid 16 3
+forth 16 5
+five 9 3
+##end
+six 1 5
+seven 4 8
+zero-forth
+zero-six
+one-thrid
+forth-thrid
+five-second
+thrid-five
+#another comment
+forth-second
+second-one
+seven-six
+seven-second
+seven-forth
+six-five
+#another comment
