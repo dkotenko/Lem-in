@@ -408,7 +408,7 @@ int		*ft_restore_path(t_array **arr, int **path_mtrx)
 	j = (*arr)->finish;
 	k = 1;
 	path[0] = (*arr)->finish;
-	while (path_mtrx[i][j] != (*arr)->start)
+	while (path_mtrx[i][j] != (*arr)->start && j != -1)
 	{
 		//printf("%d\n", path[k - 1]);
 		path[k] = path_mtrx[i][j];
@@ -517,6 +517,20 @@ void	ft_expand_graph(t_array **arr, int *path)
 	}
 }
 
+int ft_path_limit(t_array *arr)
+{
+	int min;
+
+	min = INT_MAX;
+	if (min > arr->rooms[arr->start]->s_lnk.cur_size)
+		min = arr->rooms[arr->start]->s_lnk.cur_size;
+	if (min > arr->rooms[arr->finish]->s_lnk.cur_size)
+		min = arr->rooms[arr->finish]->s_lnk.cur_size;
+	if (min > arr->ants)
+		min = arr->ants;
+	return (min);
+}
+
 int		main(int argc, char **argv)
 {
 	t_array	*arr;
@@ -530,9 +544,18 @@ int		main(int argc, char **argv)
 		fd = 0;
 	ft_read_data(fd, &arr); //читаем входные данные
 //	ft_find_path(&arr);
+
+
 	path = ft_find_path_bf(&arr, 1, 0, 0);
-	ft_expand_graph(&arr, path);
-	path = ft_find_path_bf(&arr, 1, 0, 0);
+	int path_counter = 1;
+	int path_limit = ft_path_limit(arr);
+	while (path_counter < path_limit)
+	{
+		ft_expand_graph(&arr, path);
+		path = ft_find_path_bf(&arr, 1, 0, 0);
+		path_counter++;
+	}
+
 	// всё что ниже - печать в консоль данных
 	int i = 0;
 	int j = 0;

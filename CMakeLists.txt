@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
-project(edrowzee C)
+project(edrowzee_copy C)
 
 set(CMAKE_C_STANDARD 11)
 
 include_directories(.)
 include_directories(libft)
 
-add_executable(edrowzee
+add_executable(edrowzee_copy
         libft/ft_atoi.c
         libft/ft_btree_apply_infix.c
         libft/ft_btree_apply_prefix.c
@@ -72,6 +72,5 @@ add_executable(edrowzee
         libft/ft_toupper.c
         libft/get_next_line.c
         libft/libft.h
-        #generator.c
         lem-in.h
         main.c)
