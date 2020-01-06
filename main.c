@@ -531,41 +531,19 @@ int ft_path_limit(t_array *arr)
 	return (min);
 }
 
-int		main(int argc, char **argv)
+void print_path(t_path *path, t_array *arr)
 {
-	t_array	*arr;
-	int		fd;
-	int		*path;
-
-	arr = NULL;
-	if (argc == 2)
-		fd = open(argv[1], O_RDONLY);
-	else
-		fd = 0;
-	ft_read_data(fd, &arr); //читаем входные данные
-//	ft_find_path(&arr);
-
-
-	path = ft_find_path_bf(&arr, 1, 0, 0);
-	int path_counter = 1;
-	int path_limit = ft_path_limit(arr);
-	while (path_counter < path_limit)
-	{
-		ft_expand_graph(&arr, path);
-		path = ft_find_path_bf(&arr, 1, 0, 0);
-		path_counter++;
-	}
-
 	// всё что ниже - печать в консоль данных
 	int i = 0;
 	int j = 0;
 	printf("\n");
-	while (*path != -1)
+	while (path->path[i] != -1)
 	{
-		printf("%s-", arr->rooms[*path]->name);
-		path++;
+		printf("%s-", arr->rooms[path->path[i]]->name);
+		i++;
 	}
 	printf("\n");
+	i = 0;
 	while (i < arr->current)
 	{
 		printf("name: '%8s', links: ---> ", arr->rooms[i]->name);
@@ -587,6 +565,79 @@ int		main(int argc, char **argv)
 	}
 	printf("\nstart: %d, finish: %d\n", arr->start, arr->finish);
 	printf("ants: %d", arr->ants);
+}
+
+t_paths *new_paths()
+{
+	t_paths *new;
+
+	new = (t_paths *)malloc(sizeof(t_paths));
+	new->curr_path = 0;
+	new->amount = 0;
+	new->path_arr = (t_path **)malloc(sizeof(t_path *) * 100);
+	return (new);
+}
+
+/*
+t_paths *new_paths_sets()
+{
+	t_paths_sets *new;
+
+	new = (t_paths *)malloc(sizeof(t_paths));
+	new->curr_paths_set = 0;
+	new->paths_arr[0] = new_paths();
+	new->amount = 0;
+}
+*/
+
+
+add_new_path()
+{
+	ft_find_path_bf;
+}
+
+int		main(int argc, char **argv)
+{
+	t_array *arr;
+	int fd;
+	t_path *path;
+	t_paths *paths;
+	//t_paths_sets *paths_sets;
+
+	arr = NULL;
+	if (argc == 2)
+		fd = open(argv[1], O_RDONLY);
+	else
+		fd = 0;
+	ft_read_data(fd, &arr); //читаем входные данные
+//	ft_find_path(&arr);
+
+	path = (t_path *)malloc(sizeof(t_path));
+	paths = new_paths();
+
+	//
+	paths->path_arr[paths->curr_path]->path = ft_find_path_bf(&arr, 1, 0, 0);
+	paths->amount++;
+	paths->curr_path++;
+	//
+	//add_new_path();
+	//path->path = ft_find_path_bf(&arr, 1, 0, 0);
+	int path_counter = 1;
+	int path_limit = ft_path_limit(arr);
+	while (path_counter < path_limit)
+	{
+		ft_expand_graph(&arr, path->path);
+		//
+		paths->path_arr[paths->curr_path]->path = ft_find_path_bf(&arr, 1, 0, 0);
+		paths->amount++;
+		paths->curr_path++;
+		//
+		//path->path = ft_find_path_bf(&arr, 1, 0, 0);
+		path_counter++;
+	}
+	//merge_paths(paths);
+	print_path(paths->path_arr[paths->curr_path], arr);
+
 //	printf("%d", arr->rooms[3]->s_lnk.weights[1]);
 	return (0);
 }

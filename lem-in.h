@@ -40,4 +40,43 @@ typedef struct	s_array
 
 }				t_array;
 
+typedef struct	s_ant
+{
+	char	*name;
+	int 	*curr_room;
+	int 	is_finish;
+	int 	final_room;
+}				t_ant;
+
+typedef struct	s_ants
+{
+	int 	amount;
+	t_ant	*ant_arr;
+}				t_ants;
+
+typedef struct	s_path
+{
+	int 	size;
+	int 	*path;
+	int 	start_room;
+	int 	end_room;
+}				t_path;
+
+typedef struct	s_paths
+{
+	int 	curr_path;
+	int		paths_lim;
+	int		amount;
+	t_path	**path_arr;
+}				t_paths;
+
+/*
+typedef struct	s_paths_sets
+{
+	int 	curr_paths_set;
+	int		paths_lim;
+	int		amount;
+	t_paths	**paths_arr;
+}				t_paths_sets;
+*/
 #endif
