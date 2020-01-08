@@ -395,44 +395,45 @@ void	ft_find_path_cycle(t_array **arr, int **matrix, int **path_mtrx, int i)
 	}
 }
 
-int		*ft_restore_path(t_array **arr, int **path_mtrx)
+t_path		*ft_restore_path(t_array **arr, int **path_mtrx)
 {
-	int *path;
+	t_path *path;
 	int i;
 	int j;
 	int k;
 
-	path = (int*)malloc(sizeof(int) * (*arr)->current - 1);
-	ft_fill_mem(path, (*arr)->current - 1, -1);
+	path = (t_path *)malloc(sizeof(t_path));
+	path->path = (int*)malloc(sizeof(int) * (*arr)->current - 1);
+	ft_fill_mem(path->path, (*arr)->current - 1, -1);
 	i = (*arr)->current - 2;
 	j = (*arr)->finish;
 	k = 1;
-	path[0] = (*arr)->finish;
+	path->path[0] = (*arr)->finish;
 	while (path_mtrx[i][j] != (*arr)->start && j != -1)
 	{
 		//printf("%d\n", path[k - 1]);
-		path[k] = path_mtrx[i][j];
+		path->path[k] = path_mtrx[i][j];
 		k++;
 		j = path_mtrx[i][j];
 		i--;
 	}
-	path[k] = (*arr)->start;
+	path->path[k] = (*arr)->start;
 //	while (*path != -1)
 //	{
 //		printf("%d ", *path);
 //		path++;
 //	}
-	return (path);
+	return (j != -1 ? path : NULL);
 }
 
-int		*ft_find_path_bf(t_array **arr, int i, int j, int k)
+t_path		*ft_find_path_bf(t_array **arr, int i, int j, int k)
 {
 	int	**matrix; //беллман форд работает через матрицу.
 	// Посмотри видос с названием "M46 Bellman Ford Algm single source" на ютубе.
 	// Длина видоса 15.44. Смотреть с 6.00 по 11.30 минуты
 
 	int **path_mtrx; //сюда я записываю индексы комнат, чтобы потом по ним восстановить путь (про это в видосе не говорится)
-	int	*path; //это итоговый путь который возвращает функция (массив интов)
+	t_path	*path; //это итоговый путь который возвращает функция (массив интов)
 
 	ft_malloc_bf_matrix(arr, &matrix, &path_mtrx); //маллочим память под матрицу и под path_матрицу
 	ft_fill_1st_line(arr, matrix, path_mtrx); //заполняем первую строчку матрицы
@@ -531,19 +532,28 @@ int ft_path_limit(t_array *arr)
 	return (min);
 }
 
-void print_path(t_path *path, t_array *arr)
+void print_path(t_paths *paths, t_array *arr)
 {
 	// всё что ниже - печать в консоль данных
 	int i = 0;
 	int j = 0;
 	printf("\n");
-	while (path->path[i] != -1)
+	t_path *path = paths->path_arr[paths->curr_path - 1];
+
+	while (j < paths->curr_path)
 	{
-		printf("%s-", arr->rooms[path->path[i]]->name);
-		i++;
+		i = 0;
+		while (paths->path_arr[j]->path[i] != -1)
+		{
+			printf("%s-", arr->rooms[paths->path_arr[j]->path[i]]->name);
+			//printf("%d-", arr->rooms[paths->path_arr[j]->path[i]]->s_lnk.links);
+			i++;
+		}
+		printf("\n");
+		j++;
 	}
-	printf("\n");
 	i = 0;
+	j = 0;
 	while (i < arr->current)
 	{
 		printf("name: '%8s', links: ---> ", arr->rooms[i]->name);
@@ -591,7 +601,7 @@ t_paths *new_paths_sets()
 */
 
 
-add_new_path()
+void merge_paths(t_paths *paths)
 {
 	ft_find_path_bf;
 }
@@ -616,7 +626,7 @@ int		main(int argc, char **argv)
 	paths = new_paths();
 
 	//
-	paths->path_arr[paths->curr_path]->path = ft_find_path_bf(&arr, 1, 0, 0);
+	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 	paths->amount++;
 	paths->curr_path++;
 	//
@@ -626,17 +636,20 @@ int		main(int argc, char **argv)
 	int path_limit = ft_path_limit(arr);
 	while (path_counter < path_limit)
 	{
-		ft_expand_graph(&arr, path->path);
+		ft_expand_graph(&arr, paths->path_arr[paths->curr_path - 1]->path);
 		//
-		paths->path_arr[paths->curr_path]->path = ft_find_path_bf(&arr, 1, 0, 0);
+		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
+		if (!paths->path_arr[paths->curr_path])
+			break;
 		paths->amount++;
 		paths->curr_path++;
 		//
 		//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 		path_counter++;
 	}
-	//merge_paths(paths);
-	print_path(paths->path_arr[paths->curr_path], arr);
+	if(paths->amount > 1)
+		merge_paths(paths);
+	print_path(paths, arr);
 
 //	printf("%d", arr->rooms[3]->s_lnk.weights[1]);
 	return (0);
