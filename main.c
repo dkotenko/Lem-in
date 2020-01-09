@@ -125,6 +125,7 @@ void	ft_create_room(t_array **arr, char **split, int *flag)
 	room->s_lnk.order = -1;
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.links = NULL;
+	room->s_lnk.is_copy = 0;
 	ft_arr_push(arr, room); //закидываем комнату в общий массив
 	if (*flag == 1)
 		(*arr)->start = (*arr)->current - 1;
@@ -145,6 +146,7 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
 	dst->s_lnk.room_copy = sr;
 	src->s_lnk.room_copy = ds;
+	dst->s_lnk.is_copy = 1;
 	while (i < src->s_lnk.cur_size)
 	{
 		dst->s_lnk.links[i] = src->s_lnk.links[i];
@@ -418,6 +420,7 @@ t_path		*ft_restore_path(t_array **arr, int **path_mtrx)
 		i--;
 	}
 	path->path[k] = (*arr)->start;
+	path->size = k + 1;
 //	while (*path != -1)
 //	{
 //		printf("%d ", *path);
@@ -546,7 +549,7 @@ void print_path(t_paths *paths, t_array *arr)
 		while (paths->path_arr[j]->path[i] != -1)
 		{
 			printf("%s-", arr->rooms[paths->path_arr[j]->path[i]]->name);
-			//printf("%d-", arr->rooms[paths->path_arr[j]->path[i]]->s_lnk.links);
+			printf("%d-", arr->rooms[paths->path_arr[j]->path[i]]->s_lnk.is_copy);
 			i++;
 		}
 		printf("\n");
@@ -600,15 +603,66 @@ t_paths *new_paths_sets()
 }
 */
 
+void find_common_edges(int **common_edges, t_path *path_i, t_path *path_j)
+{
+	int i;
+	int j;
+
+	i = 1;
+	j = 1;
+	while (i < path_i->size - 1)
+	{
+		j = 1;
+		while (j < path_j->size - 1)
+		{
+			if (path_i->path[i] == path_j->path[j] &&
+				path_i->path[i + 1] == path_j->path[j + 1])
+				;
+			else if (path_i->path[i] == path_j->path[j + 1] &&
+				path_i->path[i + 1] == path_j->path[j])
+				;
+			j++;
+		}
+	}
+
+
+
+}
 
 void merge_paths(t_paths *paths)
 {
-	ft_find_path_bf;
+	int i;
+	int j;
+	int k;
+	int **common_edges;
+
+	common_edges = (int **)malloc(sizeof(int *) * 100);
+
+	i = 0;
+	while (i < paths->amount - 1)
+	{
+		j = i + 1;
+		while (j < paths->amount)
+		{
+			find_common_edges(common_edges, paths->path_arr[i]->path, paths->path_arr[j]->path);
+			j++;
+		}
+
+		paths->path_arr[i]->path;
+		i++;
+	}
+
+}
+
+void copy_t_array(t_array *arr, t_array *arr_copy)
+{
+	
 }
 
 int		main(int argc, char **argv)
 {
 	t_array *arr;
+	t_array *arr_copy;
 	int fd;
 	t_path *path;
 	t_paths *paths;
@@ -630,6 +684,7 @@ int		main(int argc, char **argv)
 	paths->amount++;
 	paths->curr_path++;
 	//
+	copy_t_array(arr, arr_copy);
 	//add_new_path();
 	//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 	int path_counter = 1;
@@ -647,8 +702,8 @@ int		main(int argc, char **argv)
 		//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 		path_counter++;
 	}
-	if(paths->amount > 1)
-		merge_paths(paths);
+	//if(paths->amount > 1)
+	//	merge_paths(paths);
 	print_path(paths, arr);
 
 //	printf("%d", arr->rooms[3]->s_lnk.weights[1]);
