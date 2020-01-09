@@ -549,7 +549,7 @@ void print_path(t_paths *paths, t_array *arr)
 		while (paths->path_arr[j]->path[i] != -1)
 		{
 			printf("%s-", arr->rooms[paths->path_arr[j]->path[i]]->name);
-			printf("%d-", arr->rooms[paths->path_arr[j]->path[i]]->s_lnk.is_copy);
+			//printf("%d-", arr->rooms[paths->path_arr[j]->path[i]]->s_lnk.is_copy);
 			i++;
 		}
 		printf("\n");

@@ -67,6 +67,7 @@ typedef struct	s_paths
 	int		paths_lim;
 	int		amount;
 	t_path	**path_arr;
+	int		time;
 }				t_paths;
 
 /*
