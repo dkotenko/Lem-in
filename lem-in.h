@@ -79,4 +79,5 @@ typedef struct	s_paths_sets
 	t_paths	**paths_arr;
 }				t_paths_sets;
 */
+
 #endif

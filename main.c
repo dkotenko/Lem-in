@@ -603,55 +603,134 @@ t_paths *new_paths_sets()
 }
 */
 
-void find_common_edges(int **common_edges, t_path *path_i, t_path *path_j)
+t_path *get_single_path_origin(t_paths *paths, t_array *arr, int path)
+{
+	t_path *path_origin;
+	int j;
+
+	j = 0;
+	path_origin = (t_path *)malloc(sizeof(t_path));
+	path_origin->size = paths->path_arr[path]->size;
+	path_origin->path = (int *)malloc(sizeof(int) * path_origin->size);
+	while (j < paths->path_arr[path]->size)
+	{
+		if (arr->rooms[paths->path_arr[path]->path[j]]->s_lnk.is_copy)
+		{
+			path_origin->path[j] = arr->rooms[paths->path_arr[path]->path[j]]->s_lnk.room_copy;
+		}
+		else
+			path_origin->path[j] = paths->path_arr[path]->path[j];
+		j++;
+	}
+	return (path_origin);
+}
+
+t_path **get_paths_origin(t_paths *paths, t_array *arr)
+{
+	t_path **paths_origin;
+	int i;
+
+	i = 0;
+	paths_origin = (t_path **)malloc(sizeof(t_path *) * paths->curr_path);
+	while (i < paths->curr_path)
+	{
+		paths_origin[i] = get_single_path_origin(paths, arr, i);
+		i++;
+	}
+	return (paths_origin);
+}
+
+void find_common_edges(t_paths *common_edges, t_path *path_a, t_path *path_b, t_paths *paths)
 {
 	int i;
 	int j;
 
 	i = 1;
 	j = 1;
-	while (i < path_i->size - 1)
+	while (i < path_a->size - 1)
 	{
 		j = 1;
-		while (j < path_j->size - 1)
+		while (j < path_b->size - 1)
 		{
-			if (path_i->path[i] == path_j->path[j] &&
-				path_i->path[i + 1] == path_j->path[j + 1])
-				;
-			else if (path_i->path[i] == path_j->path[j + 1] &&
-				path_i->path[i + 1] == path_j->path[j])
-				;
+			if (path_a->path[i] == path_b->path[j + 1] &&
+				path_a->path[i + 1] == path_b->path[j])
+			{
+				common_edges->path_arr[common_edges->curr_path] = \
+					(t_path *)malloc(sizeof(t_path));
+				common_edges->path_arr[common_edges->curr_path]->path = \
+                    (int *)malloc(sizeof(int) * 2);
+				common_edges->path_arr[common_edges->curr_path]->path[0] = path_a->path[i];
+				common_edges->path_arr[common_edges->curr_path]->path[1] = path_a->path[i + 1];
+				common_edges->curr_path++;
+			}
 			j++;
 		}
+		i++;
 	}
-
-
-
 }
 
-void merge_paths(t_paths *paths)
+void delete_common_edges(t_paths *common_edges, t_paths *paths, t_array *arr)
+{
+	int i;
+	int a;
+	int b;
+
+	i = 0;
+	while (i < common_edges->curr_path)
+	{
+		a = common_edges->path_arr[i]->path[0];
+		b = common_edges->path_arr[i]->path[1];
+		arr->rooms[a]->s_lnk.weights[b] = -2;
+		arr->rooms[b]->s_lnk.weights[a] = -2;
+		i++;
+	}
+}
+
+t_paths *handle_common_edges(t_path **orig_paths, t_paths *paths, t_array *arr)
 {
 	int i;
 	int j;
-	int k;
-	int **common_edges;
+	t_paths *common_edges;
 
-	common_edges = (int **)malloc(sizeof(int *) * 100);
-
+	common_edges = new_paths();
 	i = 0;
-	while (i < paths->amount - 1)
+	while (i < paths->curr_path - 1)
 	{
 		j = i + 1;
-		while (j < paths->amount)
+		while (j < paths->curr_path)
 		{
-			find_common_edges(common_edges, paths->path_arr[i]->path, paths->path_arr[j]->path);
+			find_common_edges(common_edges, orig_paths[i], orig_paths[j], paths);
 			j++;
 		}
-
 		paths->path_arr[i]->path;
 		i++;
 	}
+	delete_common_edges(common_edges, paths, arr);
+	return (common_edges);
+}
 
+void merge_paths(t_paths *paths, t_array *arr)
+{
+	int i;
+	t_path **paths_origin;
+	t_path *path;
+	t_paths *common_edges;
+
+
+	paths_origin = get_paths_origin(paths, arr);
+	common_edges = handle_common_edges(paths_origin, paths , arr);
+	i = 0;
+	while (i < paths->curr_path && common_edges->curr_path)
+	{
+		path = NULL;
+		if (path = ft_find_path_bf(&arr, 1, 0, 0))
+		{
+			free(paths->path_arr[i]);
+			paths->path_arr[i] = path;
+		}
+		i++;
+	}
+	//free(paths_origin);
 }
 
 void copy_t_array(t_array *arr, t_array *arr_copy)
@@ -666,8 +745,9 @@ int		main(int argc, char **argv)
 	int fd;
 	t_path *path;
 	t_paths *paths;
+	t_paths *prev;
+	t_paths *curr;
 	//t_paths_sets *paths_sets;
-
 	arr = NULL;
 	if (argc == 2)
 		fd = open(argv[1], O_RDONLY);
@@ -675,16 +755,14 @@ int		main(int argc, char **argv)
 		fd = 0;
 	ft_read_data(fd, &arr); //читаем входные данные
 //	ft_find_path(&arr);
-
 	path = (t_path *)malloc(sizeof(t_path));
 	paths = new_paths();
-
-	//
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
+	//FIND_OPTIMUM();
 	paths->amount++;
 	paths->curr_path++;
-	//
 	copy_t_array(arr, arr_copy);
+	prev = paths;
 	//add_new_path();
 	//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 	int path_counter = 1;
@@ -692,20 +770,16 @@ int		main(int argc, char **argv)
 	while (path_counter < path_limit)
 	{
 		ft_expand_graph(&arr, paths->path_arr[paths->curr_path - 1]->path);
-		//
 		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 		if (!paths->path_arr[paths->curr_path])
 			break;
 		paths->amount++;
 		paths->curr_path++;
-		//
+		merge_paths(paths, arr);
 		//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 		path_counter++;
 	}
-	//if(paths->amount > 1)
-	//	merge_paths(paths);
 	print_path(paths, arr);
-
 //	printf("%d", arr->rooms[3]->s_lnk.weights[1]);
 	return (0);
 }
