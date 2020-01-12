@@ -44,21 +44,18 @@ typedef struct	s_array
 typedef struct	s_ant
 {
 	char	*name;
-	int 	*curr_room;
-	int 	is_finish;
-	int 	final_room;
+	int     path;
+    int				order;
+    int				position;
+    struct s_ant	*next;
 }				t_ant;
-
-typedef struct	s_ants
-{
-	int 	amount;
-	t_ant	*ant_arr;
-}				t_ants;
 
 typedef struct	s_path
 {
 	int 	size;
 	int 	*path;
+    int		curr_size;
+    int		order;
 }				t_path;
 
 typedef struct	s_paths
@@ -69,15 +66,5 @@ typedef struct	s_paths
 	t_path	**path_arr;
 	int		time;
 }				t_paths;
-
-/*
-typedef struct	s_paths_sets
-{
-	int 	curr_paths_set;
-	int		paths_lim;
-	int		amount;
-	t_paths	**paths_arr;
-}				t_paths_sets;
-*/
 
 #endif

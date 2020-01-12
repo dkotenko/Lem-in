@@ -591,178 +591,416 @@ t_paths *new_paths()
 	return (new);
 }
 
-/*
-t_paths *new_paths_sets()
+
+int *copy_int_array(int *arr, int size)
 {
-	t_paths_sets *new;
+	//need size_t instead of size OR NOT?!?!?!?!??!?!?!
+	int i;
+	int *new;
+
+	new = (int *)malloc(sizeof(int) * size);
+	i = 0;
+	while (i < size)
+	{
+		new[i] = arr[i];
+		i++;
+	}
+	return (new);
+}
+
+t_path *copy_t_path(t_path *path)
+{
+	t_path *new;
+
+	new = (t_path *)malloc(sizeof(t_path));
+	new->size = path->size;
+	new->path = copy_int_array(path->path, path->size);
+	return (new);
+}
+
+t_paths *copy_t_paths(t_paths *paths)
+{
+	int i;
+	t_paths *new;
 
 	new = (t_paths *)malloc(sizeof(t_paths));
-	new->curr_paths_set = 0;
-	new->paths_arr[0] = new_paths();
-	new->amount = 0;
-}
-*/
-
-t_path *get_single_path_origin(t_paths *paths, t_array *arr, int path)
-{
-	t_path *path_origin;
-	int j;
-
-	j = 0;
-	path_origin = (t_path *)malloc(sizeof(t_path));
-	path_origin->size = paths->path_arr[path]->size;
-	path_origin->path = (int *)malloc(sizeof(int) * path_origin->size);
-	while (j < paths->path_arr[path]->size)
-	{
-		if (arr->rooms[paths->path_arr[path]->path[j]]->s_lnk.is_copy)
-		{
-			path_origin->path[j] = arr->rooms[paths->path_arr[path]->path[j]]->s_lnk.room_copy;
-		}
-		else
-			path_origin->path[j] = paths->path_arr[path]->path[j];
-		j++;
-	}
-	return (path_origin);
-}
-
-t_path **get_paths_origin(t_paths *paths, t_array *arr)
-{
-	t_path **paths_origin;
-	int i;
-
+	new->curr_path = paths->curr_path;
+	new->paths_lim = paths->paths_lim;
+	new->amount = paths->amount;
+	new->time = paths->time;
+	new->path_arr = (t_path **)malloc(sizeof(t_paths *) * paths->curr_path);
 	i = 0;
-	paths_origin = (t_path **)malloc(sizeof(t_path *) * paths->curr_path);
 	while (i < paths->curr_path)
 	{
-		paths_origin[i] = get_single_path_origin(paths, arr, i);
+		new->path_arr[i] = copy_t_path(paths->path_arr[i]);
 		i++;
 	}
-	return (paths_origin);
+	return (new);
 }
 
-void find_common_edges(t_paths *common_edges, t_path *path_a, t_path *path_b, t_paths *paths)
+t_array *get_copy_t_array(t_array *arr)
 {
-	int i;
-	int j;
-
-	i = 1;
-	j = 1;
-	while (i < path_a->size - 1)
-	{
-		j = 1;
-		while (j < path_b->size - 1)
-		{
-			if (path_a->path[i] == path_b->path[j + 1] &&
-				path_a->path[i + 1] == path_b->path[j])
-			{
-				common_edges->path_arr[common_edges->curr_path] = \
-					(t_path *)malloc(sizeof(t_path));
-				common_edges->path_arr[common_edges->curr_path]->path = \
-                    (int *)malloc(sizeof(int) * 2);
-				common_edges->path_arr[common_edges->curr_path]->path[0] = path_a->path[i];
-				common_edges->path_arr[common_edges->curr_path]->path[1] = path_a->path[i + 1];
-				common_edges->curr_path++;
-			}
-			j++;
-		}
-		i++;
-	}
+    int i;
+    t_array *arr_copy;
+    
+	arr_copy = (t_array *)malloc(sizeof(t_array));
+	arr_copy->max = arr->current;
+	arr_copy->current = 0;
+	arr_copy->start = arr->start;
+	arr_copy->finish = arr->finish;
+	arr_copy->ants = arr->ants;
+	arr_copy->rooms = (t_room **)malloc(sizeof(t_room *) * arr->current);
+	i = 0;
+	while (i < arr->current)
+    {
+        arr_copy->rooms[i] = NULL;
+        i++;
+    }
+    return (arr_copy);
 }
 
-void delete_common_edges(t_paths *common_edges, t_paths *paths, t_array *arr)
+t_room *copy_room_mod(t_room **rooms, int i)
 {
-	int i;
-	int a;
-	int b;
+	t_room	*room;
+
+	room = (t_room*)malloc(sizeof(t_room));
+	if (rooms[i]->s_lnk.is_copy)
+		i = rooms[i]->s_lnk.room_copy;
+	room->name = rooms[i]->name;
+	room->s_lnk.links = (int *) malloc(sizeof(int) * rooms[i]->s_lnk.cur_size);
+	room->s_lnk.weights = (int *) malloc(sizeof(int) * rooms[i]->s_lnk.cur_size);
+	room->s_lnk.order = rooms[i]->s_lnk.order;
+	room->s_lnk.room_copy = -1;
+	room->s_lnk.is_copy = 0;
+	room->s_lnk.max_size = rooms[i]->s_lnk.cur_size;
+	room->s_lnk.cur_size = 0;
+	return (room);
+}
+
+int 	room_in_no_expanded(t_array *arr_not_expanded, t_room *room)
+{
+	int		i;
 
 	i = 0;
-	while (i < common_edges->curr_path)
+	while (i < arr_not_expanded->max)
 	{
-		a = common_edges->path_arr[i]->path[0];
-		b = common_edges->path_arr[i]->path[1];
-		arr->rooms[a]->s_lnk.weights[b] = -2;
-		arr->rooms[b]->s_lnk.weights[a] = -2;
+	    if (arr_not_expanded->rooms[i])
+	    {
+            //printf("%s %s %d\n", room->name, arr_not_expanded->rooms[i]->name, i);
+        }
+		if (arr_not_expanded->rooms[i] && room->name == arr_not_expanded->rooms[i]->name)
+			return (1);
 		i++;
 	}
+	return (0);
 }
 
-t_paths *handle_common_edges(t_path **orig_paths, t_paths *paths, t_array *arr)
+int     get_origin_room(int room_nb, t_array *arr)
+{
+    if (arr->rooms[room_nb]->s_lnk.is_copy)
+        return (arr->rooms[room_nb]->s_lnk.room_copy);
+    return (room_nb);
+}
+
+void add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *path)
 {
 	int i;
-	int j;
-	t_paths *common_edges;
+	int k;
 
-	common_edges = new_paths();
-	i = 0;
-	while (i < paths->curr_path - 1)
+	i = path->size;
+	while (--i > -1)
 	{
-		j = i + 1;
-		while (j < paths->curr_path)
+	    k = get_origin_room(path->path[i], arr);
+		printf("%s\n", arr->rooms[k]->name);
+		if (!room_in_no_expanded(arr_not_expanded, arr->rooms[k]))
 		{
-			find_common_edges(common_edges, orig_paths[i], orig_paths[j], paths);
-			j++;
+            arr_not_expanded->rooms[k] = copy_room_mod(arr->rooms, k);
+			arr_not_expanded->current++;
+        }
+		if (i > 0)
+		{
+			arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size++] = \
+			get_origin_room(path->path[i - 1], arr);
+			arr_not_expanded->rooms[k]->s_lnk.weights[arr_not_expanded->rooms[k]->s_lnk.cur_size] = 1;
 		}
-		paths->path_arr[i]->path;
-		i++;
 	}
-	delete_common_edges(common_edges, paths, arr);
-	return (common_edges);
+
 }
 
-void merge_paths(t_paths *paths, t_array *arr)
+int     nmb_in_array_pos(int number, int *arr, int size)
 {
-	int i;
-	t_path **paths_origin;
-	t_path *path;
-	t_paths *common_edges;
+    int i;
 
-
-	paths_origin = get_paths_origin(paths, arr);
-	common_edges = handle_common_edges(paths_origin, paths , arr);
-	i = 0;
-	while (i < paths->curr_path && common_edges->curr_path)
-	{
-		path = NULL;
-		if (path = ft_find_path_bf(&arr, 1, 0, 0))
-		{
-			free(paths->path_arr[i]);
-			paths->path_arr[i] = path;
-		}
-		i++;
-	}
-	//free(paths_origin);
+    i = 0;
+    while (i < size)
+    {
+        if (arr[i] == number)
+            return (i);
+        i++;
+    }
+    return (-1);
 }
 
-void copy_t_array(t_array *arr, t_array *arr_copy)
+int     remove_double_links(t_array arr, int a, int b)
 {
-	
+
+    return (0);
+}
+
+void delete_double_links(t_array *arr)
+{
+    int i;
+    int j;
+    int a;
+    int b;
+
+    i = 0;
+    while (i < arr->current)
+    {
+        j = 0;
+        while (j < arr->rooms[i]->s_lnk.cur_size)
+        {
+            a = nmb_in_array_pos(i, arr->rooms[j]->s_lnk.links,
+                    arr->rooms[j]->s_lnk.cur_size);
+            b = nmb_in_array_pos(j, arr->rooms[i]->s_lnk.links,
+                    arr->rooms[i]->s_lnk.cur_size);
+            if (a != -1 && arr->rooms[j]->s_lnk.weights[a] != -2
+            && b != -1 && arr->rooms[i]->s_lnk.weights[b] == -2)
+            {
+                arr->rooms[j]->s_lnk.weights[a] == -2;
+                arr->rooms[i]->s_lnk.weights[b] == -2;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
+void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
+{
+    int i;
+    t_path *tmp;
+
+	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
+	delete_double_links(arr_not_expanded);
+	i = 0;
+	while (i < paths->curr_path)
+    {
+	    tmp = paths->path_arr[i];
+        paths->path_arr[i] = ft_find_path_bf(&arr_not_expanded, 1, 0, 0);
+        free(tmp);
+        i++;
+    }
+}
+
+int		ft_calc_path_time(t_array **arr, t_paths *paths)
+{
+    int i;
+    int j;
+    int min_path;
+    int min_path_num;
+    int max_time;
+
+    i = 0;
+    max_time = 0;
+    while (i < (*arr)->ants)
+    {
+        j = 0;
+        min_path = 1000000;
+        while (j < paths->curr_path)
+        {
+            if (paths->path_arr[j]->curr_size < min_path)
+            {
+                min_path = paths->path_arr[j]->curr_size;
+                min_path_num = j;
+            }
+            j++;
+        }
+        paths->path_arr[min_path_num]->curr_size += 1;
+        if (max_time < paths->path_arr[min_path_num]->curr_size)
+            max_time = paths->path_arr[min_path_num]->curr_size;
+        i++;
+    }
+    max_time--;
+    printf("%d\n", max_time);
+    return (max_time);
+}
+
+t_ant	*ft_ants_creator(int start_room)
+{
+    static int	num = 1;
+    char		let[2];
+    char 		*numb;
+    t_ant		*clone;
+
+    let[0] = 'L';
+    let[1] = '\0';
+    numb = ft_itoa(num);
+    clone = (t_ant*)malloc(sizeof(t_ant));
+    clone->name = ft_strjoin(let, numb);
+    num++;
+    clone->position = 0;
+    clone->order = -1;
+    clone->path = -1;
+    clone->next = NULL;
+    free(numb);
+    return (clone);
+}
+
+void	ft_ant_reporting(char *name, char *room)
+{
+    printf("%s-%s ", name, room);
+}
+
+void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
+{
+    t_ant	*first_ant;
+    int		order;
+    int 	is_all_enter;
+    int 	is_all_finished;
+
+    order = 1;
+    first_ant = ants;
+    is_all_enter = 0;
+    is_all_finished = 0;
+    while (!is_all_enter)
+    {
+        ants = first_ant;
+        is_all_enter = 1;
+        while (ants->order == order)
+        {
+            if (ants->position < paths->path_arr[ants->path]->size)
+            {
+                ants->position += 1;
+                ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
+                ants->order += 1;
+                is_all_enter = 0;
+            }
+            ants = ants->next;
+        }
+        order++;
+        if (!is_all_enter)
+            printf("\n");
+    }
+    while (!is_all_finished)
+    {
+        //printf("CHECK\n");
+        is_all_finished = 1;
+        ants = first_ant;
+        while (ants->next != NULL)
+        {
+            //printf("|%s-%d-%d-%d|-", ants->name, ants->position, paths->path_arr[ants->path]->size, ants->path);
+            if (ants->position < paths->path_arr[ants->path]->size)
+            {
+                ants->position += 1;
+                ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
+                if (ants->position == paths->path_arr[ants->path]->size && ants->next->next == NULL)
+                    break;
+                is_all_finished = 0;
+            }
+            ants = ants->next;
+        }
+        if (!is_all_finished)
+            printf("\n");
+    }
+}
+
+void	ft_list_sort(t_ant *ants)
+{
+    t_ant	*start;
+    int 	path;
+    int 	order;
+
+    start = ants;
+    while (ants->next != NULL)
+    {
+        if (ants->order > ants->next->order && ants->next->next != NULL)
+        {
+            order = ants->order;
+            path = ants->path;
+            ants->order = ants->next->order;
+            ants->path = ants->next->path;
+            ants->next->order = order;
+            ants->next->path = path;
+            ants = start;
+            continue;
+        }
+        ants = ants->next;
+    }
+}
+
+void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
+{
+    t_ant	*ants;
+    t_ant	*first_ant;
+    int 	i;
+    int		j;
+    int 	min_path;
+    int 	min_path_num;
+
+    ants = ft_ants_creator((*arr)->start);
+    first_ant = ants;
+    i = 0;
+    while (i < (*arr)->ants)
+    {
+        j = 0;
+        min_path = 1000000;
+        while (j < paths->curr_path)
+        {
+            if (paths->path_arr[j]->curr_size < min_path)
+            {
+                min_path = paths->path_arr[j]->curr_size;
+                min_path_num = j;
+            }
+            j++;
+        }
+        paths->path_arr[min_path_num]->curr_size += 1;
+        ants->path = min_path_num;
+        ants->order = paths->path_arr[min_path_num]->order;
+        paths->path_arr[min_path_num]->order += 1;
+        ants->next = ft_ants_creator((*arr)->start); // !!!! создаётся на 1 муравья больше чем надо и это ок
+        ants = ants->next;
+        i++;
+    }
+    ants = first_ant;
+    ft_list_sort(ants);
+    while(ants != NULL)
+    {
+        printf("name: %s, path: %d, order: %d\n", ants->name, ants->path, ants->order);
+        ants = ants->next;
+    }
+    ants = first_ant;
+    ft_ants_parade(arr, ants, paths);
 }
 
 int		main(int argc, char **argv)
 {
 	t_array *arr;
-	t_array *arr_copy;
+	t_array *arr_not_expanded;
 	int fd;
-	t_path *path;
 	t_paths *paths;
 	t_paths *prev;
-	t_paths *curr;
-	//t_paths_sets *paths_sets;
 	arr = NULL;
 	if (argc == 2)
 		fd = open(argv[1], O_RDONLY);
 	else
 		fd = 0;
 	ft_read_data(fd, &arr); //читаем входные данные
-//	ft_find_path(&arr);
-	path = (t_path *)malloc(sizeof(t_path));
 	paths = new_paths();
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
-	//FIND_OPTIMUM();
+	//paths->time = FIND_OPTIMUM();
 	paths->amount++;
 	paths->curr_path++;
-	copy_t_array(arr, arr_copy);
-	prev = paths;
+    arr_not_expanded = get_copy_t_array(arr);
+	prev = copy_t_paths(paths);
+	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
+	/*int k = 0;
+	while (k < arr_not_expanded->max)
+    {
+	    if (arr_not_expanded->rooms[k])
+            printf("%s\n", arr_not_expanded->rooms[k]->name);
+	    k++;
+    } */
 	//add_new_path();
 	//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 	int path_counter = 1;
@@ -775,11 +1013,17 @@ int		main(int argc, char **argv)
 			break;
 		paths->amount++;
 		paths->curr_path++;
-		merge_paths(paths, arr);
+		handle_paths(arr_not_expanded, arr, paths);
+        //paths->time = FIND_OPTIMUM();
+        //if (FIND_OPTIMUM(path) >= FIND_OPTIMUM(prev))
+        //    path = prev; break ;
+
+		//merge_paths(paths, arr);
 		//path->path = ft_find_path_bf(&arr, 1, 0, 0);
 		path_counter++;
 	}
-	print_path(paths, arr);
+    //    ants_parade(path);
+	print_path(paths, arr_not_expanded);
 //	printf("%d", arr->rooms[3]->s_lnk.weights[1]);
 	return (0);
 }
