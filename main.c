@@ -1,6 +1,24 @@
 #include "lem-in.h"
 #include "libft/libft.h"
 
+void curr_size_to_size(t_paths *paths)
+{
+	int i;
+
+	i = -1;
+	while (++i < paths->curr_path)
+	{
+		paths->path_arr[i]->curr_size = paths->path_arr[i]->size;
+	}
+}
+/*!
+ *
+ *
+ *
+ *
+*/
+
+
 void	ft_split_free(char **split)
 {
 	int i;
@@ -419,6 +437,7 @@ t_path		*ft_restore_path(t_array **arr, int **path_mtrx)
 		i--;
 	}
 	path->path[k] = (*arr)->start;
+	path->order = 1;
 	path->size = k + 1;
 	path->curr_size = k + 1;
 	return (j != -1 ? path : NULL);
@@ -585,22 +604,23 @@ int		ft_calc_path_time(t_array **arr, t_paths *paths)
 
 	i = 0;
 	max_time = 0;
+	curr_size_to_size(paths);
 	while (i < (*arr)->ants)
 	{
 		j = 0;
 		min_path = 1000000;
 		while (j < paths->curr_path)
 		{
-			if (paths->path_arr[j]->curr_size < min_path)
+			if (paths->path_arr[j]->curr_size - 1 < min_path)
 			{
-				min_path = paths->path_arr[j]->curr_size;
+				min_path = paths->path_arr[j]->curr_size - 1;
 				min_path_num = j;
 			}
 			j++;
 		}
 		paths->path_arr[min_path_num]->curr_size += 1;
-		if (max_time < paths->path_arr[min_path_num]->curr_size)
-			max_time = paths->path_arr[min_path_num]->curr_size;
+		if (max_time < paths->path_arr[min_path_num]->curr_size - 1)
+			max_time = paths->path_arr[min_path_num]->curr_size - 1;
 		i++;
 	}
 	max_time--;
@@ -640,6 +660,7 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 	int		order;
 	int 	is_all_enter;
 	int 	is_all_finished;
+
 
 	order = 1;
 	first_ant = ants;
@@ -720,6 +741,7 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
 	int 	min_path;
 	int 	min_path_num;
 
+	curr_size_to_size(paths);
 	ants = ft_ants_creator((*arr)->start);
 	first_ant = ants;
 	i = 0;
@@ -789,6 +811,8 @@ t_path *copy_t_path(t_path *path)
 	new = (t_path *)malloc(sizeof(t_path));
 	new->size = path->size;
 	new->path = copy_int_array(path->path, path->size);
+	new->curr_size = path->curr_size;
+	new->order = path->order;
 	return (new);
 }
 
@@ -1074,6 +1098,8 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	//free_deleted_edges();
 }
 
+
+
 int		main(int argc, char **argv)
 {
 	t_array *arr;
@@ -1130,7 +1156,6 @@ int		main(int argc, char **argv)
 		path_counter++;
 	}
 	ft_ants_prepare_to_parade(&arr_not_expanded, paths);
-    //    ants_parade(path);
 	//print_path(paths, arr_not_expanded);
 	return (0);
 }
