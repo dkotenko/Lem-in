@@ -672,7 +672,7 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 		is_all_enter = 1;
 		while (ants->order == order)
 		{
-			if (ants->position < paths->path_arr[ants->path]->size)
+			if (ants->position < paths->path_arr[ants->path]->size - 1)
 			{
 				ants->position += 1;
 				ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
@@ -693,7 +693,7 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 		while (ants->next != NULL)
 		{
 			//printf("|%s-%d-%d-%d|-", ants->name, ants->position, paths->path_arr[ants->path]->size, ants->path);
-			if (ants->position < paths->path_arr[ants->path]->size)
+			if (ants->position < paths->path_arr[ants->path]->size - 1)
 			{
 				ants->position += 1;
 				ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
