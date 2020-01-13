@@ -62,9 +62,16 @@ typedef struct	s_paths
 {
 	int 	curr_path;
 	int		paths_lim;
-	int		amount;
 	t_path	**path_arr;
 	int		time;
 }				t_paths;
+
+typedef struct	s_deleted_edges
+{
+	int 		*edge_indexes;
+	int 		*edge_rooms;
+	int 		curr_size;
+	int 		size;
+}				t_deleted_edges;
 
 #endif
