@@ -434,8 +434,8 @@ void 	ft_free_bf_matrix(t_array **arr, int **matrix, int **path_mtrx)
 	while (i < (*arr)->current - 1)
 	{
 		//ft_putnbr(matrix[i][0]);
-		free(matrix[i]);
-		free(path_mtrx[i]);
+		//free(matrix[i]);
+		//free(path_mtrx[i]);
 		i++;
 	}
 	free(matrix);
@@ -536,8 +536,7 @@ t_path		*ft_find_path_bf(t_array **arr, int i, int j, int k)
 	path = ft_restore_path(arr, path_mtrx); // воссоздаёт путь из path_матрицы
 	if (debug)
 	{
-		print_t_path(path, *arr);
-		ft_putstr("here");
+		print_t_path(path, *arr);		
 	}
 	ft_free_bf_matrix(arr, matrix, path_mtrx); //чистит память после работы функции
 	return (path); //!!! АХТУНГ снаружи надо написать какую-то херабору в которую будут складироваться все найденные пути.
@@ -1098,6 +1097,19 @@ void restore_edges_bf(t_array *arr, t_deleted_edges *edges)
 	}
 }
 
+void	free_t_path(t_path **path)
+{
+	free((*path)->path);
+	free(*path);
+}
+
+void	free_t_deleted_edges(t_deleted_edges **edges)
+{
+	free((*edges)->edge_indexes);
+	free((*edges)->edge_rooms);
+	free(*edges);
+}
+
 void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 {
     int i;
@@ -1118,11 +1130,12 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 
         delete_edges_bf(arr_not_expanded, paths->path_arr[i], deleted_edges);
 		//print_t_array_rooms_with_links(arr_not_expanded);
-        free(tmp);
+        free_t_path(&tmp);
     }
     restore_edges_bf(arr_not_expanded, deleted_edges);
+	free_t_deleted_edges(&deleted_edges);
 	//print_t_array_rooms_with_links(arr_not_expanded);
-	//free_deleted_edges();
+	
 }
 
 
