@@ -1,6 +1,7 @@
 #include "lem-in.h"
 #include "libft/libft.h"
 
+int debug = 0;
 void curr_size_to_size(t_paths *paths)
 {
 	int i;
@@ -11,6 +12,70 @@ void curr_size_to_size(t_paths *paths)
 		paths->path_arr[i]->curr_size = paths->path_arr[i]->size;
 	}
 }
+
+void	print_t_links(t_links *s_lnk, t_array *arr)
+{
+	int i;
+	int printed;
+
+	i = -1;
+	printed = 0;
+	while (++i < s_lnk->cur_size)
+	{
+		ft_putstr("link ");
+		ft_putstr(arr->rooms[s_lnk->links[i]]->name);
+		ft_putstr(", weight ");
+		ft_putnbr(s_lnk->weights[i]);
+		if (i < s_lnk->cur_size - 1)
+			ft_putstr(" | ");
+		printed++;
+	}
+	if (!printed)
+		ft_putstr("no links, no weights");
+	ft_putstr("\n");
+
+}
+
+void	print_t_array_rooms_with_links(t_array *arr)
+{
+	int i;
+
+	i = -1;
+	while(++i < arr->max)
+	{
+		if (!arr->rooms[i])
+			continue ;
+		ft_putstr("ROOM ");
+		ft_putstr(arr->rooms[i]->name);
+		ft_putstr("\n");
+		print_t_links(&arr->rooms[i]->s_lnk, arr);
+	}
+}
+
+void	print_t_path(t_path *path, t_array *arr)
+{
+	int i;
+
+	i = -1;
+	while (++i < path->size)
+	{
+		ft_putstr(arr->rooms[path->path[i]]->name);
+		if (i < path->size - 1)
+			ft_putstr("-");
+	}
+	ft_putstr("\n");
+}
+
+void	print_t_paths(t_paths *paths, t_array *arr)
+{
+	int i;
+
+	i = -1;
+	while (++i < paths->curr_path)
+		print_t_path(paths->path_arr[i], arr);
+	ft_putstr("\n");
+}
+
 /*!
  *
  *
@@ -49,9 +114,10 @@ t_room	**ft_rooms_copy(t_room **rooms, int size)
 	return (new_rooms);
 }
 
-void	ft_arr_malloc(t_array **arr)
+void			ft_arr_malloc(t_array **arr)
 {
 	static int	size = ARR_INIT_SIZE;
+	int			i;
 
 	if (*arr == NULL)
 	{
@@ -59,16 +125,18 @@ void	ft_arr_malloc(t_array **arr)
 		(*arr)->rooms = (t_room**)malloc(sizeof(t_room*) * size);
 		(*arr)->max = size;
 		(*arr)->current = 0;
-		return ;
+		i = 0;
 	}
 	if ((*arr)->current == (*arr)->max)
 	{
 		size *= 2;
 		(*arr)->rooms = ft_rooms_copy((*arr)->rooms, (*arr)->max);
+		i = (*arr)->max;
 		(*arr)->max *= 2;
 		//printf("%s\n", (*arr)->rooms[1]->name);
-		return ;
 	}
+	while (i < size)
+		(*arr)->rooms[i++] = NULL;
 	return ;
 }
 
@@ -365,6 +433,7 @@ void 	ft_free_bf_matrix(t_array **arr, int **matrix, int **path_mtrx)
 	i = 0;
 	while (i < (*arr)->current - 1)
 	{
+		//ft_putnbr(matrix[i][0]);
 		free(matrix[i]);
 		free(path_mtrx[i]);
 		i++;
@@ -459,8 +528,17 @@ t_path		*ft_find_path_bf(t_array **arr, int i, int j, int k)
 		ft_find_path_cycle(arr, matrix, path_mtrx, i); //эта функция заполняет матрицу по той логике, что в видео рассказано
 		i++;
 	}
-	//ft_print_bf_matrix(matrix, path_mtrx, arr); // просто печать для дебага, можно коммитить.
+	if (debug)
+	{
+		//ft_print_bf_matrix(matrix, path_mtrx, arr); // просто печать для дебага, можно коммитить.
+		print_t_array_rooms_with_links(*arr);
+	}
 	path = ft_restore_path(arr, path_mtrx); // воссоздаёт путь из path_матрицы
+	if (debug)
+	{
+		print_t_path(path, *arr);
+		ft_putstr("here");
+	}
 	ft_free_bf_matrix(arr, matrix, path_mtrx); //чистит память после работы функции
 	return (path); //!!! АХТУНГ снаружи надо написать какую-то херабору в которую будут складироваться все найденные пути.
 	//!! ахтунг путь отмаллочен, не забыть его пофришить потом
@@ -624,7 +702,7 @@ int		ft_calc_path_time(t_array **arr, t_paths *paths)
 		i++;
 	}
 	max_time--;
-	printf("%d\n", max_time);
+	//printf("%d\n", max_time);
 	return (max_time);
 }
 
@@ -697,7 +775,7 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 			{
 				ants->position += 1;
 				ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
-				if (ants->position == paths->path_arr[ants->path]->size && ants->next->next == NULL)
+				if (ants->position == paths->path_arr[ants->path]->size - 1 && ants->next->next == NULL)
 					break;
 				is_all_finished = 0;
 			}
@@ -841,14 +919,14 @@ t_array *get_copy_t_array(t_array *arr)
     t_array *arr_copy;
     
 	arr_copy = (t_array *)malloc(sizeof(t_array));
-	arr_copy->max = arr->current;
+	arr_copy->max = arr->max;
 	arr_copy->current = 0;
 	arr_copy->start = arr->start;
 	arr_copy->finish = arr->finish;
 	arr_copy->ants = arr->ants;
 	arr_copy->rooms = (t_room **)malloc(sizeof(t_room *) * arr->current);
 	i = 0;
-	while (i < arr->current)
+	while (i < arr->max)
     {
         arr_copy->rooms[i] = NULL;
         i++;
@@ -883,7 +961,7 @@ int 	room_in_no_expanded(t_array *arr_not_expanded, t_room *room)
 	{
 	    if (arr_not_expanded->rooms[i])
 	    {
-            //printf("%s %s %d\n", room->name, arr_not_expanded->rooms[i]->name, i);
+            ; //printf("%s %s %d\n", room->name, arr_not_expanded->rooms[i]->name, i);
         }
 		if (arr_not_expanded->rooms[i] && room->name == arr_not_expanded->rooms[i]->name)
 			return (1);
@@ -971,6 +1049,8 @@ void delete_double_links(t_array *arr)
     i = -1;
     while (++i < arr->current)
     {
+    	if (!arr->rooms[i])
+			continue ;
         j = -1;
         while (++j < arr->rooms[i]->s_lnk.cur_size)
         {
@@ -985,56 +1065,7 @@ void delete_double_links(t_array *arr)
     }
 }
 
-void	print_t_links(t_links *s_lnk, t_array *arr)
-{
-	int i;
 
-	i = -1;
-	while (++i < s_lnk->cur_size)
-	{
-		printf("link %s, weight %d", arr->rooms[s_lnk->links[i]]->name, s_lnk->weights[i]);
-		if (i < s_lnk->cur_size - 1)
-			printf(" | ");
-	}
-	printf("\n");
-
-}
-
-void	print_t_array_rooms_with_links(t_array *arr)
-{
-	int i;
-
-	i = -1;
-	while(++i < arr->current)
-	{
-		printf("ROOM %s\n", arr->rooms[i]->name);
-		print_t_links(&arr->rooms[i]->s_lnk, arr);
-	}
-}
-
-void	print_t_path(t_path *path, t_array *arr)
-{
-	int i;
-
-	i = -1;
-	while (++i < path->size)
-	{
-		printf("%s", arr->rooms[path->path[i]]->name);
-		if (i < path->size - 1)
-			printf("-");
-	}
-	printf("\n");
-}
-
-void	print_t_paths(t_paths *paths, t_array *arr)
-{
-	int i;
-
-	i = -1;
-	while (++i < paths->curr_path)
-		print_t_path(paths->path_arr[i], arr);
-	printf("\n");
-}
 
 void delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges)
 {
@@ -1087,8 +1118,9 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	while (++i < paths->curr_path)
     {
 	    tmp = paths->path_arr[i];
+	    debug = 1;
         paths->path_arr[i] = ft_find_path_bf(&arr_not_expanded, 1, 0, 0);
-		print_t_path(paths->path_arr[i], arr);
+
         delete_edges_bf(arr_not_expanded, paths->path_arr[i], deleted_edges);
 		//print_t_array_rooms_with_links(arr_not_expanded);
         //free(tmp);
@@ -1115,23 +1147,16 @@ int		main(int argc, char **argv)
 	ft_read_data(fd, &arr); //читаем входные данные
 	paths = new_paths();
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
+	//print_t_path(paths->path_arr[paths->curr_path], arr);
 	if (!paths->path_arr[paths->curr_path])
 		return 0;
 	paths->curr_path++;
 	paths->time = ft_calc_path_time(&arr, paths);
-
     arr_not_expanded = get_copy_t_array(arr);
 	prev = copy_t_paths(paths);
 	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
-	/*int k = 0;
-	while (k < arr_not_expanded->max)
-    {
-	    if (arr_not_expanded->rooms[k])
-            printf("%s\n", arr_not_expanded->rooms[k]->name);
-	    k++;
-    } */
-	//add_new_path();
-	//path->path = ft_find_path_bf(&arr, 1, 0, 0);
+	//print_t_array_rooms_with_links(arr_not_expanded);
+
 	int path_counter = 1;
 	int path_limit = ft_path_limit(arr);
 	while (path_counter < path_limit)
