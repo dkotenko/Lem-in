@@ -2,3 +2,6 @@
 CMakeLists.txt
 cmake-*
 libft/*.o
+libft/*.a
+*.o
+lem-in
