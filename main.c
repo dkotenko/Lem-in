@@ -633,7 +633,7 @@ void print_path(t_paths *paths, t_array *arr)
 	int i = 0;
 	int j = 0;
 	printf("\n");
-	t_path *path = paths->path_arr[paths->curr_path - 1];
+	//t_path *path = paths->path_arr[paths->curr_path - 1];
 
 	while (j < paths->curr_path)
 	{
@@ -713,6 +713,7 @@ t_ant	*ft_ants_creator(int start_room)
 	char 		*numb;
 	t_ant		*clone;
 
+	let[0] = start_room;
 	let[0] = 'L';
 	let[1] = '\0';
 	numb = ft_itoa(num);
@@ -1033,12 +1034,6 @@ int     nbr_in_links_pos(t_array *arr , int curr, int link)
 	return (-1);
 }
 
-int     remove_double_links(t_array arr, int a, int b)
-{
-
-    return (0);
-}
-
 void delete_double_links(t_array *arr)
 {
     int i;
@@ -1092,7 +1087,7 @@ t_deleted_edges	*create_deleted_edges(int size)
 	return (deleted_edges);
 }
 
-void restore_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges)
+void restore_edges_bf(t_array *arr, t_deleted_edges *edges)
 {
 	int i;
 
@@ -1123,9 +1118,9 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 
         delete_edges_bf(arr_not_expanded, paths->path_arr[i], deleted_edges);
 		//print_t_array_rooms_with_links(arr_not_expanded);
-        //free(tmp);
+        free(tmp);
     }
-    restore_edges_bf(arr_not_expanded, paths->path_arr[i], deleted_edges);
+    restore_edges_bf(arr_not_expanded, deleted_edges);
 	//print_t_array_rooms_with_links(arr_not_expanded);
 	//free_deleted_edges();
 }
