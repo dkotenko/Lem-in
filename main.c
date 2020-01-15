@@ -9,7 +9,8 @@ void curr_size_to_size(t_paths *paths)
 	i = -1;
 	while (++i < paths->curr_path)
 	{
-		paths->path_arr[i]->curr_size = paths->path_arr[i]->size;
+		if (paths->path_arr[i])
+			paths->path_arr[i]->curr_size = paths->path_arr[i]->size;
 	}
 }
 
@@ -57,11 +58,16 @@ void	print_t_path(t_path *path, t_array *arr)
 	int i;
 
 	i = -1;
-	while (++i < path->size)
+	if (!path)
+		ft_putstr("NO PATH\n");
+	else
 	{
-		ft_putstr(arr->rooms[path->path[i]]->name);
-		if (i < path->size - 1)
-			ft_putstr("-");
+		while (++i < path->size)
+		{
+			ft_putstr(arr->rooms[path->path[i]]->name);
+			if (i < path->size - 1)
+				ft_putstr("-");
+		}
 	}
 	ft_putstr("\n");
 }
@@ -434,8 +440,8 @@ void 	ft_free_bf_matrix(t_array **arr, int **matrix, int **path_mtrx)
 	while (i < (*arr)->current - 1)
 	{
 		//ft_putnbr(matrix[i][0]);
-		//free(matrix[i]);
-		//free(path_mtrx[i]);
+		free(matrix[i]);
+		free(path_mtrx[i]);
 		i++;
 	}
 	free(matrix);
@@ -1127,32 +1133,42 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	    tmp = paths->path_arr[i];
 	    debug = 1;
         paths->path_arr[i] = ft_find_path_bf(&arr_not_expanded, 1, 0, 0);
-
+        if (!paths->path_arr[i])
+		{
+        	paths->curr_path = i;
+			break;
+		}
         delete_edges_bf(arr_not_expanded, paths->path_arr[i], deleted_edges);
 		//print_t_array_rooms_with_links(arr_not_expanded);
         free_t_path(&tmp);
     }
-    restore_edges_bf(arr_not_expanded, deleted_edges);
+    if (deleted_edges->curr_size)
+    	restore_edges_bf(arr_not_expanded, deleted_edges);
 	free_t_deleted_edges(&deleted_edges);
 	//print_t_array_rooms_with_links(arr_not_expanded);
 	
 }
 
+void ft_reader(int argc, char **argv, t_array **arr)
+{
+	int fd;
+
+	*arr = NULL;
+	if (argc == 2)
+		fd = open(argv[1], O_RDONLY);
+	else
+		fd = 0;
+	ft_read_data(fd, arr); //читаем входные данные
+}
 
 
 int		main(int argc, char **argv)
 {
 	t_array *arr;
 	t_array *arr_not_expanded;
-	int fd;
 	t_paths *paths;
 	t_paths *prev;
-	arr = NULL;
-	if (argc == 2)
-		fd = open(argv[1], O_RDONLY);
-	else
-		fd = 0;
-	ft_read_data(fd, &arr); //читаем входные данные
+	ft_reader(argc, argv, &arr);
 	paths = new_paths();
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 	//print_t_path(paths->path_arr[paths->curr_path], arr);
