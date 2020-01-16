@@ -419,8 +419,8 @@ void 	ft_malloc_bf_matrix(t_array **arr, int ***matrix, int ***path_mtrx)
 	int i;
 
 	i = 0;
-	*matrix = (int**)malloc(sizeof(int*) * (*arr)->current - 1);
-	*path_mtrx = (int**)malloc(sizeof(int*) * (*arr)->current - 1);
+	*matrix = (int**)malloc(sizeof(int*) * ((*arr)->current - 1));
+	*path_mtrx = (int**)malloc(sizeof(int*) * ((*arr)->current - 1));
 	while (i < (*arr)->current - 1)
 	{
 		(*matrix)[i] = (int*)malloc(sizeof(int) * (*arr)->current);
@@ -439,7 +439,6 @@ void 	ft_free_bf_matrix(t_array **arr, int **matrix, int **path_mtrx)
 	i = 0;
 	while (i < (*arr)->current - 1)
 	{
-		//ft_putnbr(matrix[i][0]);
 		free(matrix[i]);
 		free(path_mtrx[i]);
 		i++;
@@ -536,7 +535,7 @@ t_path		*ft_find_path_bf(t_array **arr, int i, int j, int k)
 	}
 	if (debug)
 	{
-		//ft_print_bf_matrix(matrix, path_mtrx, arr); // просто печать для дебага, можно коммитить.
+		ft_print_bf_matrix(matrix, path_mtrx, arr); // просто печать для дебага, можно коммитить.
 		print_t_array_rooms_with_links(*arr);
 	}
 	path = ft_restore_path(arr, path_mtrx); // воссоздаёт путь из path_матрицы
@@ -909,7 +908,7 @@ t_paths *copy_t_paths(t_paths *paths)
 	new->curr_path = paths->curr_path;
 	new->paths_lim = paths->paths_lim;
 	new->time = paths->time;
-	new->path_arr = (t_path **)malloc(sizeof(t_paths *) * paths->curr_path);
+	new->path_arr = (t_path **)malloc(sizeof(t_path *) * paths->curr_path);
 	i = 0;
 	while (i < paths->curr_path)
 	{
@@ -950,6 +949,7 @@ t_room *copy_room_mod(t_room **rooms, int i)
 	room->name = rooms[i]->name;
 	room->s_lnk.links = (int *) malloc(sizeof(int) * rooms[i]->s_lnk.cur_size);
 	room->s_lnk.weights = (int *) malloc(sizeof(int) * rooms[i]->s_lnk.cur_size);
+	ft_fill_mem(room->s_lnk.links, rooms[i]->s_lnk.cur_size, -1);
 	room->s_lnk.order = rooms[i]->s_lnk.order;
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.is_copy = 0;
@@ -983,43 +983,18 @@ int     get_origin_room(int room_nb, t_array *arr)
     return (room_nb);
 }
 
-void add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *path)
-{
-	int i;
-	int k;
-
-	i = path->size;
-	while (--i > -1)
-	{
-	    k = get_origin_room(path->path[i], arr);
-		if (!room_in_no_expanded(arr_not_expanded, arr->rooms[k]))
-		{
-            arr_not_expanded->rooms[k] = copy_room_mod(arr->rooms, k);
-			arr_not_expanded->current++;
-        }
-		if (i > 0)
-		{
-			arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size] = \
-			get_origin_room(path->path[i - 1], arr);
-			arr_not_expanded->rooms[k]->s_lnk.weights[arr_not_expanded->rooms[k]->s_lnk.cur_size] = 1;
-			arr_not_expanded->rooms[k]->s_lnk.cur_size++;
-		}
-	}
-}
-
-
 int     nbr_in_array_pos(int number, int *arr, int size)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (i < size)
-    {
-        if (arr[i] == number)
-            return (i);
-        i++;
-    }
-    return (-1);
+	i = 0;
+	while (i < size)
+	{
+		if (arr[i] == number)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
 
@@ -1038,6 +1013,37 @@ int     nbr_in_links_pos(t_array *arr , int curr, int link)
 	}
 	return (-1);
 }
+
+void add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *path)
+{
+	int i;
+	int k;
+	int orig;
+
+	i = path->size;
+	while (--i > -1)
+	{
+	    k = get_origin_room(path->path[i], arr);
+		if (!room_in_no_expanded(arr_not_expanded, arr->rooms[k]))
+		{
+            arr_not_expanded->rooms[k] = copy_room_mod(arr->rooms, k);
+			arr_not_expanded->current++;
+        }
+		orig = i > 0 ? get_origin_room(path->path[i - 1], arr) : 0;
+		if (i > 0) /*&& nbr_in_links_pos(arr_not_expanded,	orig,
+		arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size])
+			== -1)*/
+		{
+			arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size] = \
+			get_origin_room(path->path[i - 1], arr);
+			arr_not_expanded->rooms[k]->s_lnk.weights[arr_not_expanded->rooms[k]->s_lnk.cur_size] = 1;
+			arr_not_expanded->rooms[k]->s_lnk.cur_size++;
+		}
+	}
+}
+
+
+
 
 void delete_double_links(t_array *arr)
 {
@@ -1123,15 +1129,15 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	t_deleted_edges *deleted_edges;
 
 	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
+	print_t_array_rooms_with_links(arr_not_expanded);
 	delete_double_links(arr_not_expanded);
-	//print_t_array_rooms_with_links(arr_not_expanded);
+
 	i = -1;
 	deleted_edges = create_deleted_edges(arr_not_expanded->current);
 	//print_t_array_rooms_with_links(arr_not_expanded);
 	while (++i < paths->curr_path)
     {
 	    tmp = paths->path_arr[i];
-	    debug = 1;
         paths->path_arr[i] = ft_find_path_bf(&arr_not_expanded, 1, 0, 0);
         if (!paths->path_arr[i])
 		{
@@ -1169,6 +1175,7 @@ int		main(int argc, char **argv)
 	t_paths *paths;
 	t_paths *prev;
 	ft_reader(argc, argv, &arr);
+	arr->current;
 	paths = new_paths();
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 	//print_t_path(paths->path_arr[paths->curr_path], arr);
@@ -1204,6 +1211,7 @@ int		main(int argc, char **argv)
 		}
 		path_counter++;
 	}
+	//ft_ants_prepare_to_parade(&arr, paths);
 	ft_ants_prepare_to_parade(&arr_not_expanded, paths);
 	//print_path(paths, arr_not_expanded);
 	return (0);
