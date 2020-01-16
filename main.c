@@ -901,8 +901,8 @@ t_path *copy_t_path(t_path *path)
 
 t_paths *copy_t_paths(t_paths *paths)
 {
-	int i;
-	t_paths *new;
+	int		i;
+	t_paths	*new;
 
 	new = (t_paths *)malloc(sizeof(t_paths));
 	new->curr_path = paths->curr_path;
@@ -925,11 +925,12 @@ t_array *get_copy_t_array(t_array *arr)
     
 	arr_copy = (t_array *)malloc(sizeof(t_array));
 	arr_copy->max = arr->max;
-	arr_copy->current = 0;
+	arr_copy->current = arr->current;
 	arr_copy->start = arr->start;
 	arr_copy->finish = arr->finish;
 	arr_copy->ants = arr->ants;
-	arr_copy->rooms = (t_room **)malloc(sizeof(t_room *) * arr->current);
+	arr_copy->rooms = (t_room **)malloc(sizeof(t_room *) * arr->max);
+	
 	i = 0;
 	while (i < arr->max)
     {
@@ -1018,7 +1019,7 @@ void add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *pa
 {
 	int i;
 	int k;
-	int orig;
+	//int orig;
 
 	i = path->size;
 	while (--i > -1)
@@ -1027,9 +1028,9 @@ void add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *pa
 		if (!room_in_no_expanded(arr_not_expanded, arr->rooms[k]))
 		{
             arr_not_expanded->rooms[k] = copy_room_mod(arr->rooms, k);
-			arr_not_expanded->current++;
+			//arr_not_expanded->current++;
         }
-		orig = i > 0 ? get_origin_room(path->path[i - 1], arr) : 0;
+		//orig = i > 0 ? get_origin_room(path->path[i - 1], arr) : 0;
 		if (i > 0) /*&& nbr_in_links_pos(arr_not_expanded,	orig,
 		arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size])
 			== -1)*/
@@ -1149,7 +1150,9 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
         free_t_path(&tmp);
     }
     if (deleted_edges->curr_size)
+	{
     	restore_edges_bf(arr_not_expanded, deleted_edges);
+	}
 	free_t_deleted_edges(&deleted_edges);
 	//print_t_array_rooms_with_links(arr_not_expanded);
 	
@@ -1174,8 +1177,7 @@ int		main(int argc, char **argv)
 	t_array *arr_not_expanded;
 	t_paths *paths;
 	t_paths *prev;
-	ft_reader(argc, argv, &arr);
-	arr->current;
+	ft_reader(argc, argv, &arr);	
 	paths = new_paths();
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 	//print_t_path(paths->path_arr[paths->curr_path], arr);
