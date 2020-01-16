@@ -1177,6 +1177,49 @@ int		ft_free(void *val)
 }
 
 
+/*
+int			hash_table_add(int hash, int pointer, int *hash_table)
+{
+	int		i;
+	
+	
+	i = 0;
+	while (i + hash < hash_table.size)
+	{
+		if (hash_table[hash + i] == -1)
+		{
+			hash_table[hash] = pointer;
+			return (1);
+		}
+		else if (hash_table[hash + i] == pointer)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+*/
+
+#define PRIME_NUMBER 17
+int		hash_func(char *s, int table_size)
+{
+	int		i;
+	int		hash;
+	int		len;
+
+	hash = 0;
+	len = ft_strlen(s);
+	i = 0;
+	while (i < len)
+	{
+		hash = ((hash * PRIME_NUMBER) + s[i]) % table_size;
+		i++;
+	}
+	return (hash % table_size);
+}
+
+
+
+
 int		main(int argc, char **argv)
 {
 	t_array *arr;
