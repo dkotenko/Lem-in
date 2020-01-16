@@ -860,7 +860,7 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
 	ft_ants_parade(arr, ants, paths);
 }
 
-t_paths *new_paths()
+t_paths *create_t_paths()
 {
 	t_paths *new;
 
@@ -1093,7 +1093,7 @@ t_deleted_edges	*create_deleted_edges(int size)
 
 	deleted_edges = (t_deleted_edges *)malloc(sizeof(deleted_edges)	* size);
 	deleted_edges->edge_indexes = (int *)malloc(sizeof(int)	* size);
-	deleted_edges->edge_rooms = (int *)malloc(sizeof(int)	* size);
+	deleted_edges->edge_rooms = (int *)malloc(sizeof(int) * size);
 	deleted_edges->curr_size = 0;
 	deleted_edges->size = size;
 	return (deleted_edges);
@@ -1130,7 +1130,7 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	t_deleted_edges *deleted_edges;
 
 	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
-	print_t_array_rooms_with_links(arr_not_expanded);
+	//print_t_array_rooms_with_links(arr_not_expanded);
 	delete_double_links(arr_not_expanded);
 
 	i = -1;
@@ -1158,7 +1158,7 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	
 }
 
-void ft_reader(int argc, char **argv, t_array **arr)
+static	void ft_reader(int argc, char **argv, t_array **arr)
 {
 	int fd;
 
@@ -1170,6 +1170,12 @@ void ft_reader(int argc, char **argv, t_array **arr)
 	ft_read_data(fd, arr); //читаем входные данные
 }
 
+int		ft_free(void *val)
+{
+	free(val);
+	return (1);
+}
+
 
 int		main(int argc, char **argv)
 {
@@ -1177,8 +1183,9 @@ int		main(int argc, char **argv)
 	t_array *arr_not_expanded;
 	t_paths *paths;
 	t_paths *prev;
+	
 	ft_reader(argc, argv, &arr);	
-	paths = new_paths();
+	paths = create_t_paths();
 	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 	//print_t_path(paths->path_arr[paths->curr_path], arr);
 	if (!paths->path_arr[paths->curr_path])
@@ -1193,12 +1200,12 @@ int		main(int argc, char **argv)
 	int path_counter = 1;
 	int path_limit = ft_path_limit(arr);
 	while (path_counter < path_limit)
-	{
+	{		
 		ft_expand_graph(&arr, paths->path_arr[paths->curr_path - 1]->path);
 		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 		if (!paths->path_arr[paths->curr_path])
 			break;
-		paths->curr_path++;
+		paths->curr_path++;	
 		handle_paths(arr_not_expanded, arr, paths);
         paths->time = ft_calc_path_time(&arr, paths);
         if (paths->time >= prev->time)
@@ -1212,14 +1219,10 @@ int		main(int argc, char **argv)
 			prev = copy_t_paths(paths);
 		}
 		path_counter++;
-	}
-	//ft_ants_prepare_to_parade(&arr, paths);
-	ft_ants_prepare_to_parade(&arr_not_expanded, paths);
-	//print_path(paths, arr_not_expanded);
+	}	
+	ft_ants_prepare_to_parade(&arr_not_expanded, paths);	
 	return (0);
 }
-
-
 
 // --> замена исходящей ссылки в вершине OUT на прошлую вершину IN в пути на собственный (IN)
 //			if (i != 0 && (*arr)->rooms[(*arr)->rooms[path[i]]->s_lnk.room_copy]->s_lnk.weights[j] == -1)

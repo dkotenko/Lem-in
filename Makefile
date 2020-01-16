@@ -19,14 +19,14 @@ HEAD = ./src/filler.h
 OBJECTS = $(SOURCES:%.c=%.o)
 CC = gcc 
 FLAGS = -Wall -Wextra -Werror
-PLAYER = lem-in
+LEMIN = lem-in
 COMP_LIB = make -C libft/
 INCLUDES = ./lem-in.h ./libft/libft.h
 LIB = libft/libft.a
 
-all: libft $(PLAYER)
+all: libft $(LEMIN)
 
-$(PLAYER): $(OBJECTS)
+$(LEMIN): $(OBJECTS)
 	$(CC) $(FLAGS) -o $@  $(OBJECTS) $(LIB)
 
 %.o: %.c $(INCLUDES) $(LIB)
@@ -42,7 +42,7 @@ clean:
 
 fclean: clean	
 		make fclean -C libft/
-		/bin/rm -f $(PLAYER)
+		/bin/rm -f $(LEMIN)
 
 re: fclean all
 
