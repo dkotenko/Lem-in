@@ -39,12 +39,10 @@ void	print_t_links(t_links *s_lnk, t_array *arr)
 	printed = 0;
 	while (++i < s_lnk->cur_size)
 	{
-		ft_putstr(": ");
-		ft_putstr("lnk [");
+		ft_putstr("link ");
 		ft_putstr(arr->rooms[s_lnk->links[i]]->name);
-		ft_putstr(",");
+		ft_putstr(", weight ");
 		ft_putnbr(s_lnk->weights[i]);
-		ft_putstr("]");
 		if (i < s_lnk->cur_size - 1)
 			ft_putstr(" | ");
 		printed++;
@@ -66,6 +64,7 @@ void	print_t_array_rooms_with_links(t_array *arr)
 			continue ;
 		ft_putstr("ROOM ");
 		ft_putstr(arr->rooms[i]->name);
+		ft_putstr("\n");
 		print_t_links(&arr->rooms[i]->s_lnk, arr);
 	}
 }
@@ -409,18 +408,18 @@ t_path	*ft_restore_path_bfs(t_array **arr)
 			break;
 
 	}
-
+	/*
 	i = 0;
-	printf("bfs path: ");
+//	printf("bfs path: ");
 
 	while (i < path->size)
 	{
 		printf("%d-", path->path[i]);
 		i++;
 	}
-	printf(" bfs path len: %d", path->size);
+//	printf(" bfs path len: %d", path->size);
 	printf("\n");
-
+	 */
 	return (path);
 }
 
@@ -702,14 +701,6 @@ void	ft_expand_graph(t_array **arr, int *path)
 	int 	j;
 	t_room	*room;
 
-	i = 0;
-	printf("path to expand: ");
-	while (path[i] != -1)
-	{
-		printf("%d--", path[i]);
-		i++;
-	}
-	printf("\n");
 //	(*arr)->rooms[path[0]]->s_lnk.weights[path[1]] = -1; 	//reverse path - по-моему это уже не надо
 	i = 0;
 	while (path[i] != -1)
@@ -1240,23 +1231,20 @@ void delete_double_links(t_array *arr)
 
 void delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges)
 {
-	int 	index_first;
+	int 	index_next;
 	int 	i;
 
 	i = -1;
 	while (++i + 1 < path->size)
 	{
-		index_first = nbr_in_array_pos(path->path[i + 1],
+		index_next = nbr_in_array_pos(path->path[i + 1],
 									   arr->rooms[path->path[i]]->s_lnk.links,
 									   arr->rooms[path->path[i]]->s_lnk.cur_size);
-		arr->rooms[path->path[i]]->s_lnk.weights[index_first] = -2;
+		arr->rooms[path->path[i]]->s_lnk.weights[index_next] = -2;
 		edges->edge_rooms[edges->curr_size] = path->path[i];
-		edges->edge_indexes[edges->curr_size] = index_first;
+		edges->edge_indexes[edges->curr_size] = index_next;
 		edges->curr_size++;
 	}
-
-
-
 }
 
 t_deleted_edges	*create_deleted_edges(int size)
@@ -1295,33 +1283,12 @@ void	free_t_deleted_edges(t_deleted_edges **edges)
 	free(*edges);
 }
 
-void	ft_path_sort(t_path *path)
-{
-	int	temp[path->size];
-	int i;
-	int j;
-	i = 0;
-	j = path->size - 1;
-	while (i < path->size)
-	{
-		temp[i] = path->path[j];
-		j--;
-		i++;
-	}
-	i = 0;
-	while (i < path->size)
-	{
-		path->path[i] = temp[i];
-		i++;
-	}
-}
-
 t_path	*ft_find_path_dfs(t_array **arr)
 {
 	t_path		*result;
 	static int	i = -1;
 	int			j;
-//	print_t_array_rooms_with_links(*arr);
+
 	if (i == -1)
 		i = (*arr)->rooms[(*arr)->start]->s_lnk.cur_size - 1;
 //	{
@@ -1335,8 +1302,8 @@ t_path	*ft_find_path_dfs(t_array **arr)
 
 	result->path[0] = (*arr)->start;
 	result->path[1] = (*arr)->rooms[(*arr)->start]->s_lnk.links[i];
-//	printf("i is: %d - ", i);
-	//int counter = 0;
+//	printf("i is: %d\n", i);
+	int counter = 0;
 //	while (counter < (*arr)->rooms[(*arr)->start]->s_lnk.cur_size)
 //	{
 //		printf("links: %d\n", (*arr)->rooms[(*arr)->start]->s_lnk.links[counter]);
@@ -1369,14 +1336,13 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	result->order = 1;
 	i--;
 	j = 0;
-	ft_path_sort(result);
 //	printf("size: %d\n", result->size);
-//	while (j < result->size)
-//	{
-//		printf("%d--", result->path[j]);
-//		j++;
-//	}
-//	printf("\n");
+	/*while (j < result->size)
+	{
+		printf("%d-", result->path[j]);
+		j++;
+	}
+	printf("\n");*/
 //	printf("res f: %d\n", result->path[result->size]);
 	return (result);
 }
@@ -1391,16 +1357,16 @@ void handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	//print_t_array_rooms_with_links(arr_not_expanded);
 	delete_double_links(arr_not_expanded);
 
-	deleted_edges = create_deleted_edges(arr_not_expanded->current);
+	deleted_edges = create_deleted_edges(arr_not_expanded->max);
 	i = -1;
 	//print_t_array_rooms_with_links(arr_not_expanded);
 
 	while (++i < paths->curr_path)
 	{
 		tmp = paths->path_arr[i];
-
-		paths->path_arr[i] = ft_find_path_dfs(&arr_not_expanded);
-
+		paths->path_arr[i] = ft_find_path_bf(&arr_not_expanded, 1, 0, 0);
+		//paths->path_arr[i] = ft_find_path_dfs(&arr_not_expanded);
+		print_t_paths(paths, arr);
 //		ft_clear_order(&arr_not_expanded);
 
 		if (!paths->path_arr[i])
@@ -1502,38 +1468,37 @@ int		main(int argc, char **argv)
 //	ft_find_path_dfs(&arr);
 //	return (0);
 	paths = create_t_paths();
-//	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
-//	paths->path_arr[paths->curr_path] = ft_find_path(&arr);
-//	ft_clear_order(&arr);
-
+	paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
+	//paths->path_arr[paths->curr_path] = ft_find_path(&arr);
+	ft_clear_order(&arr);
 	//print_t_path(paths->path_arr[paths->curr_path], arr);
-//	if (!paths->path_arr[paths->curr_path])
-//		return 0;
-//	paths->curr_path++;
-//	paths->time = ft_calc_path_time(&arr, paths);
+	if (!paths->path_arr[paths->curr_path])
+		return 0;
+	paths->curr_path++;
+	paths->time = ft_calc_path_time(&arr, paths);
 	arr_not_expanded = get_copy_t_array(arr);
 	prev = copy_t_paths(paths);
-	//add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
+	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
 	//printf("%s\n", arr_not_expanded->rooms[0]->name);
 	//print_t_array_rooms_with_links(arr_not_expanded);
 
-	int path_counter = 0;
+	int path_counter = 1;
 	int path_limit = ft_path_limit(arr);
-
-
 	while (path_counter < path_limit)
 	{
-		paths->path_arr[paths->curr_path] = ft_find_path(&arr);
-		ft_clear_order(&arr);
-		ft_expand_graph(&arr, paths->path_arr[paths->curr_path]->path);
-//		print_t_array_rooms_with_links(arr);
-//		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
-//		paths->path_arr[paths->curr_path] = ft_find_path(&arr);
+//		printf("WHY?\n");
+
+		ft_expand_graph(&arr, paths->path_arr[paths->curr_path - 1]->path);
+//		ft_find_path(&arr);
 //		ft_clear_order(&arr);
+		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
+//		paths->path_arr[paths->curr_path] = ft_find_path(&arr);
+
+//		printf("\n\n\n\n\n\n\n");
+		ft_clear_order(&arr);
 		if (!paths->path_arr[paths->curr_path])
 			break;
 		paths->curr_path++;
-
 		handle_paths(arr_not_expanded, arr, paths);
 		paths->time = ft_calc_path_time(&arr, paths);
 		if (paths->time >= prev->time)
