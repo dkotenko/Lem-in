@@ -1494,6 +1494,7 @@ int		main(int argc, char **argv)
 	t_paths *paths;
 	t_paths *prev;
 
+	prev = NULL;
 	ft_reader(argc, argv, &arr);
 //	print_t_array_rooms_with_links(arr);
 //	ft_find_path_dfs(&arr);
@@ -1512,7 +1513,7 @@ int		main(int argc, char **argv)
 //	paths->curr_path++;
 //	paths->time = ft_calc_path_time(&arr, paths);
 	arr_not_expanded = get_copy_t_array(arr);
-	prev = copy_t_paths(paths);
+
 	//add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
 	//printf("%s\n", arr_not_expanded->rooms[0]->name);
 	//print_t_array_rooms_with_links(arr_not_expanded);
@@ -1523,9 +1524,12 @@ int		main(int argc, char **argv)
 
 	while (path_counter < path_limit)
 	{
+		if (path_counter)
+			prev = copy_t_paths(paths);
 		paths->path_arr[paths->curr_path] = ft_find_path(&arr);
 		ft_clear_order(&arr);
 		ft_expand_graph(&arr, paths->path_arr[paths->curr_path]->path);
+
 //		print_t_array_rooms_with_links(arr);
 //		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1, 0, 0);
 //		paths->path_arr[paths->curr_path] = ft_find_path(&arr);
@@ -1536,15 +1540,15 @@ int		main(int argc, char **argv)
 
 		handle_paths(arr_not_expanded, arr, paths);
 		paths->time = ft_calc_path_time(&arr, paths);
-		if (paths->time >= prev->time)
+		if (path_counter)
 		{
-			paths = prev;
-			break;
-		}
-		else
-		{
-			free(prev);
-			prev = copy_t_paths(paths);
+			if (paths->time >= prev->time) {
+				paths = prev;
+				break;
+			} else {
+				free(prev);
+				prev = copy_t_paths(paths);
+			}
 		}
 		path_counter++;
 //		printf("CHECK\n");
