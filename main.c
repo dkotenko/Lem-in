@@ -876,8 +876,8 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 				ants->position += 1;
 				ants->order += 1;
 				ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
-				if (ants->position == paths->path_arr[ants->path]->size - 1 && ants->next->next == NULL)
-					return;
+				//if (ants->position == paths->path_arr[ants->path]->size - 1 && ants->next->next == NULL)
+				//	return;
 				is_all_finished = 0;
 			}
 			ants = ants->next;
@@ -1417,6 +1417,6 @@ int    main(int argc, char **argv)
 		path_counter++;
 	}	
 	ft_ants_prepare_to_parade(&arr_not_expanded, paths);
-	printf("\n");
+	//printf("\n");
 	return (0);
 }
