@@ -820,18 +820,51 @@ void	ft_ant_reporting(char *name, char *room)
 	printf("%s-%s ", name, room);
 }
 
+void	ft_path_sort(t_path *path)
+{
+	int	temp[path->size];
+	int i;
+	int j;
+	i = 0;
+	j = path->size - 1;
+	while (i < path->size)
+	{
+		temp[i] = path->path[j];
+		j--;
+		i++;
+	}
+	i = 0;
+	while (i < path->size)
+	{
+		path->path[i] = temp[i];
+		i++;
+	}
+}
+
+void	ft_paths_sort(t_paths *paths)
+{
+	int	i;
+
+	i = -1;
+	while(++i < paths->curr_path)
+	{
+		ft_path_sort(paths->path_arr[i]);
+	}
+}
+
 void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 {
 	t_ant	*first_ant;
 	int		order;
-	int 	is_all_enter;
+	//int 	is_all_enter;
 	int 	is_all_finished;
 
 	order = 1;
 	first_ant = ants;
-	is_all_enter = 0;
+	//is_all_enter = 0;
 	is_all_finished = 0;
-
+	ft_paths_sort(paths);
+	printf("\n"); //между вводов комнат/связей и выводом программы должна быть пустая строка
 	while (!is_all_finished)
 	{
 		is_all_finished = 1;
@@ -1023,13 +1056,19 @@ t_room *copy_room_mod(t_room **rooms, int i)
 {
 	t_room	*room;
 
-	room = (t_room*)malloc(sizeof(t_room));
+	if (!(room = (t_room*)malloc(sizeof(t_room))))
+		exit(32);
 	if (rooms[i]->s_lnk.is_copy)
 		i = rooms[i]->s_lnk.room_copy;
 	room->name = rooms[i]->name;	
 	room->s_lnk.links = (int *) malloc(sizeof(int) * (rooms[i]->s_lnk.cur_size));
+	if (!room->s_lnk.links)	
+		exit(12);
 	room->s_lnk.weights = (int *) malloc(sizeof(int) * (rooms[i]->s_lnk.cur_size));
+	if (!room->s_lnk.weights)
+		exit(13);
 	ft_fill_mem(room->s_lnk.links, rooms[i]->s_lnk.cur_size, -1);
+	ft_fill_mem(room->s_lnk.weights, rooms[i]->s_lnk.cur_size, -3);
 	room->s_lnk.order = rooms[i]->s_lnk.order;
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.is_copy = 0;
@@ -1158,6 +1197,8 @@ void	delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges)
 		index_first = nbr_in_array_pos(path->path[i + 1],
 									   arr->rooms[path->path[i]]->s_lnk.links,
 									   arr->rooms[path->path[i]]->s_lnk.cur_size);
+		if (index_first == -1)
+			continue ;
 		arr->rooms[path->path[i]]->s_lnk.weights[index_first] = -2;
 		edges->edge_rooms[edges->curr_size] = path->path[i];
 		edges->edge_indexes[edges->curr_size] = index_first;
@@ -1201,26 +1242,7 @@ void	free_t_deleted_edges(t_deleted_edges **edges)
 	free(*edges);
 }
 
-void	ft_path_sort(t_path *path)
-{
-	int	temp[path->size];
-	int i;
-	int j;
-	i = 0;
-	j = path->size - 1;
-	while (i < path->size)
-	{
-		temp[i] = path->path[j];
-		j--;
-		i++;
-	}
-	i = 0;
-	while (i < path->size)
-	{
-		path->path[i] = temp[i];
-		i++;
-	}
-}
+
 
 t_path	*ft_find_path_dfs(t_array **arr)
 {
@@ -1228,7 +1250,7 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	static int	i = -1;
 	int			j;
 	int			k;
-	int			counter;
+	//int			counter;
 
 	if (i == -1)
 		i = (*arr)->rooms[(*arr)->start]->s_lnk.cur_size - 1;
@@ -1237,7 +1259,7 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	ft_fill_mem(result->path, (*arr)->current - 1, -1);
 	result->path[0] = (*arr)->start;
 	result->path[1] = (*arr)->rooms[(*arr)->start]->s_lnk.links[i];
-	counter = 0;
+	//counter = 0;
 	j = 1;
 	while (result->path[j] != (*arr)->finish)
 	{
@@ -1378,8 +1400,8 @@ int    main(int argc, char **argv)
 		if (!paths->path_arr[paths->curr_path])
 			break;
 		paths->curr_path++;
-		if (paths->curr_path == 2)
-			print_t_path(paths->path_arr[1], arr);
+		//if (paths->curr_path == 2)
+		//	print_t_path(paths->path_arr[1], arr);
 		handle_paths(arr_not_expanded, arr, paths);
 		paths->time = ft_calc_path_time(&arr, paths);
 		if (path_counter)
@@ -1393,7 +1415,8 @@ int    main(int argc, char **argv)
 			}
 		}
 		path_counter++;
-	}
+	}	
 	ft_ants_prepare_to_parade(&arr_not_expanded, paths);
+	printf("\n");
 	return (0);
 }
