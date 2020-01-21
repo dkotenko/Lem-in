@@ -958,12 +958,12 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 {
 	t_ant	*first_ant;
 	int		order;
-	int 	is_all_enter;
+	//int 	is_all_enter;
 	int 	is_all_finished;
 
 	order = 1;
 	first_ant = ants;
-	is_all_enter = 0;
+	//is_all_enter = 0;
 	is_all_finished = 0;
 	ft_paths_sort(paths);
 	while (!is_all_finished)
@@ -1347,7 +1347,7 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	static int	i = -1;
 	int			j;
 	int			k;
-	int			counter;
+	//int			counter;
 
 	if (i == -1)
 		i = (*arr)->rooms[(*arr)->start]->s_lnk.cur_size - 1;
@@ -1356,7 +1356,7 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	ft_fill_mem(result->path, (*arr)->current - 1, -1);
 	result->path[0] = (*arr)->start;
 	result->path[1] = (*arr)->rooms[(*arr)->start]->s_lnk.links[i];
-	counter = 0;
+	//counter = 0;
 	j = 1;
 	while (result->path[j] != (*arr)->finish)
 	{
@@ -1477,8 +1477,7 @@ int		hash_func(char *s, int table_size)
 
 int		ft_find_link(t_array **arr, int room, int to_find)
 {
-	int i;
-	int j;
+	int i;	
 
 	i = 0;
 	while (i < (*arr)->rooms[room]->s_lnk.cur_size)
@@ -1500,12 +1499,12 @@ void	ft_modify_gpaph(t_array **arr, int *path)
 	i = 0;
 	start = path;
 //	print_t_array_rooms_with_links(*arr);
-	while (path[i] != -1)
+	/*while (path[i] != -1)
 	{
 		printf("%d-", path[i]);
 		i++;
 	}
-	printf("\n");
+	printf("\n");*/
 
 	i = 0;
 	while (path[i] != -1)
@@ -1541,7 +1540,7 @@ void	ft_modify_gpaph(t_array **arr, int *path)
 //		(*arr)->rooms[path[i]]->s_lnk.room_copy = 1;
 //		i++;
 //	}
-	printf("\n");
+//	printf("\n");
 
 }
 
@@ -1596,6 +1595,6 @@ int    main(int argc, char **argv)
 	}
 //	print_t_array_rooms_with_links(arr);
 	ft_ants_prepare_to_parade(&arr_not_expanded, paths);
-	printf("time: %d\n", paths->time);
+	//printf("time: %d\n", paths->time);
 	return (0);
 }
