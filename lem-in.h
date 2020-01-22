@@ -8,7 +8,7 @@
 # include <fcntl.h>
 # include <limits.h>
 
-# define ARR_INIT_SIZE 2
+# define ARR_INIT_SIZE 10000
 
 typedef struct	s_links
 {

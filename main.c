@@ -475,7 +475,7 @@ t_path	*ft_restore_path_bfs_smart(t_array **arr)
 
 	if (!(path = (t_path *)malloc(sizeof(t_path))))
 		return (NULL);
-	path->path = (int*)malloc(sizeof(int) * (*arr)->current + 1); //!! ПОСЧИТАТЬ КОЛИЧЕСТВО ПАМЯТИ
+	path->path = (int*)malloc(sizeof(int) * ((*arr)->current + 1)); //!! ПОСЧИТАТЬ КОЛИЧЕСТВО ПАМЯТИ
 	ft_fill_mem(path->path, (*arr)->current + 1, -1);
 	i = 0;
 	order = (*arr)->rooms[(*arr)->finish]->s_lnk.order - 1;
@@ -1217,7 +1217,7 @@ int 	room_in_no_expanded(t_array *arr_not_expanded, t_room *room)
 		{
 			; //printf("%s %s %d\n", room->name, arr_not_expanded->rooms[i]->name, i);
 		}
-		if (arr_not_expanded->rooms[i] && room->name == arr_not_expanded->rooms[i]->name)
+		if (arr_not_expanded->rooms[i] && !ft_strcmp(room->name, arr_not_expanded->rooms[i]->name))
 			return (1);
 		i++;
 	}
