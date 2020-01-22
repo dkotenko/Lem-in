@@ -243,8 +243,8 @@ void	ft_arr_malloc(t_array **arr)
 		i = (*arr)->max;
 		(*arr)->max *= 2;
 	}
-	while (i < size)
-		(*arr)->rooms[i++] = NULL;
+//	while (i < size)
+//		(*arr)->rooms[i++] = NULL;
 	return ;
 }
 
@@ -284,10 +284,14 @@ void	ft_links_push(t_links *s_lnk, int push, int weight)
 
 void	ft_arr_push(t_array **arr, t_room *room)
 {
+
 	if (*arr == NULL || (*arr)->current == (*arr)->max)
 		ft_arr_malloc(arr);
+
 	(*arr)->rooms[(*arr)->current] = room;
+
 	(*arr)->current++;
+
 }
 
 void	ft_read_ants(int fd, t_array **arr)
@@ -318,6 +322,7 @@ void	ft_create_room(t_array **arr, char **split, int *flag)
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.links = NULL;
 	room->s_lnk.is_copy = 0;
+	int temp = 0;
 	ft_arr_push(arr, room);
 	if (*flag == 1)
 		(*arr)->start = (*arr)->current - 1;
@@ -475,8 +480,8 @@ t_path	*ft_restore_path_bfs_smart(t_array **arr)
 
 	if (!(path = (t_path *)malloc(sizeof(t_path))))
 		return (NULL);
-	path->path = (int*)malloc(sizeof(int) * (*arr)->current + 1); //!! ПОСЧИТАТЬ КОЛИЧЕСТВО ПАМЯТИ
-	ft_fill_mem(path->path, (*arr)->current + 1, -1);
+	path->path = (int*)malloc(sizeof(int) * ((*arr)->current + 1)); //!! ПОСЧИТАТЬ КОЛИЧЕСТВО ПАМЯТИ
+	ft_fill_mem(path->path, (*arr)->current, -1);
 	i = 0;
 	order = (*arr)->rooms[(*arr)->finish]->s_lnk.order - 1;
 	path->size = (*arr)->rooms[(*arr)->finish]->s_lnk.order + 1;
@@ -496,14 +501,15 @@ t_path	*ft_restore_path_bfs_smart(t_array **arr)
 //	printf("\n");
 	i = 0;
 //	printf("new path (%d) : ", path->size);
-	while (i < path->size)
-	{
+//	while (i < path->size)
+//	{
 //		printf("%s-", (*arr)->rooms[path->path[i]]->name);
-//		printf("%d-", path->path[i]);
-		i++;
-	}
-	path->order = 1;
+////		printf("%d-", path->path[i]);
+//		i++;
+//	}
 //	printf("\n");
+	path->order = 1;
+
 	return (path);
 }
 
@@ -828,6 +834,9 @@ void	ft_expand_graph(t_array **arr, int *path)
 	int 	j;
 	t_room	*room;
 //printf("\n");
+//	print_t_path(path, *arr);
+//	printf("\n");
+
 	i = 0;
 	while (path[i] != -1)
 	{
@@ -853,12 +862,17 @@ void	ft_expand_graph(t_array **arr, int *path)
 	while (path[i] != -1)
 	{
 		// --> duplicate room
-	//		printf("name: %s\n", (*arr)->rooms[path[i]]->name);
+
+//		printf("name: %s\n", (*arr)->rooms[path[i]]->name);
+
 		if (i != 0 && path[i + 1] != -1 && (*arr)->rooms[path[i]]->s_lnk.room_copy == -1)
 		{
 			room = (t_room*)malloc(sizeof(t_room));
+
 			ft_cpy_room_data(room, (*arr)->rooms[path[i]], (*arr)->current, path[i]);
+
 			ft_arr_push(arr, room);
+
 
 		}
 
@@ -1410,6 +1424,17 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	result->order = 1;
 	i--;
 	ft_path_sort(result);
+
+	j = 0;
+//	printf("dsf path (%d) : ", result->size);
+//	while (j < result->size)
+//	{
+//		printf("%s-", (*arr)->rooms[result->path[j]]->name);
+////		printf("%d-", path->path[i]);
+//		j++;
+//	}
+//	printf("\n");
+
 	return (result);
 }
 
@@ -1737,7 +1762,7 @@ int    main(int argc, char **argv)
 	int i = 0;
 	int 	path_counter;
 	int path_limit;
-
+//	static  int test1 = 0;
 	ft_reader(argc, argv, &arr);
 	paths = create_t_paths();
 	arr_not_expanded = get_copy_t_array(arr);
@@ -1750,6 +1775,7 @@ int    main(int argc, char **argv)
 //	return (0);
 	while (path_counter < path_limit)
 	{
+
 		if (path_counter)
 			prev = copy_t_paths(paths);
 		i = 0;
@@ -1758,6 +1784,7 @@ int    main(int argc, char **argv)
 			ft_expand_graph(&arr, paths->path_arr[i]->path);
 			i++;
 		}
+
 		paths->path_arr[paths->curr_path] = ft_find_path_bfs(&arr);
 		ft_clear_order(&arr);
 
@@ -1791,22 +1818,6 @@ int    main(int argc, char **argv)
 		arr = ft_cpy_graph(test);
 		path_counter++;
 	}
-//	arr = ft_cpy_graph(test);
-//	i = 0;
-//	while (i < paths->curr_path)
-//	{
-//		print_t_path(paths->path_arr[i], arr);
-//		ft_expand_graph(&arr, paths->path_arr[i]->path);
-//		print_t_array_rooms_with_links(arr);
-//		i++;
-//	}
-
 	ft_ants_prepare_to_parade(&arr, paths);
-//	print_t_paths(a1, arr);
-//	print_t_array_rooms_with_links(arr);
-//	ft_find_path_dfs_rev(&arr);
-//	ft_find_path_dfs_rev(&arr);
-//	ft_find_path_dfs_rev(&arr);
-//	printf("time: %d\n", a1->time);
 	return (0);
 }
