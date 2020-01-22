@@ -56,7 +56,21 @@ t_path	*ft_restore_path_bfs_smart(t_array **arr)
 	if (!(path = (t_path *)malloc(sizeof(t_path))))
 		return (NULL);
 	path->path = (int*)malloc(sizeof(int) * ((*arr)->current + 1)); //!! ПОСЧИТАТЬ КОЛИЧЕСТВО ПАМЯТИ
+	i = 0;
+//	while (i < (*arr)->current + 1)
+//	{
+//		printf("|%+d|", path->path[i]);
+//		i++;
+//	}
+//	printf("\n");
 	ft_fill_mem(path->path, (*arr)->current, -1);
+//	i = 0;
+//	while (i < (*arr)->current)
+//	{
+//		printf("|%d|", path->path[i]);
+//		i++;
+//	}
+//	printf("\n");
 	i = 0;
 	order = (*arr)->rooms[(*arr)->finish]->s_lnk.order - 1;
 	path->size = (*arr)->rooms[(*arr)->finish]->s_lnk.order + 1;
@@ -84,7 +98,13 @@ t_path	*ft_restore_path_bfs_smart(t_array **arr)
 //	}
 //	printf("\n");
 	path->order = 1;
-
+//	i = 0;
+//	while (i < (*arr)->current)
+//	{
+//		printf("|%d|", path->path[i]);
+//		i++;
+//	}
+//	printf("\n");
 	return (path);
 }
 

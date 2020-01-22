@@ -1,6 +1,18 @@
 #include "lem-in.h"
 #include "libft/libft.h"
 
+void	ft_fill_mem(int *arr, int size, int num)
+{
+	int i;
+
+	i = 0;
+	while (i < size)
+	{
+		arr[i] = num;
+		i++;
+	}
+}
+
 void	curr_size_to_size(t_paths *paths)
 {
 	int i;

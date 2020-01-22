@@ -58,19 +58,20 @@ int		*copy_int_array(int *arr, int size)
 	return (new);
 }
 
-t_path *copy_t_path(t_path *path)
+t_path *copy_t_path(t_path *path, t_array *arr)
 {
 	t_path *new;
 
 	new = (t_path *)malloc(sizeof(t_path));
 	new->size = path->size;
-	new->path = copy_int_array(path->path, path->size);
+//	ft_fill_mem(path->path, arr->current + 1, -1);
+	new->path = copy_int_array(path->path, arr->current + 1);
 	new->curr_size = path->curr_size;
 	new->order = path->order;
 	return (new);
 }
 
-t_paths *copy_t_paths(t_paths *paths)
+t_paths *copy_t_paths(t_paths *paths, t_array *arr)
 {
 	int		i;
 	t_paths	*new;
@@ -83,7 +84,7 @@ t_paths *copy_t_paths(t_paths *paths)
 	i = 0;
 	while (i < paths->curr_path)
 	{
-		new->path_arr[i] = copy_t_path(paths->path_arr[i]);
+		new->path_arr[i] = copy_t_path(paths->path_arr[i], arr);
 		i++;
 	}
 	return (new);

@@ -1,18 +1,6 @@
 #include "lem-in.h"
 #include "libft/libft.h"
 
-void	ft_fill_mem(int *arr, int size, int num)
-{
-	int i;
-
-	i = 0;
-	while (i < size)
-	{
-		arr[i] = num;
-		i++;
-	}
-}
-
 t_room	*ft_cpy_room(t_room *src)
 {
 	t_room *dst;
@@ -77,7 +65,7 @@ void	ft_clear_order(t_array **arr)
 		if ((*arr)->rooms[i])
 		{
 			(*arr)->rooms[i]->s_lnk.order = -1;
-			(*arr)->rooms[i]->flag = -1;
+//			(*arr)->rooms[i]->flag = -1;
 		}
 		i++;
 	}

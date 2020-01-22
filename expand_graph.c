@@ -6,8 +6,14 @@ void	ft_expand_graph(t_array **arr, int *path)
 	int		i;
 	int 	j;
 	t_room	*room;
+
 //printf("\n");
-//	print_t_path(path, *arr);
+//	i = 0;
+//	while (path[i] != -1)
+//	{
+//		printf("%d-", path[i]);
+//		i++;
+//	}
 //	printf("\n");
 
 	i = 0;
@@ -82,19 +88,19 @@ void	ft_expand_graph(t_array **arr, int *path)
 		i++;
 	}
 
-	i = 0;
-	j = 0;
-	while (i < (*arr)->current)
-	{
-		j = 0;
-		//	printf("name: %s:", (*arr)->rooms[i]->name);
-		while (j < (*arr)->rooms[i]->s_lnk.cur_size)
-		{
-//			printf("lnk:%s-%d w:%d   ", (*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->name ,(*arr)->rooms[i]->s_lnk.links[j], (*arr)->rooms[i]->s_lnk.weights[j]);
-			j++;
-		}
-//		printf("\n");
-		i++;
-	}
+//	i = 0;
+//	j = 0;
+//	while (i < (*arr)->current)
+//	{
+//		j = 0;
+//		//	printf("name: %s:", (*arr)->rooms[i]->name);
+//		while (j < (*arr)->rooms[i]->s_lnk.cur_size)
+//		{
+////			printf("lnk:%s-%d w:%d   ", (*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->name ,(*arr)->rooms[i]->s_lnk.links[j], (*arr)->rooms[i]->s_lnk.weights[j]);
+//			j++;
+//		}
+////		printf("\n");
+//		i++;
+//	}
 
 }

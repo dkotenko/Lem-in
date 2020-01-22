@@ -11,8 +11,17 @@
 # **************************************************************************** #
 
 
-SOURCES =main.c \
-		
+SOURCES =   main.c \
+print_debug.c \
+read_input.c \
+find_path_dfs.c \
+find_path_bfs.c \
+find_path_bf.c \
+ants.c\
+paths_tech.c\
+graph_tech.c\
+expand_graph.c\
+clala.c \
 
 
 HEAD = ./src/filler.h
