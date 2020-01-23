@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 t_ant	*ft_ants_creator(int start_room)
 {

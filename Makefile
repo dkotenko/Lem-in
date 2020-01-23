@@ -11,17 +11,17 @@
 # **************************************************************************** #
 
 
-SOURCES =   main.c \
-print_debug.c \
-read_input.c \
-find_path_dfs.c \
-find_path_bfs.c \
-find_path_bf.c \
-ants.c\
-paths_tech.c\
-graph_tech.c\
-expand_graph.c\
-clala.c \
+SOURCES =   src/main.c \
+src/print_debug.c \
+src/read_input.c \
+src/find_path_dfs.c \
+src/find_path_bfs.c \
+src/find_path_bf.c \
+src/ants.c\
+src/paths_tech.c\
+src/graph_tech.c\
+src/expand_graph.c\
+src/clala.c \
 
 
 HEAD = ./src/filler.h
@@ -30,7 +30,7 @@ CC = gcc
 FLAGS = -Wall -Wextra -Werror
 LEMIN = lem-in
 COMP_LIB = make -C libft/
-INCLUDES = ./lem-in.h ./libft/libft.h
+INCLUDES = ./includes/lem-in.h ./libft/libft.h
 LIB = libft/libft.a
 
 all: libft $(LEMIN)

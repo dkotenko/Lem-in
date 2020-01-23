@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 void	ft_fill_mem(int *arr, int size, int num)
 {

@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 t_path	*ft_find_path_dfs(t_array **arr)
 {

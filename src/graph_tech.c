@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 t_room	*ft_cpy_room(t_room *src)
 {

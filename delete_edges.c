@@ -1,3 +1,6 @@
+#include "includes/lem-in.h"
+#include "libft/libft.h"
+
 void delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges)
 {
 	int 	index_next;

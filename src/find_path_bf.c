@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 void 	ft_malloc_bf_matrix(t_array **arr, int ***matrix, int ***path_mtrx)
 {

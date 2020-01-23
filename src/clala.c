@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 void	ft_paths_sort(t_paths *paths)
 {
@@ -48,7 +48,8 @@ int		*copy_int_array(int *arr, int size)
 	int i;
 	int *new;
 
-	new = (int *)malloc(sizeof(int) * size);
+	new = (int *)malloc(sizeof(int) * (size + 5)); //+5 потому что мне нужно чтобы этот массив был -1 терминирован,а 5 просто на всякий случай с запасом
+	ft_fill_mem(new, size + 5, -1);
 	i = 0;
 	while (i < size)
 	{
@@ -58,20 +59,19 @@ int		*copy_int_array(int *arr, int size)
 	return (new);
 }
 
-t_path *copy_t_path(t_path *path, t_array *arr)
+t_path *copy_t_path(t_path *path)
 {
 	t_path *new;
 
 	new = (t_path *)malloc(sizeof(t_path));
 	new->size = path->size;
-//	ft_fill_mem(path->path, arr->current + 1, -1);
-	new->path = copy_int_array(path->path, arr->current + 1);
+	new->path = copy_int_array(path->path, path->size + 5);
 	new->curr_size = path->curr_size;
 	new->order = path->order;
 	return (new);
 }
 
-t_paths *copy_t_paths(t_paths *paths, t_array *arr)
+t_paths *copy_t_paths(t_paths *paths)
 {
 	int		i;
 	t_paths	*new;
@@ -84,7 +84,7 @@ t_paths *copy_t_paths(t_paths *paths, t_array *arr)
 	i = 0;
 	while (i < paths->curr_path)
 	{
-		new->path_arr[i] = copy_t_path(paths->path_arr[i], arr);
+		new->path_arr[i] = copy_t_path(paths->path_arr[i]);
 		i++;
 	}
 	return (new);

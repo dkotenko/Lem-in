@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 void	ft_expand_graph(t_array **arr, int *path)
 {
@@ -28,8 +28,13 @@ void	ft_expand_graph(t_array **arr, int *path)
 //			printf("%s-", (*arr)->rooms[(*arr)->rooms[path[i]]->s_lnk.links[j]]->name);
 			if (i != 0 && (*arr)->rooms[path[i]]->s_lnk.links[j] == path[i - 1])
 				(*arr)->rooms[path[i]]->s_lnk.weights[j] = -2; // -2 - это стёртые пути
-			if ((*arr)->rooms[path[i]]->s_lnk.links[j] == path[i + 1] && ((*arr)->rooms[path[i]]->s_lnk.room_copy == -1 && (*arr)->rooms[path[i + 1]]->s_lnk.room_copy == -1))
-				(*arr)->rooms[path[i]]->s_lnk.weights[j] = -1; // -1 - это реверснутые пути
+			if ((*arr)->rooms[path[i]]->s_lnk.links[j] == path[i + 1])
+			{
+				if ((*arr)->rooms[path[i]]->s_lnk.weights[j] == 1)
+					(*arr)->rooms[path[i]]->s_lnk.weights[j] = -1;
+				else
+					(*arr)->rooms[path[i]]->s_lnk.weights[j] = 1;
+			}
 			j++;
 		}
 //		printf("\n");

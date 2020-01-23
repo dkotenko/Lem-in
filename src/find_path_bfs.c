@@ -1,5 +1,5 @@
-#include "lem-in.h"
-#include "libft/libft.h"
+#include "../includes/lem-in.h"
+#include "../libft/libft.h"
 
 void	ft_check_for_cpy_bfs_smart(t_array **arr, t_path *path)
 {
@@ -131,8 +131,8 @@ t_path	*ft_restore_path_bfs(t_array **arr)
 	is_room = 1;
 	if (!(path = (t_path *)malloc(sizeof(t_path))))
 		return (NULL);
-	path->path = (int*)malloc(sizeof(int) * (*arr)->current - 1);
-	ft_fill_mem(path->path, (*arr)->current - 1, -1);
+	path->path = (int*)malloc(sizeof(int) * ((*arr)->current + 2));
+	ft_fill_mem(path->path, (*arr)->current + 2, -1);
 	k = (*arr)->rooms[(*arr)->finish]->s_lnk.order;
 	path->path[0] = (*arr)->finish;
 	path->size = k + 1;
@@ -260,5 +260,5 @@ t_path	*ft_find_path_bfs(t_array **arr)
 
 //	print_t_array_rooms_with_links(*arr);
 //	ft_restore_path_bfs(arr);
-	return ft_restore_path_bfs_smart(arr);
+	return ft_restore_path_bfs(arr);
 }
