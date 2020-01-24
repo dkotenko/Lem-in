@@ -159,10 +159,11 @@ int    main(int argc, char **argv)
 		}
 		paths->path_arr[paths->curr_path] = find_path_bf_new(&arr);
 		ft_clear_order(&arr);
-//		ft_expand_graph(&arr, paths->path_arr[paths->curr_path]->path, paths->path_arr[paths->curr_path]->size);
-		ft_check_for_cpy_bfs_smart(&arr, paths->path_arr[paths->curr_path]);
 		if (!paths->path_arr[paths->curr_path])
 			break;
+//		ft_expand_graph(&arr, paths->path_arr[paths->curr_path]->path, paths->path_arr[paths->curr_path]->size);
+		ft_check_for_cpy_bfs_smart(&arr, paths->path_arr[paths->curr_path]);
+
 		paths->curr_path++;
 //		find_path_bf_new(&arr);
 		handle_paths(arr_not_expanded, arr, paths);
