@@ -316,8 +316,7 @@ void	handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	{
 		tmp = paths->path_arr[i];
 		paths->path_arr[i] = ft_find_path_dfs(&arr_not_expanded);
-		print_t_path(paths->path_arr[i], arr);
-
+//		print_t_path(paths->path_arr[i], arr);
 		if (!paths->path_arr[i])
 		{
 			paths->curr_path = i;

@@ -145,7 +145,8 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	int i;
 
 	i = 0;
-	dst->name = ft_strjoin("#", src->name);
+	if (dst->name == NULL)
+		dst->name = ft_strjoin("#", src->name);
 	dst->x = src->x;
 	dst->y = src->y;
 	if (dst->s_lnk.links == NULL)
