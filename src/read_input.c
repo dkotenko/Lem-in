@@ -148,8 +148,10 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	dst->name = ft_strjoin("#", src->name);
 	dst->x = src->x;
 	dst->y = src->y;
-	dst->s_lnk.links = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
-	dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
+	if (dst->s_lnk.links == NULL)
+		dst->s_lnk.links = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
+	if (dst->s_lnk.weights == NULL)
+		dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
 	dst->s_lnk.room_copy = sr;
 	src->s_lnk.room_copy = ds;
 	dst->s_lnk.is_copy = 1;

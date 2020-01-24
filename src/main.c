@@ -83,11 +83,49 @@ t_path	*find_path_bf_new(t_array **arr)
 		find_path_bf_new_cycle(arr, &is_weight_modify);
 		i++;
 	}
+	if ((*arr)->rooms[(*arr)->finish]->order == INT_MAX)
+		return (NULL);
 	result = find_path_bf_new_ret(arr);
 	reset_order_src(arr);
 //	printf("new path: ");
 //	print_t_path(result, *arr);
 	return (result);
+}
+
+void	ft_delete_room(t_room *room)
+{
+	free(room->s_lnk.links);
+	free(room->s_lnk.weights);
+	free(room->name);
+	free(room);
+}
+
+void	ft_reset_graph(t_array **arr)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < (*arr)->base)
+	{
+		j = 0;
+		while (j < (*arr)->rooms[i]->s_lnk.cur_size)
+		{
+			(*arr)->rooms[i]->s_lnk.weights[j] = 1;
+			if((*arr)->rooms[i]->s_lnk.links[j] >= (*arr)->base)
+				(*arr)->rooms[i]->s_lnk.links[j] = (*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->s_lnk.room_copy;
+			j++;
+		}
+		(*arr)->rooms[i]->s_lnk.room_copy = -1;
+		i++;
+	}
+	while (i < (*arr)->current)
+	{
+		ft_delete_room((*arr)->rooms[i]);
+		(*arr)->rooms[i] = NULL;
+		i++;
+	}
+	(*arr)->current = (*arr)->base;
 }
 
 int    main(int argc, char **argv)
@@ -96,7 +134,7 @@ int    main(int argc, char **argv)
 	t_array	*arr_not_expanded;
 	t_paths	*paths;
 	t_paths	*prev;
-	t_array *test;
+//	t_array *test;
 	int i = 0;
 	int 	path_counter;
 	int path_limit;
@@ -106,7 +144,7 @@ int    main(int argc, char **argv)
 	path_counter = 0;
 	path_limit = ft_path_limit(arr);
 	arr->base = arr->current;
-	test = ft_cpy_graph(arr);
+//	test = ft_cpy_graph(arr);
 	while (path_counter < path_limit)
 	{
 
@@ -119,7 +157,7 @@ int    main(int argc, char **argv)
 			ft_expand_graph(&arr, paths->path_arr[i]->path, paths->path_arr[i]->size);
 			i++;
 		}
-		paths->path_arr[paths->curr_path] = find_path_bf_new(&arr);
+		paths->path_arr[paths->curr_path] = ft_find_path_bfs(&arr);
 		ft_clear_order(&arr);
 //		ft_expand_graph(&arr, paths->path_arr[paths->curr_path]->path, paths->path_arr[paths->curr_path]->size);
 		ft_check_for_cpy_bfs_smart(&arr, paths->path_arr[paths->curr_path]);
@@ -144,7 +182,8 @@ int    main(int argc, char **argv)
 				prev = copy_t_paths(paths);
 			}
 		}
-		arr = ft_cpy_graph(test);
+		ft_reset_graph(&arr);
+//		arr = ft_cpy_graph(test);
 		path_counter++;
 	}
 //	i = 0;

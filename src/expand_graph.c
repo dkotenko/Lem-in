@@ -7,7 +7,8 @@ void	ft_expand_graph(t_array **arr, int *path, int size)
 	int 	j;
 	t_room	*room;
 
-
+	printf("ENTER\n");
+	print_t_array_rooms_with_links(*arr);
 	i = 0;
 	while (i < size)
 	{
@@ -39,6 +40,8 @@ void	ft_expand_graph(t_array **arr, int *path, int size)
 			ft_cpy_room_data(room, (*arr)->rooms[path[i]], (*arr)->current, path[i]);
 			ft_arr_push(arr, room);
 		}
+		else
+			ft_cpy_room_data((*arr)->rooms[(*arr)->rooms[path[i]]->s_lnk.room_copy], (*arr)->rooms[path[i]], (*arr)->rooms[path[i]]->s_lnk.room_copy, path[i]);
 		// <-- duplicate room
 		i++;
 	}
@@ -71,19 +74,6 @@ void	ft_expand_graph(t_array **arr, int *path, int size)
 		// <-- добавление связи между OUT и IN
 		i++;
 	}
-//	i = 0;
-//	j = 0;
-//	while (i < (*arr)->current)
-//	{
-//		j = 0;
-//		//	printf("name: %s:", (*arr)->rooms[i]->name);
-//		while (j < (*arr)->rooms[i]->s_lnk.cur_size)
-//		{
-////			printf("lnk:%s-%d w:%d   ", (*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->name ,(*arr)->rooms[i]->s_lnk.links[j], (*arr)->rooms[i]->s_lnk.weights[j]);
-//			j++;
-//		}
-////		printf("\n");
-//		i++;
-//	}
-
+	printf("exit\n");
+	print_t_array_rooms_with_links(*arr);
 }
