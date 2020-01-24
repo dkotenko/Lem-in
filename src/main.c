@@ -1,6 +1,95 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
+void	reset_order_src(t_array **arr)
+{
+	int i;
+
+	i = 0;
+	while (i< (*arr)->current)
+	{
+		(*arr)->rooms[i]->order = INT_MAX;
+		(*arr)->rooms[i]->src = -1;
+		i++;
+	}
+}
+
+t_path	*find_path_bf_new_ret(t_array **arr)
+{
+	t_path 	*result;
+	int 	i;
+	int		len;
+
+	result = (t_path *)malloc(sizeof(t_path));
+	i = (*arr)->finish;
+	len = 1;
+	while (i != (*arr)->start)
+	{
+		i = (*arr)->rooms[i]->src;
+		len++;
+	}
+	result->size = len;
+//	printf("size: %d\n", len);
+	result->path = (int*)malloc(sizeof(int) * result->size);
+	i = 1;
+	result->path[0] = (*arr)->finish;
+	while (i < result->size)
+	{
+		result->path[i] = (*arr)->rooms[result->path[i - 1]]->src;
+		i++;
+	}
+	return (result);
+}
+
+void	find_path_bf_new_cycle(t_array **arr, int *is_weight_modify)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < (*arr)->current)
+	{
+		j = 0;
+		if ((*arr)->rooms[i]->order != INT_MAX)
+			while (j < (*arr)->rooms[i]->s_lnk.cur_size)
+			{
+				if ((*arr)->rooms[i]->s_lnk.weights[j] != -2)
+				{
+					if ((*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order > (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j])
+					{
+						(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j];
+						(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = i;
+						*is_weight_modify = 1;
+					}
+				}
+				j++;
+			}
+		i++;
+	}
+}
+
+t_path	*find_path_bf_new(t_array **arr)
+{
+	t_path	*result;
+	int		i;
+	int		is_weight_modify;
+
+	i = 0;
+	is_weight_modify = 1;
+	(*arr)->rooms[(*arr)->start]->order = 0;
+	while (i < (*arr)->current && is_weight_modify)
+	{
+		is_weight_modify = 0;
+		find_path_bf_new_cycle(arr, &is_weight_modify);
+		i++;
+	}
+	result = find_path_bf_new_ret(arr);
+	reset_order_src(arr);
+//	printf("new path: ");
+//	print_t_path(result, *arr);
+	return (result);
+}
+
 int    main(int argc, char **argv)
 {
 	t_array	*arr;
@@ -27,19 +116,20 @@ int    main(int argc, char **argv)
 
 		while (i < paths->curr_path)
 		{
-			ft_expand_graph(&arr, paths->path_arr[i]->path);
+			ft_expand_graph(&arr, paths->path_arr[i]->path, paths->path_arr[i]->size);
 			i++;
 		}
-		//printf("%d\n", check++);
-		paths->path_arr[paths->curr_path] = ft_find_path_bf(&arr, 1);
+		paths->path_arr[paths->curr_path] = find_path_bf_new(&arr);
 		ft_clear_order(&arr);
-
+//		ft_expand_graph(&arr, paths->path_arr[paths->curr_path]->path, paths->path_arr[paths->curr_path]->size);
 		ft_check_for_cpy_bfs_smart(&arr, paths->path_arr[paths->curr_path]);
+
 		if (!paths->path_arr[paths->curr_path])
 			break;
 		paths->curr_path++;
-
+//		find_path_bf_new(&arr);
 		handle_paths(arr_not_expanded, arr, paths);
+
 		paths->time = ft_calc_path_time(&arr, paths);
 		if (path_counter)
 		{

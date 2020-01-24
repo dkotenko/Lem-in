@@ -13,13 +13,7 @@ t_path	*ft_find_path_dfs(t_array **arr)
 	result = (t_path *)malloc(sizeof(t_path));
 	result->path = (int*)malloc(sizeof(int) * ((*arr)->current + 1));
 	ft_fill_mem(result->path, (*arr)->current + 1, -1);
-//	int b = 0;
-//	while (b < (*arr)->current)
-//	{
-//		printf("/%d/", result->path[b]);
-//		b++;
-//	}
-//	printf("\n");
+
 	result->path[0] = (*arr)->start;
 	result->path[1] = (*arr)->rooms[(*arr)->start]->s_lnk.links[i];
 	j = 1;

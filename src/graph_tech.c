@@ -15,6 +15,8 @@ t_room	*ft_cpy_room(t_room *src)
 	dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
 	dst->s_lnk.room_copy = -1;
 	dst->s_lnk.is_copy = src->s_lnk.is_copy;
+	dst->order = src->order;
+	dst->src = src->src;
 	while (i < src->s_lnk.cur_size)
 	{
 		dst->s_lnk.links[i] = src->s_lnk.links[i];

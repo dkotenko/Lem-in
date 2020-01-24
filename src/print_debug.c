@@ -44,9 +44,8 @@ void	print_t_links(t_links *s_lnk, t_array *arr)
 	printed = 0;
 	while (++i < s_lnk->cur_size)
 	{
-		if (s_lnk->weights[i] == -2)
-			continue;
-		ft_putstr(": ");
+//		if (s_lnk->weights[i] == -2)
+//			continue;
 		ft_putstr("lnk [");
 		ft_putstr(arr->rooms[s_lnk->links[i]]->name);
 		ft_putstr(",");
@@ -73,12 +72,14 @@ void	print_t_array_rooms_with_links(t_array *arr)
 //	printf("start: %d\n", arr->start);
 //	printf("finish: %d\n", arr->finish);
 //	printf("current: %d\n", arr->current);
-	while(++i < arr->max)
+	while(++i < arr->current)
 	{
 		if (!arr->rooms[i])
 			continue ;
 		ft_putstr("ROOM:");
 		ft_putstr(arr->rooms[i]->name);
+		ft_putstr(": ");
+		printf("(o: %d src: %d) | ", arr->rooms[i]->order, arr->rooms[i]->src);
 		//	printf(" lnkS:%d ", arr->rooms[i]->s_lnk.cur_size);
 		//	printf(" lnkS:%d ", arr->rooms[i]->s_lnk.room_copy);
 		//	printf("(%d)", arr->rooms[i]->s_lnk.order);

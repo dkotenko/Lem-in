@@ -127,6 +127,8 @@ void	ft_create_room(t_array **arr, char **split, int *flag)
 	room->s_lnk.cur_size = 0;
 	room->s_lnk.max_size = ARR_INIT_SIZE;
 	room->s_lnk.order = -1;
+	room->order = INT_MAX;
+	room->src = -1;
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.links = NULL;
 	room->s_lnk.is_copy = 0;
@@ -151,6 +153,8 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	dst->s_lnk.room_copy = sr;
 	src->s_lnk.room_copy = ds;
 	dst->s_lnk.is_copy = 1;
+	dst->order = src->order;
+	dst->src = src->src;
 	while (i < src->s_lnk.cur_size)
 	{
 		dst->s_lnk.links[i] = src->s_lnk.links[i];

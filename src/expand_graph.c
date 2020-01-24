@@ -1,23 +1,15 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
-void	ft_expand_graph(t_array **arr, int *path)
+void	ft_expand_graph(t_array **arr, int *path, int size)
 {
 	int		i;
 	int 	j;
 	t_room	*room;
 
-//printf("\n");
-//	i = 0;
-//	while (path[i] != -1)
-//	{
-//		printf("%d-", path[i]);
-//		i++;
-//	}
-//	printf("\n");
 
 	i = 0;
-	while (path[i] != -1)
+	while (i < size)
 	{
 		j = 0;
 //		printf("%d\n", path[i]);
@@ -28,44 +20,31 @@ void	ft_expand_graph(t_array **arr, int *path)
 //			printf("%s-", (*arr)->rooms[(*arr)->rooms[path[i]]->s_lnk.links[j]]->name);
 			if (i != 0 && (*arr)->rooms[path[i]]->s_lnk.links[j] == path[i - 1])
 				(*arr)->rooms[path[i]]->s_lnk.weights[j] = -2; // -2 - это стёртые пути
-			if ((*arr)->rooms[path[i]]->s_lnk.links[j] == path[i + 1])
-			{
-				if ((*arr)->rooms[path[i]]->s_lnk.weights[j] == 1)
+			if (i < size - 1 && (*arr)->rooms[path[i]]->s_lnk.links[j] == path[i + 1])
 					(*arr)->rooms[path[i]]->s_lnk.weights[j] = -1;
-				else
-					(*arr)->rooms[path[i]]->s_lnk.weights[j] = 1;
-			}
 			j++;
 		}
 //		printf("\n");
 		// <-- reverse path
 		i++;
 	}
-	i = 0;
-
-	while (path[i] != -1)
+	i = 1;
+	while (i < size - 1)
 	{
 		// --> duplicate room
-
 //		printf("name: %s\n", (*arr)->rooms[path[i]]->name);
-
-		if (i != 0 && path[i + 1] != -1 && (*arr)->rooms[path[i]]->s_lnk.room_copy == -1)
+		if ((*arr)->rooms[path[i]]->s_lnk.room_copy == -1)
 		{
 			room = (t_room*)malloc(sizeof(t_room));
-
 			ft_cpy_room_data(room, (*arr)->rooms[path[i]], (*arr)->current, path[i]);
-
 			ft_arr_push(arr, room);
-
-
 		}
-
 		// <-- duplicate room
 		i++;
 	}
 
 	i = 0;
-	while (path[i + 1] != -1)
+	while (i < size - 1)
 	{
 		j = 0;
 		while (j < (*arr)->rooms[path[i]]->s_lnk.cur_size)
@@ -92,7 +71,6 @@ void	ft_expand_graph(t_array **arr, int *path)
 		// <-- добавление связи между OUT и IN
 		i++;
 	}
-
 //	i = 0;
 //	j = 0;
 //	while (i < (*arr)->current)
