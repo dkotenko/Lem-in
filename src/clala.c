@@ -190,26 +190,28 @@ void	add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *pa
 {
 	int i;
 	int k;
-	//int orig;
+	int prev_index;
 
 	i = path->size;
 	while (--i > -1)
 	{
 		k = get_origin_room(path->path[i], arr);
 		if (!room_in_no_expanded(arr_not_expanded, arr->rooms[k]))
-		{
 			arr_not_expanded->rooms[k] = copy_room_mod(arr->rooms, k);
-			//arr_not_expanded->current++;
-		}
-		//orig = i > 0 ? get_origin_room(path->path[i - 1], arr) : 0;
-		if (i > 0) /*&& nbr_in_links_pos(arr_not_expanded,	orig,
-		arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size])
-			== -1)*/
+		if (i > 0)
 		{
-			arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size] = \
-			get_origin_room(path->path[i - 1], arr);
-			arr_not_expanded->rooms[k]->s_lnk.weights[arr_not_expanded->rooms[k]->s_lnk.cur_size] = 1;
-			arr_not_expanded->rooms[k]->s_lnk.cur_size++;
+			prev_index = nbr_in_array_pos(path->path[i - 1],
+					arr_not_expanded->rooms[k]->s_lnk.links,
+					arr_not_expanded->rooms[k]->s_lnk.cur_size);
+			if (prev_index == -1)
+			{
+				arr_not_expanded->rooms[k]->s_lnk.links[arr_not_expanded->rooms[k]->s_lnk.cur_size] = \
+                get_origin_room(path->path[i - 1], arr);
+				arr_not_expanded->rooms[k]->s_lnk.weights[arr_not_expanded->rooms[k]->s_lnk.cur_size] = 1;
+				arr_not_expanded->rooms[k]->s_lnk.cur_size++;
+			}
+			else
+				arr_not_expanded->rooms[k]->s_lnk.weights[prev_index] = 1;
 		}
 	}
 }
@@ -231,7 +233,9 @@ void	delete_double_links(t_array *arr)
 		{
 			pos_i_in_links_j = nbr_in_links_pos(arr, i, j);
 			pos_j_in_rooms = arr->rooms[i]->s_lnk.links[j];
-			if (pos_i_in_links_j != -1)
+			if (pos_i_in_links_j != -1 &&
+			arr->rooms[pos_j_in_rooms]->s_lnk.weights[pos_i_in_links_j] != -2
+			&& arr->rooms[i]->s_lnk.weights[j] != -2)
 			{
 				arr->rooms[pos_j_in_rooms]->s_lnk.weights[pos_i_in_links_j] = -2;
 				arr->rooms[i]->s_lnk.weights[j] = -2;
@@ -304,7 +308,6 @@ void	handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	t_deleted_edges *deleted_edges;
 
 	add_path_to_no_expanded(arr_not_expanded, arr, paths->path_arr[paths->curr_path - 1]);
-
 	delete_double_links(arr_not_expanded);
 	deleted_edges = create_deleted_edges(arr_not_expanded->current);
 	i = -1;
@@ -313,6 +316,8 @@ void	handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	{
 		tmp = paths->path_arr[i];
 		paths->path_arr[i] = ft_find_path_dfs(&arr_not_expanded);
+		print_t_path(paths->path_arr[i], arr);
+
 		if (!paths->path_arr[i])
 		{
 			paths->curr_path = i;
