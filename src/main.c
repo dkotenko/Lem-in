@@ -57,8 +57,16 @@ void	find_path_bf_new_cycle(t_array **arr, int *is_weight_modify)
 				{
 					if ((*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order > (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j])
 					{
-						(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j];
-						(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = i;
+						if ((*arr)->rooms[i]->s_lnk.weights[j] == 0)
+						{
+							(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order;
+							(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = (*arr)->rooms[i]->src;
+						}
+						else
+						{
+							(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j];
+							(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = i;
+						}
 						*is_weight_modify = 1;
 					}
 				}
