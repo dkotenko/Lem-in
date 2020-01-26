@@ -93,7 +93,7 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
 	int 	min_path_num;
 
 	curr_size_to_size(paths);
-	ants = ft_ants_creator((*arr)->start);
+	ants = ft_ants_creator();
 	first_ant = ants;
 	i = 0;
 
