@@ -121,7 +121,7 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
 	ants = first_ant;
 	while (ants->next != NULL)
 	{
-			printf("name: %s, p:%d, o:%d\n", ants->name, ants->path, ants->order);
+			//printf("name: %s, p:%d, o:%d\n", ants->name, ants->path, ants->order);
 		ants = ants->next;
 	}
 	ants = first_ant;
