@@ -29,10 +29,11 @@ t_path	*find_path_bf_new_ret(t_array **arr)
 		len++;
 	}
 	result->size = len;
-//	printf("size: %d\n", len);
+	//printf("size: %d\n", len);
 	result->path = (int*)malloc(sizeof(int) * result->size);
 	i = 1;
 	result->path[0] = (*arr)->finish;
+	result->curr_size = 0;
 	while (i < result->size)
 	{
 		result->path[i] = (*arr)->rooms[result->path[i - 1]]->src;
@@ -174,7 +175,16 @@ int    main(int argc, char **argv)
 
 		paths->curr_path++;
 //		find_path_bf_new(&arr);
-		handle_paths(arr_not_expanded, arr, paths);
+		//handle_paths(arr_not_expanded, arr, paths);
+
+		printf("Before merge_paths\n");
+		print_t_paths(paths, arr);
+		printf("//////////\n");
+		while (merge_paths(arr, paths))
+			;
+		printf("AFTER merge_paths\n");
+		print_t_paths(paths, arr);
+		printf("//////////\n");
 
 		paths->time = ft_calc_path_time(&arr, paths);
 		if (path_counter)
