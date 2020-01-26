@@ -28,7 +28,7 @@ t_path *create_t_path(int size)
 	new->path = (int *)malloc(sizeof(int) * size);
 	new->curr_size = 0;
 	new->size = size;
-	new->order = -1;
+	new->order = 1;
 	return (new);
 }
 
@@ -458,7 +458,7 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 	t_path	*temp2;
 	t_path *slice_temp1;
 	t_path *slice_temp2;
-	int 	common_vertices_nbr;
+//	int 	common_vertices_nbr;
 
 	temp1 = *path1;
 	temp2 = *path2;
@@ -470,7 +470,7 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 	printf("*************\n");
 
 	printf("\nPATH 1 MERGING\n");
-	common_vertices_nbr = get_common_vertices_nbr(*path1, *path2, path1_ind1, path2_ind1);
+//	common_vertices_nbr = get_common_vertices_nbr(*path1, *path2, path1_ind1, path2_ind1);
 	slice_temp1 = slice_t_path(temp1,  0, path1_ind1);
 	slice_temp2 = slice_t_path(temp2, nbr_in_array_pos(
 			temp1->path[path1_ind1], temp2->path, temp2->size), temp2->size);

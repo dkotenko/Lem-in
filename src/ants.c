@@ -1,14 +1,13 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
-t_ant	*ft_ants_creator(int start_room)
+t_ant	*ft_ants_creator()
 {
 	static int	num = 1;
 	char		let[2];
 	char 		*numb;
 	t_ant		*clone;
 
-	let[0] = start_room;
 	let[0] = 'L';
 	let[1] = '\0';
 	numb = ft_itoa(num);
@@ -115,14 +114,14 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
 		ants->path = min_path_num;
 		ants->order = paths->path_arr[min_path_num]->order;
 		paths->path_arr[min_path_num]->order += 1;
-		ants->next = ft_ants_creator((*arr)->start); // !!!! создаётся на 1 муравья больше чем надо и это ок
+		ants->next = ft_ants_creator(); // !!!! создаётся на 1 муравья больше чем надо и это ок
 		ants = ants->next;
 		i++;
 	}
 	ants = first_ant;
 	while (ants->next != NULL)
 	{
-		//	printf("name: %s, p:%d, o:%d\n", ants->name, ants->path, ants->order);
+			printf("name: %s, p:%d, o:%d\n", ants->name, ants->path, ants->order);
 		ants = ants->next;
 	}
 	ants = first_ant;

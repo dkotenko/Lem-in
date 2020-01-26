@@ -140,7 +140,7 @@ void	ft_reset_graph(t_array **arr)
 int    main(int argc, char **argv)
 {
 	t_array	*arr;
-	t_array	*arr_not_expanded;
+//	t_array	*arr_not_expanded;
 	t_paths	*paths;
 	t_paths	*prev;
 //	t_array *test;
@@ -149,7 +149,7 @@ int    main(int argc, char **argv)
 	int path_limit;
 	ft_reader(argc, argv, &arr);
 	paths = create_t_paths();
-	arr_not_expanded = get_copy_t_array(arr);
+//	arr_not_expanded = get_copy_t_array(arr);
 	path_counter = 0;
 	path_limit = ft_path_limit(arr);
 	arr->base = arr->current;

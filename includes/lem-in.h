@@ -154,7 +154,7 @@ t_path	*ft_restore_path_bf(t_array **arr, int **path_mtrx);
 t_path	*ft_find_path_bf(t_array **arr, int i);
 
 //ants
-t_ant	*ft_ants_creator(int start_room);
+t_ant	*ft_ants_creator();
 void	ft_ant_reporting(char *name, char *room);
 void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths);
 void	ft_list_sort(t_ant *ants);
