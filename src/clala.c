@@ -231,8 +231,8 @@ void	add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *pa
 			arr_not_expanded->rooms[k] = copy_room_mod(arr->rooms, k);
 		if (i > 0)
 		{
-			print_t_path(path, arr);
-			print_t_array_rooms_with_links(arr_not_expanded);
+			//print_t_path(path, arr);
+			//print_t_array_rooms_with_links(arr_not_expanded);
 			prev_index = nbr_in_array_pos(path->path[i - 1],
 					arr_not_expanded->rooms[k]->s_lnk.links,
 					arr_not_expanded->rooms[k]->s_lnk.cur_size);
@@ -433,7 +433,7 @@ t_path		*slice_t_path(t_path *path, int start, int end)
 		i++;
 		start++;
 	}
-	//printf("size: %d\n", new->size);
+	printf("size: %d\n", new->size);
 	return (new);
 }
 
@@ -471,8 +471,9 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 
 	printf("\nPATH 1 MERGING\n");
 	common_vertices_nbr = get_common_vertices_nbr(*path1, *path2, path1_ind1, path2_ind1);
-	slice_temp1 = slice_t_path(temp1, 0, path1_ind1);
-	slice_temp2 = slice_t_path(temp2, path2_ind1, temp2->size);
+	slice_temp1 = slice_t_path(temp1,  0, path1_ind1);
+	slice_temp2 = slice_t_path(temp2, nbr_in_array_pos(
+			temp1->path[path1_ind1], temp2->path, temp2->size), temp2->size);
 	printf("slice p1 before merge\n");
 	print_t_path(slice_temp1,arr);
 	printf("*************\n");
@@ -489,10 +490,15 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 	printf("\nPATH 1 MERGING END\n");
 
 	printf("\nPATH 2 MERGING\n");
+	printf("slice p1 before merge\n");
 	slice_temp1 = slice_t_path(temp2, 0, path2_ind1);
 	print_t_path(slice_temp1,arr);
-	slice_temp2 = slice_t_path(temp1, path1_ind1 + common_vertices_nbr, temp1->size);
+	printf("*************\n");
+	printf("slice p2 before merge\n");
+	slice_temp2 = slice_t_path(temp1, nbr_in_array_pos(
+			temp2->path[path2_ind1], temp1->path, temp1->size), temp1->size);
 	print_t_path(slice_temp2,arr);
+	printf("*************\n");
 	printf("\npath2\n");
 	*path2 = join_free_t_path(&slice_temp1, &slice_temp2);
 	free(temp1);
@@ -540,8 +546,10 @@ int		merge_paths(t_array *arr, t_paths *paths)
 					paths->path_arr[j], arr);
 			if (p1_ind1)
 			{
-				p2_ind1 = nbr_in_array_pos(paths->path_arr[i]->path[p1_ind1],
-						paths->path_arr[j]->path, paths->path_arr[j]->size);
+				p2_ind1 = get_index_of_intersection_in_path(paths->path_arr[j],
+															paths->path_arr[i], arr);
+				/*p2_ind1 = nbr_in_array_pos(paths->path_arr[i]->path[p1_ind1],
+						paths->path_arr[j]->path, paths->path_arr[j]->size);*/
 				merge_int_paths(&paths->path_arr[i], &paths->path_arr[j],
 								p1_ind1, p2_ind1, arr);
 				switched = 1;
