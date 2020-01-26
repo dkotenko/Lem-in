@@ -127,6 +127,7 @@ int			hash_table_add(int hash, int pointer, int *hash_table);
 int		hash_func(char *s, int table_size);
 int		ft_path_limit(t_array *arr);
 int		merge_paths(t_array *arr, t_paths *paths);
+int t_path_has_duplicates(t_path *path);
 
 //
 void	ft_fill_mem(int *arr, int size, int num);

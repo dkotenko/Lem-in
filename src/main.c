@@ -179,12 +179,33 @@ int    main(int argc, char **argv)
 
 		printf("Before merge_paths\n");
 		print_t_paths(paths, arr);
-		printf("//////////\n");
+		int o = -1;
+		while (++o < paths->curr_path)
+		{
+			if (t_path_has_duplicates(paths->path_arr[o]))
+			{
+				printf("DUPLICATE\n");
+				print_t_path(paths->path_arr[o], arr);
+				printf("//////////\n");
+			}
+		}
+		printf("---------------\n");
+
 		while (merge_paths(arr, paths))
 			;
 		printf("AFTER merge_paths\n");
 		print_t_paths(paths, arr);
-		printf("//////////\n");
+		printf("---------------\n");
+		o = -1;
+		while (++o < paths->curr_path)
+		{
+			if (t_path_has_duplicates(paths->path_arr[o]))
+			{
+				printf("DUPLICATE\n");
+				print_t_path(paths->path_arr[o], arr);
+				printf("//////////\n");
+			}
+		}
 
 		paths->time = ft_calc_path_time(&arr, paths);
 		if (path_counter)

@@ -1,6 +1,25 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
+int t_path_has_duplicates(t_path *path)
+{
+	int 	i;
+	int		j;
+
+	i = -1;
+
+	while(++i < path->size)
+	{
+		j = i;
+		while (++j < path->size)
+		{
+			if (path->path[i] == path->path[j])
+				return (1);
+		}
+	}
+	return (0);
+}
+
 t_path *create_t_path(int size)
 {
 	t_path	*new;
@@ -418,34 +437,68 @@ t_path		*slice_t_path(t_path *path, int start, int end)
 	return (new);
 }
 
+
+int 	get_common_vertices_nbr(t_path *path1, t_path *path2, int path1_ind1, int path2_ind1)
+{
+	int 	i;
+
+	i = 0;
+	while (path1->path[path1_ind1] == path2->path[path2_ind1])
+	{
+		i++;
+		path1_ind1++;
+		path2_ind1++;
+	}
+	return (i);
+}
+
 static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int path2_ind1, t_array *arr)
 {
 	t_path	*temp1;
 	t_path	*temp2;
 	t_path *slice_temp1;
 	t_path *slice_temp2;
+	int 	common_vertices_nbr;
 
 	temp1 = *path1;
 	temp2 = *path2;
-	//print_t_path(temp1,arr);
-	//print_t_path(temp2, arr);
+	printf("path1 before merge\n");
+	print_t_path(temp1,arr);
+	printf("*************\n");
+	printf("path2 before merge\n");
+	print_t_path(temp2, arr);
+	printf("*************\n");
+
+	printf("\nPATH 1 MERGING\n");
+	common_vertices_nbr = get_common_vertices_nbr(*path1, *path2, path1_ind1, path2_ind1);
 	slice_temp1 = slice_t_path(temp1, 0, path1_ind1);
 	slice_temp2 = slice_t_path(temp2, path2_ind1, temp2->size);
+	printf("slice p1 before merge\n");
+	print_t_path(slice_temp1,arr);
+	printf("*************\n");
+	printf("slice p2 before merge\n");
+	print_t_path(slice_temp2,arr);
+	printf("*************\n");
 	//printf("hello!\n");
 	//print_t_path(slice_temp1,arr);
 	//(slice_temp2, arr);
 	*path1 = join_free_t_path(&slice_temp1, &slice_temp2);
+	printf("\npath1\n");
+	print_t_path(*path1,arr);
+	printf("\n");
+	printf("\nPATH 1 MERGING END\n");
 
-	//print_t_path(*path1, arr);
-
+	printf("\nPATH 2 MERGING\n");
 	slice_temp1 = slice_t_path(temp2, 0, path2_ind1);
-	//print_t_path(slice_temp1,arr);
-	slice_temp2 = slice_t_path(temp1, path1_ind1 + 2, temp1->size);
-	//print_t_path(slice_temp2,arr);
+	print_t_path(slice_temp1,arr);
+	slice_temp2 = slice_t_path(temp1, path1_ind1 + common_vertices_nbr, temp1->size);
+	print_t_path(slice_temp2,arr);
+	printf("\npath2\n");
 	*path2 = join_free_t_path(&slice_temp1, &slice_temp2);
 	free(temp1);
 	free(temp2);
-	//print_t_path(*path2, arr);
+	print_t_path(*path2, arr);
+	printf("\nPATH 2 MERGING END\n");
 }
 void	count__size_in_path(t_path *path)
 {
