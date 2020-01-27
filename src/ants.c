@@ -24,7 +24,7 @@ t_ant	*ft_ants_creator()
 
 void	ft_ant_reporting(char *name, char *room)
 {
-	printf("%s-%s ", name, room);
+	ft_printf("%s-%s ", name, room);
 }
 
 void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)

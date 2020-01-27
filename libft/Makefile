@@ -35,6 +35,8 @@ ft_btree_apply_infix.c get_next_line.c \
       ft_ftoa.c \
       ft_strrev.c \
       ft_swap.c \
+      ft_ultoa.c \
+      ft_pow.c \
 
 OBJECTS = $(FILES:.c=.o)
 

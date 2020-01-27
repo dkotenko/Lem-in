@@ -15,6 +15,7 @@
 
 # include <stdarg.h>
 # include "libft.h"
+# include "libft_compat.h"
 
 # define PRINTF_HASH 1
 # define PRINTF_ZERO 2

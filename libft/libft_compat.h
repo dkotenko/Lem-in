@@ -17,7 +17,6 @@
 # ifdef _WIN32
 #  include <io.h>
 #  define read _read
-#  define sleep(x) _sleep(x)
 # else
 #  include <unistd.h>
 # endif
