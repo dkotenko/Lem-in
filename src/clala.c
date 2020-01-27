@@ -433,7 +433,7 @@ t_path		*slice_t_path(t_path *path, int start, int end)
 		i++;
 		start++;
 	}
-	printf("size: %d\n", new->size);
+	//printf("size: %d\n", new->size);
 	return (new);
 }
 
@@ -462,6 +462,9 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 
 	temp1 = *path1;
 	temp2 = *path2;
+	if (arr->current > 20000000)
+		printf("hello");
+	/*
 	printf("path1 before merge\n");
 	print_t_path(temp1,arr);
 	printf("*************\n");
@@ -470,10 +473,12 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 	printf("*************\n");
 
 	printf("\nPATH 1 MERGING\n");
+	 */
 //	common_vertices_nbr = get_common_vertices_nbr(*path1, *path2, path1_ind1, path2_ind1);
 	slice_temp1 = slice_t_path(temp1,  0, path1_ind1);
 	slice_temp2 = slice_t_path(temp2, nbr_in_array_pos(
 			temp1->path[path1_ind1], temp2->path, temp2->size), temp2->size);
+	/*
 	printf("slice p1 before merge\n");
 	print_t_path(slice_temp1,arr);
 	printf("*************\n");
@@ -483,7 +488,9 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 	//printf("hello!\n");
 	//print_t_path(slice_temp1,arr);
 	//(slice_temp2, arr);
+	 */
 	*path1 = join_free_t_path(&slice_temp1, &slice_temp2);
+	/*
 	printf("\npath1\n");
 	print_t_path(*path1,arr);
 	printf("\n");
@@ -491,20 +498,27 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 
 	printf("\nPATH 2 MERGING\n");
 	printf("slice p1 before merge\n");
+	 */
 	slice_temp1 = slice_t_path(temp2, 0, path2_ind1);
+	/*
 	print_t_path(slice_temp1,arr);
 	printf("*************\n");
 	printf("slice p2 before merge\n");
+	 */
 	slice_temp2 = slice_t_path(temp1, nbr_in_array_pos(
 			temp2->path[path2_ind1], temp1->path, temp1->size), temp1->size);
+	/*
 	print_t_path(slice_temp2,arr);
 	printf("*************\n");
 	printf("\npath2\n");
+	 */
 	*path2 = join_free_t_path(&slice_temp1, &slice_temp2);
 	free(temp1);
 	free(temp2);
+	/*
 	print_t_path(*path2, arr);
 	printf("\nPATH 2 MERGING END\n");
+	 */
 }
 void	count__size_in_path(t_path *path)
 {

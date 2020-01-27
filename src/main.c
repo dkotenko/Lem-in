@@ -95,6 +95,7 @@ t_path	*find_path_bf_new(t_array **arr)
 	if ((*arr)->rooms[(*arr)->finish]->order == INT_MAX)
 		return (NULL);
 	result = find_path_bf_new_ret(arr);
+	result->order = 1;
 	reset_order_src(arr);
 //	printf("new path: ");
 //	print_t_path(result, *arr);
