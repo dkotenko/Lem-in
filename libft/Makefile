@@ -12,7 +12,7 @@
 
 NAME = libft.a
 CFLAGS = -Wall -Werror -Wextra
-HEADERS = libft.h
+HEADERS = libft.h libft_compat.h
 FILES = ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c \
 ft_isprint.c ft_memalloc.c ft_memcpy.c ft_memdel.c ft_memchr.c \
 ft_memccpy.c ft_memcmp.c ft_memmove.c ft_memset.c ft_putchar_fd.c \
@@ -26,7 +26,15 @@ ft_strsub.c ft_strtrim.c ft_toupper.c ft_tolower.c ft_itoa.c \
 ft_atoi.c ft_strsplit.c ft_lstnew.c ft_lstdelone.c ft_lstdel.c \
 ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_btree_insert_data.c \
 ft_btree_create_node.c ft_btree_apply_suffix.c ft_btree_apply_prefix.c \
-ft_btree_apply_infix.c get_next_line.c
+ft_btree_apply_infix.c get_next_line.c \
+      ft_printf.c \
+      spec_parse.c \
+      conversion.c \
+      convert.c \
+      apply_fw.c \
+      ft_ftoa.c \
+      ft_strrev.c \
+      ft_swap.c \
 
 OBJECTS = $(FILES:.c=.o)
 

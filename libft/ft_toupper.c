@@ -12,6 +12,16 @@
 
 #include "libft.h"
 
+char		*ft_toupper_inplace(char *s)
+{
+	char *p;
+
+	p = s;
+	while ((*p = (char)ft_toupper(*p)))
+		p++;
+	return (s);
+}
+
 int	ft_toupper(int c)
 {
 	if (c >= 'a' && c <= 'z')

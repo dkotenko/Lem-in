@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include "libft_compat.h"
 
 # define BUFF_SIZE 100
 # define MALLCHECK(x) if (x == NULL) return (-1)
@@ -60,7 +61,7 @@ void				ft_putendl_fd(char const *s, int fd);
 void				ft_putendl(char const *s);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putnbr(int n);
-void				ft_putstr_fd(char const *s, int fd);
+size_t				ft_putstr_fd(char const *s, int fd);
 void				ft_putstr(char *str);
 char				*ft_strcat(char *str_destination, const char *str_source);
 char				*ft_strchr(const char *str, int c);
@@ -93,7 +94,7 @@ char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strtrim(char const *s);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
-char				*ft_itoa(int a);
+char				*ft_itoa(long long int a);
 int					ft_atoi(const char *str);
 char				**ft_strsplit(char const *s, char c);
 t_list				*ft_lstnew(void const *content, size_t content_size);
@@ -111,5 +112,18 @@ t_btree				*ft_btree_create_node(void *item);
 void				ft_btree_insert_data(t_btree **root, void *item,
 		int (*cmpf)(void *, void *));
 int					get_next_line(const int fd, char **line);
+char				*ft_ultoa_buf(char *s, ulong n, uint base);
+char				*ft_itoa_buf(char *s, long long int n, uint base);
+char				*ft_ftoa_buf(char *s, long double n, int decimals);
+char				*ft_toupper_inplace(char *s);
+char				*ft_strrev(char *str);
+void				*ft_memrev(void *str, size_t len);
+unsigned char		ft_bitrev(unsigned char b);
+void				ft_swap(void **a, void **b);
+void				ft_swap_int(int *a, int *b);
+void				ft_swap_char(char *a, char *b);
+void				ft_swap_double(double *a, double *b);
+ullong				ft_ullpow(ullong a, ullong b);
+uint				ft_count_int_digits(long long int n, uint base);
 
 #endif
