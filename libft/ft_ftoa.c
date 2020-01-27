@@ -12,7 +12,6 @@
 
 #include <limits.h>
 #include "libft.h"
-#include "libft_math.h"
 
 static ullong		mod(long double a, int b)
 {
