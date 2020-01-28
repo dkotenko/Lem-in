@@ -123,10 +123,8 @@ void	ft_create_room(t_array **arr, char **split, int *flag)
 	room->name = ft_strdup(split[0]);
 	room->x = ft_atoi(split[1]);
 	room->y = ft_atoi(split[2]);
-	room->flag = -1;
 	room->s_lnk.cur_size = 0;
 	room->s_lnk.max_size = ARR_INIT_SIZE;
-	room->s_lnk.order = -1;
 	room->order = INT_MAX;
 	room->src = -1;
 	room->s_lnk.room_copy = -1;
@@ -145,14 +143,11 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	int i;
 
 	i = 0;
-	if (dst->name == NULL)
-		dst->name = ft_strjoin("#", src->name);
+	dst->name = ft_strjoin("#", src->name);
 	dst->x = src->x;
 	dst->y = src->y;
-	if (dst->s_lnk.links == NULL)
-		dst->s_lnk.links = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
-	if (dst->s_lnk.weights == NULL)
-		dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
+	dst->s_lnk.links = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
+	dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
 	dst->s_lnk.room_copy = sr;
 	src->s_lnk.room_copy = ds;
 	dst->s_lnk.is_copy = 1;
@@ -166,7 +161,6 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	}
 	dst->s_lnk.cur_size = src->s_lnk.cur_size;
 	dst->s_lnk.max_size = src->s_lnk.max_size;
-	dst->s_lnk.order = src->s_lnk.order;
 }
 
 void	ft_create_links(t_array **arr, char **split)

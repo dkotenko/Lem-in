@@ -15,7 +15,6 @@ SOURCES =   src/main.c \
 src/print_debug.c \
 src/read_input.c \
 src/find_path_dfs.c \
-src/find_path_bfs.c \
 src/find_path_bf.c \
 src/ants.c\
 src/paths_tech.c\

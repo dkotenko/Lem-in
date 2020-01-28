@@ -154,7 +154,6 @@ t_room *copy_room_mod(t_room **rooms, int i)
 	room->s_lnk.links = (int *) malloc(sizeof(int) * (rooms[i]->s_lnk.cur_size));
 	room->s_lnk.weights = (int *) malloc(sizeof(int) * (rooms[i]->s_lnk.cur_size));
 	ft_fill_mem(room->s_lnk.links, rooms[i]->s_lnk.cur_size, -1);
-	room->s_lnk.order = rooms[i]->s_lnk.order;
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.is_copy = 0;
 	room->s_lnk.max_size = rooms[i]->s_lnk.cur_size;

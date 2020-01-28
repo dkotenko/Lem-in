@@ -1,123 +1,90 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
-void 	ft_malloc_bf_matrix(t_array **arr, int ***matrix, int ***path_mtrx)
+static t_path	*find_path_bf_new_ret(t_array **arr)
 {
-	int i;
+	t_path 	*result;
+	int 	i;
+	int		len;
 
-	i = 0;
-	*matrix = (int**)malloc(sizeof(int*) * ((*arr)->current - 1));
-	*path_mtrx = (int**)malloc(sizeof(int*) * ((*arr)->current - 1));
-	while (i < (*arr)->current - 1)
+	result = (t_path *)malloc(sizeof(t_path));
+	i = (*arr)->finish;
+	len = 1;
+	while (i != (*arr)->start)
 	{
-		(*matrix)[i] = (int*)malloc(sizeof(int) * (*arr)->current);
-		(*path_mtrx)[i] = (int*)malloc(sizeof(int) * (*arr)->current);
-		ft_fill_mem((*matrix)[i], (*arr)->current, INT_MAX);
-		ft_fill_mem((*path_mtrx)[i], (*arr)->current, -1);
+		i = (*arr)->rooms[i]->src;
+		len++;
+	}
+	result->size = len;
+	result->path = (int*)malloc(sizeof(int) * result->size);
+	i = 1;
+	result->path[0] = (*arr)->finish;
+	result->curr_size = 0;
+	while (i < result->size)
+	{
+		result->path[i] = (*arr)->rooms[result->path[i - 1]]->src;
 		i++;
 	}
-
+	return (result);
 }
 
-void 	ft_free_bf_matrix(t_array **arr, int **matrix, int **path_mtrx)
+static void		find_path_bf_new_cycle2(t_array **arr, int *is_weight_modify, int i, int j)
 {
-	int i;
-
-	i = 0;
-	while (i < (*arr)->current - 1)
+	if ((*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order > (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j])
 	{
-		free(matrix[i]);
-		free(path_mtrx[i]);
-		i++;
-	}
-	free(matrix);
-	free(path_mtrx);
-}
-
-void	ft_fill_1st_line(t_array **arr, int **matrix, int **path)
-{
-	int k;
-
-	k = 0;
-	matrix[0][(*arr)->start] = 0;
-	path[0][(*arr)->start] = (*arr)->start;
-	while (k < (*arr)->rooms[(*arr)->start]->s_lnk.cur_size)
-	{
-		matrix[0][(*arr)->rooms[(*arr)->start]->s_lnk.links[k]] = (*arr)->rooms[(*arr)->start]->s_lnk.weights[k];
-		path[0][(*arr)->rooms[(*arr)->start]->s_lnk.links[k]] = (*arr)->start;
-		k++;
-	}
-}
-
-void	ft_find_path_cycle(t_array **arr, int **matrix, int **path_mtrx, int i)
-{
-	int j;
-	int k;
-
-	j = 0;
-	while (j < (*arr)->current)
-	{
-		if (matrix[i - 1][j] == INT_MAX && j++)
-			continue;
-		k = 0;
-		matrix[i][j] = matrix[i - 1][j];
-		path_mtrx[i][j] = path_mtrx[i - 1][j];
-		while (k < (*arr)->rooms[j]->s_lnk.cur_size)
+		if ((*arr)->rooms[i]->s_lnk.weights[j] == 0)
 		{
-			if ((*arr)->rooms[j]->s_lnk.weights[k] != -2)
-				if (matrix[i][(*arr)->rooms[j]->s_lnk.links[k]] > matrix[i - 1][j] + 1)
-				{
-					matrix[i][(*arr)->rooms[j]->s_lnk.links[k]] = matrix[i - 1][j] + 1;
-					path_mtrx[i][(*arr)->rooms[j]->s_lnk.links[k]] = j;
-				}
-			k++;
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order;
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = (*arr)->rooms[i]->src;
 		}
-		j++;
+		else
+		{
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j];
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = i;
+		}
+		*is_weight_modify = 1;
 	}
 }
 
-t_path	*ft_restore_path_bf(t_array **arr, int **path_mtrx)
+static void		find_path_bf_new_cycle(t_array **arr, int *is_weight_modify)
 {
-	t_path *path;
 	int i;
 	int j;
-	int k;
 
-	path = (t_path *)malloc(sizeof(t_path));
-	path->path = (int*)malloc(sizeof(int) * (*arr)->current - 1);
-	ft_fill_mem(path->path, (*arr)->current - 1, -1);
-	i = (*arr)->current - 2;
-	j = (*arr)->finish;
-	k = 1;
-	path->path[0] = (*arr)->finish;
-	while (path_mtrx[i][j] != (*arr)->start && j != -1)
+	i = -1;
+	while (++i < (*arr)->current)
 	{
-		path->path[k] = path_mtrx[i][j];
-		k++;
-		j = path_mtrx[i][j];
-		i--;
+		j = -1;
+		if ((*arr)->rooms[i]->order != INT_MAX)
+		{
+			while (++j < (*arr)->rooms[i]->s_lnk.cur_size)
+			{
+				if ((*arr)->rooms[i]->s_lnk.weights[j] != -2)
+					find_path_bf_new_cycle2(arr, is_weight_modify, i, j);
+			}
+		}
 	}
-	path->path[k] = (*arr)->start;
-	path->order = 1;
-	path->size = k + 1;
-	path->curr_size = k + 1;
-	return (j != -1 ? path : NULL);
 }
 
-t_path	*ft_find_path_bf(t_array **arr, int i)
+t_path			*find_path_bf_new(t_array **arr)
 {
-	int	**matrix;
-	int **path_mtrx;
-	t_path	*path;
+	t_path	*result;
+	int		i;
+	int		is_weight_modify;
 
-	ft_malloc_bf_matrix(arr, &matrix, &path_mtrx);
-	ft_fill_1st_line(arr, matrix, path_mtrx);
-	while (i < (*arr)->current - 1)
+	i = 0;
+	is_weight_modify = 1;
+	(*arr)->rooms[(*arr)->start]->order = 0;
+	while (i < (*arr)->current && is_weight_modify)
 	{
-		ft_find_path_cycle(arr, matrix, path_mtrx, i);
+		is_weight_modify = 0;
+		find_path_bf_new_cycle(arr, &is_weight_modify);
 		i++;
 	}
-	path = ft_restore_path_bf(arr, path_mtrx);
-	ft_free_bf_matrix(arr, matrix, path_mtrx);
-	return (path);
+	if ((*arr)->rooms[(*arr)->finish]->order == INT_MAX)
+		return (NULL);
+	result = find_path_bf_new_ret(arr);
+	result->order = 1;
+	reset_order_src(arr);
+	return (result);
 }
