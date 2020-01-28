@@ -1,74 +1,62 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
-t_room	*ft_cpy_room(t_room *src)
+void	reset_order_src(t_array **arr)
 {
-	t_room *dst;
 	int i;
 
 	i = 0;
-	dst	= malloc(sizeof(t_room));
-	dst->name = ft_strdup(src->name);
-	dst->x = src->x;
-	dst->y = src->y;
-	dst->s_lnk.links = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
-	dst->s_lnk.weights = (int*)malloc(sizeof(int) * src->s_lnk.max_size);
-	dst->s_lnk.room_copy = -1;
-	dst->s_lnk.is_copy = src->s_lnk.is_copy;
-	dst->order = src->order;
-	dst->src = src->src;
-	while (i < src->s_lnk.cur_size)
+	while (i< (*arr)->current)
 	{
-		dst->s_lnk.links[i] = src->s_lnk.links[i];
-		dst->s_lnk.weights[i] = src->s_lnk.weights[i];
+		(*arr)->rooms[i]->order = INT_MAX;
+		(*arr)->rooms[i]->src = -1;
 		i++;
 	}
-	dst->s_lnk.cur_size = src->s_lnk.cur_size;
-	dst->s_lnk.max_size = src->s_lnk.max_size;
-	dst->s_lnk.order = src->s_lnk.order;
-	dst->flag = src->flag;
-	return (dst);
 }
 
-t_array *ft_cpy_graph(t_array *arr)
+void	ft_reset_graph(t_array **arr)
 {
 	int i;
-	t_array *result;
+	int j;
 
-	result = malloc(sizeof(t_array));
-	result->current = arr->current;
-	result->finish = arr->finish;
-	result->start = arr->start;
-	result->base = arr->base;
-	result->ants = arr->ants;
-	result->max = arr->max;
-	result->rooms = malloc(sizeof(t_room*) * arr->max);
-	i = 0;
-	while(i < arr->current)
+	i = -1;
+	while (++i < (*arr)->base)
 	{
-		result->rooms[i] = ft_cpy_room(arr->rooms[i]);
-		i++;
+		j = -1;
+		while (++j < (*arr)->rooms[i]->s_lnk.cur_size)
+		{
+			(*arr)->rooms[i]->s_lnk.weights[j] = 1;
+			if((*arr)->rooms[i]->s_lnk.links[j] >= (*arr)->base)
+				(*arr)->rooms[i]->s_lnk.links[j] = (*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->s_lnk.room_copy;
+		}
+		(*arr)->rooms[i]->s_lnk.room_copy = -1;
 	}
-	while (i < result->max)
-	{
-		result->rooms[i] = NULL;
-		i++;
-	}
-	return (result);
-}
-
-void	ft_clear_order(t_array **arr)
-{
-	int i;
-
-	i = 0;
 	while (i < (*arr)->current)
 	{
-		if ((*arr)->rooms[i])
-		{
-			(*arr)->rooms[i]->s_lnk.order = -1;
-//			(*arr)->rooms[i]->flag = -1;
-		}
+		ft_delete_room((*arr)->rooms[i]);
+		(*arr)->rooms[i] = NULL;
+		i++;
+	}
+	(*arr)->current = (*arr)->base;
+}
+
+void	ft_delete_room(t_room *room)
+{
+	free(room->s_lnk.links);
+	free(room->s_lnk.weights);
+	free(room->name);
+	free(room);
+}
+
+void	ft_replace_cpy_in_path(t_array **arr, t_path *path)
+{
+	int i;
+
+	i = 0;
+	while (i < path->size)
+	{
+		if ((*arr)->rooms[path->path[i]]->s_lnk.is_copy == 1)
+			path->path[i] = (*arr)->rooms[path->path[i]]->s_lnk.room_copy;
 		i++;
 	}
 }
