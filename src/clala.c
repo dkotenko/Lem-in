@@ -572,62 +572,10 @@ int		merge_paths(t_array *arr, t_paths *paths)
 	return (switched);
 }
 
-
-void	ft_reader(int argc, char **argv, t_array **arr)
-{
-	int fd;
-
-	*arr = NULL;
-	if (argc == 2)
-		fd = open(argv[1], O_RDONLY);
-	else
-		fd = 0;
-	ft_read_data(fd, arr); //читаем входные данные
-}
-
 int		ft_free(void *val)
 {
 	free(val);
 	return (1);
-}
-
-/*
-int			hash_table_add(int hash, int pointer, int *hash_table)
-{
-	int		i;
-
-
-	i = 0;
-	while (i + hash < hash_table.size)
-	{
-		if (hash_table[hash + i] == -1)
-		{
-			hash_table[hash] = pointer;
-			return (1);
-		}
-		else if (hash_table[hash + i] == pointer)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-*/
-
-int		hash_func(char *s, int table_size)
-{
-	int		i;
-	int		hash;
-	int		len;
-
-	hash = 0;
-	len = ft_strlen(s);
-	i = 0;
-	while (i < len)
-	{
-		hash = ((hash * PRIME_NUMBER) + s[i]) % table_size;
-		i++;
-	}
-	return (hash % table_size);
 }
 
 int		ft_path_limit(t_array *arr)

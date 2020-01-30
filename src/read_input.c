@@ -1,10 +1,12 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
-void	ft_split_free(char **split)
+int		ft_split_free(char **split)
 {
 	int i;
 
+	if (!split)
+		return (0);
 	i = 0;
 	while (split[i] != NULL)
 	{
@@ -13,6 +15,7 @@ void	ft_split_free(char **split)
 	}
 	free(split[i]);
 	free(split);
+	return (1);
 }
 
 t_room	**ft_rooms_copy(t_room **rooms, int size)
@@ -114,9 +117,10 @@ void	ft_read_ants(int fd, t_array **arr)
 	(*arr)->ants = ants;
 }
 
-void	ft_create_room(t_array **arr, char **split, int *flag)
+void	ft_create_room(t_array **arr, char **split, char *s, t_input *input)
 {
 	t_room *room;
+	char *coords_restored;
 
 	room = (t_room*)malloc(sizeof(t_room));
 	room->name = NULL;
@@ -131,11 +135,15 @@ void	ft_create_room(t_array **arr, char **split, int *flag)
 	room->s_lnk.links = NULL;
 	room->s_lnk.is_copy = 0;
 	ft_arr_push(arr, room);
-	if (*flag == 1)
+	if (input->prev_status == STATUS_IS_START)
 		(*arr)->start = (*arr)->current - 1;
-	else if (*flag == 2)
+	else if (input->prev_status == STATUS_IS_END)
 		(*arr)->finish = (*arr)->current - 1;
-	*flag = 0;
+	t_htable_add(input->ht->names->hash(room->name, input->ht->names->size),
+				 room->name, &input->ht->names);
+	coords_restored = ft_strchr(s, ' ') + 1;
+	t_htable_add(input->ht->coords->hash(coords_restored, input->ht->coords->size),
+				 coords_restored, &input->ht->coords);
 }
 
 void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
@@ -163,12 +171,13 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	dst->s_lnk.max_size = src->s_lnk.max_size;
 }
 
-void	ft_create_links(t_array **arr, char **split)
+void	ft_create_links(t_array **arr, char **split, t_htable **ht_links)
 {
 	char	**links;
 	int		i;
 	int		first_room;
 	int 	second_room;
+	char 	*link_name;
 
 	i = 0;
 	links = ft_strsplit(split[0], '-');
@@ -180,39 +189,10 @@ void	ft_create_links(t_array **arr, char **split)
 			second_room = i;
 		i++;
 	}
+	link_name = ft_strdup(split[0]);
+	t_htable_add((*ht_links)->hash(link_name, (*ht_links)->size),
+				 link_name, ht_links);
 	ft_links_push(&((*arr)->rooms[first_room]->s_lnk), second_room, 1);
 	ft_links_push(&((*arr)->rooms[second_room]->s_lnk), first_room, 1);
 	ft_split_free(links);
-}
-
-void	ft_read_data(int fd, t_array **arr)
-{
-	char	*temp;
-	char	**split;
-	int 	flag;
-
-	ft_read_ants(fd, arr); //читает количество муравьёв
-	flag = 0;
-	while (get_next_line(fd, &temp))
-	{
-		if (temp[0] == '#') //если у нас одна "#" то мы пропускаем эту строчку
-		{
-			if (temp[1] == '#')
-			{
-				if (temp[2] == 's')
-					flag = 1;   // флаг это костыль если флаг == 1 - то при создании комнаты мы её пометим как стартовую, если флаг == 2 - то при создании пометим как финишную
-				else
-					flag = 2;
-			}
-			free(temp);
-			continue ;
-		}
-		split = ft_strsplit(temp, ' '); // если длина массива после сплита == 3 - то это комната, если 1 - то это связи
-		free(temp);
-		if (split[1] == NULL)
-			ft_create_links(arr, split); //создаём линки в комнатах
-		else
-			ft_create_room(arr, split, &flag); //маллочим комнату, инициализируем переменные и закидываем её в общий массив всех комнат
-		ft_split_free(split); //чистка памяти
-	}
 }

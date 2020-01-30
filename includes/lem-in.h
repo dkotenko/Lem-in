@@ -2,13 +2,22 @@
 # define LEMIN_LEM_IN_H
 
 # include <stdlib.h>
-# include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <limits.h>
 
-# define ARR_INIT_SIZE 10
-# define PRIME_NUMBER 17
+# include "../libft/ft_printf.h"
+# include "../libft/libft.h"
+# include "t_htable.h"
+
+# define ARR_INIT_SIZE 1024
+# define STATUS_ANTS 1
+# define STATUS_BEFORE_START 2
+# define STATUS_IS_START 4
+# define STATUS_BEFORE_END 8
+# define STATUS_IS_END 16
+# define STATUS_AFTER_END 32
+# define STATUS_LINKS 64
 
 typedef struct		s_links
 {
@@ -76,6 +85,25 @@ typedef struct		s_deleted_edges
 	int 			size;
 }					t_deleted_edges;
 
+typedef struct	s_htables
+{
+	t_htable	*names;
+	t_htable	*coords;
+	t_htable	*links;
+
+}				t_htables;
+
+typedef struct	s_input
+{
+	int 		current;
+	char		**rows;
+	int			status;
+	int 		prev_status;
+	int			max;
+	int			lines_counter;
+	t_htables	*ht;
+}				t_input;
+
 //debug
 void				print_t_links(t_links *s_lnk, t_array *arr);
 void				print_t_array_rooms_with_links(t_array *arr);
@@ -85,17 +113,16 @@ void				print_path(t_paths *paths, t_array *arr);
 void				ft_print_bf_matrix(int **matrix, int **path, t_array **arr);
 
 //read input
-void				ft_split_free(char **split);
+int					ft_split_free(char **split);
 t_room				**ft_rooms_copy(t_room **rooms, int size);
 void				ft_arr_malloc(t_array **arr);
 int					*ft_int_arr_realloc(int *arr, int new_size);
 void				ft_links_push(t_links *s_lnk, int push, int weight);
 void				ft_arr_push(t_array **arr, t_room *room);
-void				ft_read_ants(int fd, t_array **arr);
-void				ft_create_room(t_array **arr, char **split, int *flag);
+void				ft_create_room(t_array **arr, char **split, char *s, t_input *input);
 void				ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr);
-void				ft_create_links(t_array **arr, char **split);
-void				ft_read_data(int fd, t_array **arr);
+void				ft_create_links(t_array **arr, char **split, t_htable **ht_links);
+
 
 //clala
 void				ft_paths_sort(t_paths *paths);
@@ -118,13 +145,31 @@ void				restore_edges_bf(t_array *arr, t_deleted_edges *edges);
 void				free_t_path(t_path **path);
 void				free_t_deleted_edges(t_deleted_edges **edges);
 void				handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths);
-void				ft_reader(int argc, char **argv, t_array **arr);
+void				ft_reader(int argc, char **argv, t_input *input, t_array *arr);
 int					ft_free(void *val);
-int					hash_table_add(int hash, int pointer, int *hash_table);
-int					hash_func(char *s, int table_size);
 int					ft_path_limit(t_array *arr);
 int					merge_paths(t_array *arr, t_paths *paths);
 int 				t_path_has_duplicates(t_path *path);
+
+int					is_valid_line(char *s, t_input *in, t_array *arr);
+int					is_valid_room(char *s, t_input *input, t_array *arr);
+int					handle_error(char *s, t_input *input, t_array *arr);
+int					is_valid_link(char *s, t_input *input, t_array *arr);
+void				ft_reader(int argc, char **argv, t_input *input, t_array *arr);
+
+int					ft_ilen(int n);
+int					ft_free(void *val);
+
+void				t_htables_init(t_input *input, int size, t_htable_cmp *cmp, t_htable_hash *hash);
+
+void				t_input_malloc(t_input **input);
+char				**t_input_rows_copy(char **rows, int size);
+void				t_input_write(char *s, t_input *input);
+void				t_input_print(t_input *input);
+
+
+
+
 
 //find path dfs
 t_path				*ft_find_path_dfs(t_array **arr);

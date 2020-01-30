@@ -1,16 +1,28 @@
 #include "../includes/lem-in.h"
-#include "../libft/libft.h"
 
+#include <time.h>
 int    main(int argc, char **argv)
 {
+	// SPEED TEST
+	clock_t start, end;
+	double runTime;
+	start = clock();
+	//
+
 	t_array	*arr;
 //	t_array	*arr_not_expanded;
 	t_paths	*paths;
 	t_paths	*prev;
+	t_input *input;
+	arr = NULL;
+	input = NULL;
 	int i = 0;
 	int 	path_counter;
 	int path_limit;
-	ft_reader(argc, argv, &arr);
+	ft_arr_malloc(&arr);
+	t_input_malloc(&input);
+	ft_reader(argc, argv, input, arr);
+	t_input_print(input);
 	paths = create_t_paths();
 //	arr_not_expanded = get_copy_t_array(arr);
 	path_counter = 0;
@@ -91,5 +103,11 @@ int    main(int argc, char **argv)
 //
 //	print_t_array_rooms_with_links(arr);
 	ft_ants_prepare_to_parade(&arr, paths);
+
+	// SPEED TIME
+	end = clock();
+	runTime = ((end - start) / (double) CLOCKS_PER_SEC );
+	printf ("Run time is %g seconds\n", runTime);
+	//
 	return (0);
 }
