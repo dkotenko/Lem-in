@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.c                                            :+:      :+:    :+:   */
+/*   reader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/01/19 17:40:13 by clala            ###   ########.fr       */
+/*   Updated: 2020/01/30 23:20:28 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	ft_read_ants(int fd, t_input *input, t_array *arr)
 	is_valid_line(s, input, arr);
 	t_input_write(s, input);
 	arr->ants = ft_atoi(s);
-	//ft_arr_malloc(arr); ARR НЕ ЗАМОЛОЧЕН
 }
 
 static void	ft_read_data(int fd, t_input *input, t_array *arr)
@@ -44,19 +43,20 @@ static void	ft_read_data(int fd, t_input *input, t_array *arr)
 	char	**split;
 
 	temp = NULL;
-	ft_read_ants(fd, input, arr); //читает количество муравьёв
+	ft_read_ants(fd, input, arr);
 	while (get_next_line(fd, &temp))
 	{
 		if (!is_line_informative(temp) && (input->status != STATUS_IS_START &&
-			input->status != STATUS_IS_END) && input->lines_counter++)
+			input->status != STATUS_IS_END) && input->lines_counter++ &&
+			ft_free(temp))
 			continue ;
 		input->prev_status = input->status;
 		is_valid_line(temp, input, arr);
-		split = (temp[0] == '#') ? NULL : ft_strsplit(temp, ' '); // если длина массива после сплита == 3 - то это комната, если 1 - то это связи		
+		split = (temp[0] == '#') ? NULL : ft_strsplit(temp, ' ');
 		if (split && split[1] == NULL)
-			ft_create_links(&arr, split, &input->ht->links); //создаём линки в комнатах
+			ft_create_links(&arr, split, &input->ht->links);
 		else if (split && split[3] == NULL)
-			ft_create_room(&arr, split, temp, input); //маллочим комнату, инициализируем переменные и закидываем её в общий массив всех комнат
+			ft_create_room(&arr, split, temp, input);
 		t_input_write(temp, input);
 		ft_split_free(split);
 	}
@@ -67,7 +67,7 @@ static void	ft_read_data(int fd, t_input *input, t_array *arr)
 void		ft_reader(int argc, char **argv, t_input *input, t_array *arr)
 {
 	int		fd;
-	char 	*s;
+	char	*s;
 
 	s = NULL;
 	if (argc > 2)
@@ -79,5 +79,5 @@ void		ft_reader(int argc, char **argv, t_input *input, t_array *arr)
 	if ((fd == -1 && handle_error("fd", input, arr)) ||
 		(read(fd, s, 0) && handle_error("read", input, arr)))
 		return ;
-	ft_read_data(fd, input, arr); //читаем входные данные
+	ft_read_data(fd, input, arr);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: clala <clala@student.21-school.ru>         +#+  +:+       +#+         #
+#    By: clala <clala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/15 16:58:10 by clala             #+#    #+#              #
-#    Updated: 2019/12/29 13:27:10 by clala            ###   ########.fr        #
+#    Updated: 2020/01/30 23:32:38 by clala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,10 @@ src/reader.c \
 src/t_htable.c \
 src/t_htables.c \
 src/t_input.c \
-src/graph_tech.c\
-src/paths_tech.c\
+src/graph_tech.c \
+src/paths_tech.c \
+src/merge_paths.c \
+src/t_path.c
 
 
 

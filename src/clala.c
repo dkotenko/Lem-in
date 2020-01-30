@@ -1,37 +1,6 @@
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
-int t_path_has_duplicates(t_path *path)
-{
-	int 	i;
-	int		j;
-
-	i = -1;
-
-	while(++i < path->size)
-	{
-		j = i;
-		while (++j < path->size)
-		{
-			if (path->path[i] == path->path[j])
-				return (1);
-		}
-	}
-	return (0);
-}
-
-t_path *create_t_path(int size)
-{
-	t_path	*new;
-
-	new = (t_path *)malloc(sizeof(t_path));
-	new->path = (int *)malloc(sizeof(int) * size);
-	new->curr_size = 0;
-	new->size = size;
-	new->order = 1;
-	return (new);
-}
-
 void	ft_paths_sort(t_paths *paths)
 {
 	int	i;
@@ -90,17 +59,7 @@ int		*copy_int_array(int *arr, int size)
 	return (new);
 }
 
-t_path *copy_t_path(t_path *path)
-{
-	t_path *new;
 
-	new = (t_path *)malloc(sizeof(t_path));
-	new->size = path->size;
-	new->path = copy_int_array(path->path, path->size);
-	new->curr_size = path->curr_size;
-	new->order = path->order;
-	return (new);
-}
 
 t_paths *copy_t_paths(t_paths *paths)
 {
@@ -320,13 +279,7 @@ void	restore_edges_bf(t_array *arr, t_deleted_edges *edges)
 	}
 }
 
-void	free_t_path(t_path **path)
-{
-	free((*path)->path);
-	free(*path);
-}
-
-void	free_t_deleted_edges(t_deleted_edges **edges)
+void	t_deleted_edges_free(t_deleted_edges **edges)
 {
 	free((*edges)->edge_indexes);
 	free((*edges)->edge_rooms);
@@ -355,7 +308,7 @@ void	handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 			break;
 		}
 		delete_edges_bf(arr_not_expanded, paths->path_arr[i], deleted_edges);
-		free_t_path(&tmp);
+		t_path_free(tmp);
 
 	}
 	if (deleted_edges->curr_size)
@@ -363,78 +316,12 @@ void	handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 		restore_edges_bf(arr_not_expanded, deleted_edges);
 	}
 
-	free_t_deleted_edges(&deleted_edges);
+	t_deleted_edges_free(&deleted_edges);
 }
 
-int 	get_index_of_intersection_in_path(t_path *path1, t_path *path2, t_array *arr)
-{
-	int	i;
-	int j;
-	int p1_orig;
-	int p2_orig;
 
-	i = 0;
-	while (++i < path1->size - 1)
-	{
-		j = path2->size - 1;
-		p1_orig = get_origin_room(path1->path[i], arr);
-		while (--j > 0)
-		{
-			p2_orig = get_origin_room(path2->path[j], arr);
-			if (p1_orig == p2_orig && get_origin_room(path2->path[j - 1], arr)
-			== get_origin_room(path1->path[i + 1], arr))
-				return (i);
-		}
-	}
-	return (0);
-}
 
-t_path		*join_free_t_path(t_path **path1, t_path **path2)
-{
-	t_path	*new;
-	int 	i;
-	int 	j;
-	
-	i = 0;
-	new = create_t_path((*path1)->size + (*path2)->size);
-	while (i < (*path1)->size)
-	{
-		new->path[i] = (*path1)->path[i];
-		i++;
-	}
-	j = 0;
-	while (j < (*path2)->size)
-	{
-		new->path[i] = (*path2)->path[j];
-		i++;
-		j++;
-	}
-	free(*path1);
-	free(*path2);
-	return (new);
-}
 
-t_path		*slice_t_path(t_path *path, int start, int end)
-{
-	t_path	*new;
-	int 	i;
-
-	if (end < start || start < 0)
-	{
-		ft_putstr_fd("ERROR: slice_t_path out of bounds\n", 2);
-		return (NULL);
-	}
-	i = 0;
-	new = create_t_path(end - start);	
-	while (start < end)
-	{
-		new->path[i] = path->path[start];
-		i++;
-		start++;
-	}
-	//printf("size: %d\n", new->size);
-	return (new);
-}
 
 
 int 	get_common_vertices_nbr(t_path *path1, t_path *path2, int path1_ind1, int path2_ind1)
@@ -451,74 +338,7 @@ int 	get_common_vertices_nbr(t_path *path1, t_path *path2, int path1_ind1, int p
 	return (i);
 }
 
-static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int path2_ind1, t_array *arr)
-{
-	t_path	*temp1;
-	t_path	*temp2;
-	t_path *slice_temp1;
-	t_path *slice_temp2;
-//	int 	common_vertices_nbr;
 
-	temp1 = *path1;
-	temp2 = *path2;
-	if (arr->current > 20000000)
-		printf("hello");
-	/*
-	printf("path1 before merge\n");
-	print_t_path(temp1,arr);
-	printf("*************\n");
-	printf("path2 before merge\n");
-	print_t_path(temp2, arr);
-	printf("*************\n");
-
-	printf("\nPATH 1 MERGING\n");
-	 */
-//	common_vertices_nbr = get_common_vertices_nbr(*path1, *path2, path1_ind1, path2_ind1);
-	slice_temp1 = slice_t_path(temp1,  0, path1_ind1);
-	slice_temp2 = slice_t_path(temp2, nbr_in_array_pos(
-			temp1->path[path1_ind1], temp2->path, temp2->size), temp2->size);
-	/*
-	printf("slice p1 before merge\n");
-	print_t_path(slice_temp1,arr);
-	printf("*************\n");
-	printf("slice p2 before merge\n");
-	print_t_path(slice_temp2,arr);
-	printf("*************\n");
-	//printf("hello!\n");
-	//print_t_path(slice_temp1,arr);
-	//(slice_temp2, arr);
-	 */
-	*path1 = join_free_t_path(&slice_temp1, &slice_temp2);
-	/*
-	printf("\npath1\n");
-	print_t_path(*path1,arr);
-	printf("\n");
-	printf("\nPATH 1 MERGING END\n");
-
-	printf("\nPATH 2 MERGING\n");
-	printf("slice p1 before merge\n");
-	 */
-	slice_temp1 = slice_t_path(temp2, 0, path2_ind1);
-	/*
-	print_t_path(slice_temp1,arr);
-	printf("*************\n");
-	printf("slice p2 before merge\n");
-	 */
-	slice_temp2 = slice_t_path(temp1, nbr_in_array_pos(
-			temp2->path[path2_ind1], temp1->path, temp1->size), temp1->size);
-	/*
-	print_t_path(slice_temp2,arr);
-	printf("*************\n");
-	printf("\npath2\n");
-	 */
-	*path2 = join_free_t_path(&slice_temp1, &slice_temp2);
-	free(temp1);
-	free(temp2);
-	/*
-	print_t_path(*path2, arr);
-	printf("\nPATH 2 MERGING END\n");
-	 */
-}
 void	count__size_in_path(t_path *path)
 {
 	int i;
@@ -540,37 +360,7 @@ void	count__size_in_paths(t_paths *paths)
 
 }
 
-int		merge_paths(t_array *arr, t_paths *paths)
-{
-	int	i;
-	int j;
-	int p1_ind1;
-	int p2_ind1;
-	int switched;
 
-	switched = 0;
-	i = -1;
-	while (++i < paths->curr_path - 1)
-	{
-		j = i;
-		while (++j < paths->curr_path)
-		{
-			p1_ind1 = get_index_of_intersection_in_path(paths->path_arr[i],
-					paths->path_arr[j], arr);
-			if (p1_ind1)
-			{
-				p2_ind1 = get_index_of_intersection_in_path(paths->path_arr[j],
-															paths->path_arr[i], arr);
-				/*p2_ind1 = nbr_in_array_pos(paths->path_arr[i]->path[p1_ind1],
-						paths->path_arr[j]->path, paths->path_arr[j]->size);*/
-				merge_int_paths(&paths->path_arr[i], &paths->path_arr[j],
-								p1_ind1, p2_ind1, arr);
-				switched = 1;
-			}
-		}
-	}
-	return (switched);
-}
 
 int		ft_free(void *val)
 {

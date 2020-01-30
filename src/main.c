@@ -25,7 +25,7 @@ int    main(int argc, char **argv)
 	ft_arr_malloc(&arr);
 	t_input_malloc(&input);
 	ft_reader(argc, argv, input, arr);
-	t_input_print(input);
+	t_input_print(input);	
 	paths = create_t_paths();
 //	arr_not_expanded = get_copy_t_array(arr);
 	path_counter = 0;
@@ -34,8 +34,8 @@ int    main(int argc, char **argv)
 	while (path_counter < path_limit)
 	{
 
-		if (path_counter)
-			prev = copy_t_paths(paths);
+		if (path_counter)		
+			prev = copy_t_paths(paths);			
 		i = 0;
 		while (i < paths->curr_path)
 		{
@@ -80,20 +80,14 @@ int    main(int argc, char **argv)
 		}
 */
 		paths->time = ft_calc_path_time(&arr, paths);
-		if (path_counter)
+		if (path_counter && paths->time > prev->time)
 		{
-			if (paths->time >= prev->time)
-			{
-				t_paths_free(paths);
-				paths = prev;
-				break;
-			}
-			else
-			{
-				t_paths_free(prev);
-				prev = copy_t_paths(paths);
-			}
+			t_paths_free(paths);
+			paths = prev;
+			break;
 		}
+		else if (path_counter)
+			t_paths_free(prev);									
 		ft_reset_graph(&arr);
 		path_counter++;
 	}
@@ -105,11 +99,13 @@ int    main(int argc, char **argv)
 //		i++;
 //	}
 //
-//	print_t_array_rooms_with_links(arr);
+//	print_t_array_rooms_with_links(arr);	
 	ft_ants_prepare_to_parade(&arr, paths);
+	t_input_free(input);
+	t_paths_free(paths);
 	exit(1);
-	//t_input_free(input);
-	//t_paths_free(paths);
+	
+	
 	//t_array_free(arr);
 
 

@@ -142,8 +142,7 @@ void				delete_double_links(t_array *arr);
 void				delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges);
 t_deleted_edges		*create_deleted_edges(int size);
 void				restore_edges_bf(t_array *arr, t_deleted_edges *edges);
-void				free_t_path(t_path **path);
-void				free_t_deleted_edges(t_deleted_edges **edges);
+void				t_deleted_edges_free(t_deleted_edges **edges);
 void				handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths);
 void				ft_reader(int argc, char **argv, t_input *input, t_array *arr);
 int					ft_free(void *val);
@@ -153,6 +152,7 @@ int 				t_path_has_duplicates(t_path *path);
 void				t_array_free(t_array *arr);
 void				t_paths_free(t_paths *paths);
 void				t_path_free(t_path *path);
+t_path 				*t_path_create(int size);
 
 
 int					is_valid_line(char *s, t_input *in, t_array *arr);
