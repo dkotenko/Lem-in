@@ -11,16 +11,29 @@
 # **************************************************************************** #
 
 
-SOURCES =   src/main.c \
+SOURCES = src/ants.c\
+src/clala.c \
+src/expand_graph.c\
+src/find_path_bf.c \
+src/find_path_dfs.c \
+src/ft_ilen.c \
+src/handle_error.c \
+src/is_valid_line.c \
+src/is_valid_link.c \
+src/is_valid_room.c \
+src/main.c \
 src/print_debug.c \
 src/read_input.c \
-src/find_path_dfs.c \
-src/find_path_bf.c \
-src/ants.c\
-src/paths_tech.c\
-src/graph_tech.c\
-src/expand_graph.c\
-src/clala.c \
+src/reader.c \
+src/t_htable.c \
+src/t_htables.c \
+src/t_input.c
+
+#src/graph_tech.c\
+#src/paths_tech.c\
+
+
+
 
 
 HEAD = ./src/filler.h
