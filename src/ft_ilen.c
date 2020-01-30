@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_ilen(int n)
+#include "../includes/lem-in.h"
+
+size_t		ft_ilen(int n)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (n <= 0)

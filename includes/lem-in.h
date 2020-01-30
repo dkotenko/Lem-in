@@ -157,7 +157,7 @@ int					handle_error(char *s, t_input *input, t_array *arr);
 int					is_valid_link(char *s, t_input *input, t_array *arr);
 void				ft_reader(int argc, char **argv, t_input *input, t_array *arr);
 
-int					ft_ilen(int n);
+size_t				ft_ilen(int n);
 int					ft_free(void *val);
 
 void				t_htables_init(t_input *input, int size, t_htable_cmp *cmp, t_htable_hash *hash);

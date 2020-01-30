@@ -42,7 +42,6 @@ static void	ft_read_data(int fd, t_input *input, t_array *arr)
 {
 	char	*temp;
 	char	**split;
-	char 	flag;
 
 	temp = NULL;
 	ft_read_ants(fd, input, arr); //читает количество муравьёв

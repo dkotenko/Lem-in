@@ -1,5 +1,4 @@
-#include "t_htable.h"
-#include <stdio.h>
+#include "../includes/lem-in.h"
 
 int				cmp_func(const void* a, const void* b)
 {
@@ -24,7 +23,6 @@ int				hash_func(const void* p, int size)
 	}
 	if (hash == 0)
 		hash = 1;
-	int d = hash % size;
 	if (hash < 0)
 		return ((hash % size) * -1);
 	return (hash % size);

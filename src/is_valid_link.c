@@ -12,7 +12,7 @@
 
 #include "../includes/lem-in.h"
 
-static		int rooms_in_link_exists(char **splitted, t_input *input, t_array *arr)
+static		int rooms_in_link_exists(char **splitted, t_input *input)
 {
 	int hash_1room;
 	int hash_2room;
@@ -76,7 +76,7 @@ int			is_valid_link(char *s, t_input *input, t_array *arr)
 		handle_error("Invalid link ", input, arr);
 	if (!ft_strcmp(splitted[0], splitted[1]))
 		handle_error("Link refers to the same room", input, arr);
-	if (!rooms_in_link_exists(splitted, input, arr))
+	if (!rooms_in_link_exists(splitted, input))
 		handle_error("Room(s) in link do(es)n`t exist", input, arr);
 	check_links_are_unique(s, input, arr);
 	//ft_free2dchararr(&splitted, 2);

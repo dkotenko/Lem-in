@@ -2,7 +2,6 @@
 # define T_HTABLE_H
 
 #include <stdlib.h>
-#include <malloc.h>
 #include <string.h>
 #include <stdint.h>
 # include <fcntl.h>

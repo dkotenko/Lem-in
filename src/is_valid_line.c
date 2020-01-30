@@ -44,7 +44,7 @@ static int		is_valid_status_STATUS_BEFORE_START_end(char *s, t_input *input, t_a
 
 int		is_valid_line(char *s, t_input *in, t_array *arr)
 {
-	!s[0] || !s ? handle_error("Empty line", in, arr) : 1;
+	!s || !s[0] ? handle_error("Empty line", in, arr) : 1;
 	if (in->status == STATUS_ANTS)
 		is_valid_status_ants(s, in, arr);
 	else if (in->status == STATUS_BEFORE_START || in->status == STATUS_BEFORE_END)
@@ -64,6 +64,7 @@ int		is_valid_line(char *s, t_input *in, t_array *arr)
 			handle_error("Invalid room", in, arr);
 	}	
 	else if (in->status == STATUS_LINKS && !is_valid_link(s, in, arr))
+		handle_error("Invalid line", in, arr);
 
 	return (1);
 }

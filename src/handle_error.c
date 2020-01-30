@@ -15,6 +15,8 @@
 int	handle_error(char *s, t_input *input, t_array *arr)
 {
 	ft_fprintf(2, "ERROR in line %d: %s\n", input->lines_counter, s);
+	if (arr->current == -1)
+		ft_printf("1");
 	exit(1);
 	return (1);
 }

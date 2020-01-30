@@ -27,10 +27,9 @@ src/read_input.c \
 src/reader.c \
 src/t_htable.c \
 src/t_htables.c \
-src/t_input.c
-
-#src/graph_tech.c\
-#src/paths_tech.c\
+src/t_input.c \
+src/graph_tech.c\
+src/paths_tech.c\
 
 
 
@@ -42,7 +41,7 @@ CC = gcc
 FLAGS = -Wall -Wextra -Werror
 LEMIN = lem-in
 COMP_LIB = make -C libft/
-INCLUDES = ./includes/lem-in.h ./libft/libft.h
+INCLUDES = ./includes/lem-in.h ./libft/libft.h ./includes/t_htable.h
 LIB = libft/libft.a
 
 all: libft $(LEMIN)
