@@ -150,6 +150,10 @@ int					ft_free(void *val);
 int					ft_path_limit(t_array *arr);
 int					merge_paths(t_array *arr, t_paths *paths);
 int 				t_path_has_duplicates(t_path *path);
+void				t_array_free(t_array *arr);
+void				t_paths_free(t_paths *paths);
+void				t_path_free(t_path *path);
+
 
 int					is_valid_line(char *s, t_input *in, t_array *arr);
 int					is_valid_room(char *s, t_input *input, t_array *arr);
@@ -161,11 +165,13 @@ size_t				ft_ilen(int n);
 int					ft_free(void *val);
 
 void				t_htables_init(t_input *input, int size, t_htable_cmp *cmp, t_htable_hash *hash);
+void				t_htables_free(t_htables *ht);
 
 void				t_input_malloc(t_input **input);
 char				**t_input_rows_copy(char **rows, int size);
 void				t_input_write(char *s, t_input *input);
 void				t_input_print(t_input *input);
+void				t_input_free(t_input *input);
 
 
 

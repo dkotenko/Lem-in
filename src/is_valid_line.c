@@ -25,7 +25,7 @@ static int		is_valid_status_ants(char *s, t_input *input, t_array *arr)
 	return (1);
 }
 
-static int		is_valid_status_STATUS_BEFORE_START_end(char *s, t_input *input, t_array *arr)
+static int		is_valid_status_status_before_start_end(char *s, t_input *input, t_array *arr)
 {
 	if (input->status == STATUS_BEFORE_START && ft_strcmp(s, "##start") == 0)
 	{
@@ -48,7 +48,7 @@ int		is_valid_line(char *s, t_input *in, t_array *arr)
 	if (in->status == STATUS_ANTS)
 		is_valid_status_ants(s, in, arr);
 	else if (in->status == STATUS_BEFORE_START || in->status == STATUS_BEFORE_END)
-		is_valid_status_STATUS_BEFORE_START_end(s, in, arr);
+		is_valid_status_status_before_start_end(s, in, arr);
 	else if (in->status == STATUS_IS_START || in->status == STATUS_IS_END)
 	{
 		if (!is_valid_room(s, in, arr))

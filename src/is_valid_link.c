@@ -49,6 +49,7 @@ static void	check_links_are_unique(char *s, t_input *input, t_array *arr)
 	if (t_htable_find(input->ht->links->hash(reverse, input->ht->links->size),
 		reverse, input->ht->links))
 		handle_error("Reverse link exists", input, arr);
+	free(reverse);	
 }
 
 void		check_link_name(char *s, t_input *input, t_array *arr)
@@ -72,13 +73,14 @@ int			is_valid_link(char *s, t_input *input, t_array *arr)
 		handle_error("Invalid link ", input, arr);
 	check_link_name(s, input, arr);
 	splitted = ft_strsplit(s, '-');
-	if (!ft_strlen(splitted[0]) || !ft_strlen(splitted[1]))
+	if ((!ft_strlen(splitted[0]) || !ft_strlen(splitted[1])) &&
+	ft_split_free(splitted))
 		handle_error("Invalid link ", input, arr);
-	if (!ft_strcmp(splitted[0], splitted[1]))
+	if (!ft_strcmp(splitted[0], splitted[1]) && ft_split_free(splitted))
 		handle_error("Link refers to the same room", input, arr);
-	if (!rooms_in_link_exists(splitted, input))
+	if (!rooms_in_link_exists(splitted, input) && ft_split_free(splitted))
 		handle_error("Room(s) in link do(es)n`t exist", input, arr);
 	check_links_are_unique(s, input, arr);
-	//ft_free2dchararr(&splitted, 2);
+	ft_split_free(splitted);
 	return (1);
 }

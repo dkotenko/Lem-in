@@ -59,3 +59,12 @@ char		**t_input_rows_copy(char **rows, int size)
 	free(rows);
 	return (new_rows);
 }
+
+void	t_input_free(t_input *input)
+{	
+	t_htables_free(input->ht);
+	while (--(input->current) > -1)
+		free(input->rows[input->current]);
+	free(input->rows);
+	free(input);	
+}

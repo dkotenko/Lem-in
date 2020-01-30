@@ -40,5 +40,6 @@ int					t_htable_find(int hash, void *pointer, t_htable *table);
 t_htable			*t_htable_init(int size, t_htable_cmp *cmp, t_htable_hash *hash);
 int					cmp_func(const void* a, const void* b);
 int					hash_func(const void* p, int size);
+void				t_htable_free(t_htable *table);
 
 #endif

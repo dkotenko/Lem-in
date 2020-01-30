@@ -151,3 +151,17 @@ t_htable		*t_htable_init(int size, t_htable_cmp *cmp, t_htable_hash *hash)
 	t->hash = hash;
 	return (t);
 }
+
+void			t_htable_free(t_htable *table)
+{
+	int			i;
+
+	i = table->real_size;	
+	while (--i > -1)
+	{
+		if (table->table[i])
+			free(table->table[i]);
+	}
+		
+	free(table);
+}

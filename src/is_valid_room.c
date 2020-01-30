@@ -45,15 +45,20 @@ static int	is_integer(char *s, int n)
 	return (1);	
 }
 
-void		check_room_name(char *s, t_input *input, t_array *arr)
+void		check_room_name(char **arr_split, t_input *input, t_array *arr)
 {
 	int		i;
+	char	*s;
 
+	s = arr_split[0];
 	i = -1;
 	while(s[++i])
 	{
-		if (!ft_isalnum(s[i]) && s[i] != '_')		
+		if (!ft_isalnum(s[i]) && s[i] != '_')
+		{
+			ft_split_free(arr_split);		
 			handle_error("Invalid character in room name", input, arr);
+		}
 	}
 }
 
@@ -70,18 +75,21 @@ int			is_valid_room(char *s, t_input *input, t_array *arr)
 		handle_error("Room`s name starts with 'L'", input, arr);
 	arr_split = ft_strsplit(s, ' ');
 	if ((!arr_split[0] || !arr_split[1] ||
-		!arr_split[2] || arr_split[3]))
+		!arr_split[2] || arr_split[3]) && ft_split_free(arr_split))
 		handle_error("Invalid room", input, arr);	
-	check_room_name(arr_split[0], input, arr);
+	check_room_name(arr_split, input, arr);
 	x = ft_atoi(arr_split[1]);
 	y = ft_atoi(arr_split[2]);
-	if  (!is_integer(arr_split[1], x) || !is_integer(arr_split[2], y))
+	if  ((!is_integer(arr_split[1], x) || !is_integer(arr_split[2], y)) &&
+	ft_split_free(arr_split))
 		handle_error("Room`s coords are not integers", input, arr);	
-	if (!is_room_name_unique(arr_split[0], input))
+	if (!is_room_name_unique(arr_split[0], input) && ft_split_free(arr_split))
 		handle_error("Room with the same name already exists", input, arr);
 	//ft_free2dchararr(arr_split, 3);
-	if (!is_room_coords_unique(ft_strchr(s, ' ') + 1, input))
-		handle_error("Room with the same name coords exists", input, arr);		
+	if (!is_room_coords_unique(ft_strchr(s, ' ') + 1, input) &&
+	ft_split_free(arr_split))
+		handle_error("Room with the same name coords exists", input, arr);
+	ft_split_free(arr_split);
 	return (1);	
 }
 

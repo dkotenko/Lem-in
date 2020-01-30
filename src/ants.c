@@ -57,6 +57,7 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 		if (!is_all_finished)
 			printf("\n");
 	}
+	exit(1);
 }
 
 void	ft_list_sort(t_ant *ants)

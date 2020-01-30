@@ -14,15 +14,18 @@ int    main(int argc, char **argv)
 	t_paths	*paths;
 	t_paths	*prev;
 	t_input *input;
-	arr = NULL;
-	input = NULL;
-	int i = 0;
+	
+	int i;
 	int 	path_counter;
 	int path_limit;
+
+	i = 0;
+	arr = NULL;
+	input = NULL;
 	ft_arr_malloc(&arr);
 	t_input_malloc(&input);
 	ft_reader(argc, argv, input, arr);
-	//t_input_print(input);
+	t_input_print(input);
 	paths = create_t_paths();
 //	arr_not_expanded = get_copy_t_array(arr);
 	path_counter = 0;
@@ -81,12 +84,13 @@ int    main(int argc, char **argv)
 		{
 			if (paths->time >= prev->time)
 			{
+				t_paths_free(paths);
 				paths = prev;
 				break;
 			}
 			else
 			{
-				free(prev);
+				t_paths_free(prev);
 				prev = copy_t_paths(paths);
 			}
 		}
@@ -103,6 +107,11 @@ int    main(int argc, char **argv)
 //
 //	print_t_array_rooms_with_links(arr);
 	ft_ants_prepare_to_parade(&arr, paths);
+	exit(1);
+	//t_input_free(input);
+	//t_paths_free(paths);
+	//t_array_free(arr);
+
 
 	/*// SPEED TIME
 	end = clock();

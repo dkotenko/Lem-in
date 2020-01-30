@@ -79,8 +79,8 @@ int		*copy_int_array(int *arr, int size)
 	int i;
 	int *new;
 
-	new = (int *)malloc(sizeof(int) * (size + 5)); //+5 потому что мне нужно чтобы этот массив был -1 терминирован,а 5 просто на всякий случай с запасом
-	ft_fill_mem(new, size + 5, -1);
+	new = (int *)malloc(sizeof(int) * (size + 1)); //+5 потому что мне нужно чтобы этот массив был -1 терминирован,а 5 просто на всякий случай с запасом
+	ft_fill_mem(new, size + 1, -1);
 	i = 0;
 	while (i < size)
 	{
@@ -96,7 +96,7 @@ t_path *copy_t_path(t_path *path)
 
 	new = (t_path *)malloc(sizeof(t_path));
 	new->size = path->size;
-	new->path = copy_int_array(path->path, path->size + 5);
+	new->path = copy_int_array(path->path, path->size);
 	new->curr_size = path->curr_size;
 	new->order = path->order;
 	return (new);
@@ -590,4 +590,42 @@ int		ft_path_limit(t_array *arr)
 	if (min > arr->ants)
 		min = arr->ants;
 	return (min);
+}
+
+
+
+void				t_room_free(t_room *room)
+{
+	free(room->s_lnk.links);
+	free(room->s_lnk.weights);
+	free(room);
+}
+
+void				t_array_free(t_array *arr)
+{
+	int				i;
+
+	i = arr->max;
+	while (--i > -1)
+	{
+		if (arr->rooms[i])
+			t_room_free(arr->rooms[i]);
+	}
+	free(arr->rooms);
+	free(arr);		
+}
+
+void				t_path_free(t_path *path)
+{
+	free(path->path);
+	free(path);
+}
+
+void				t_paths_free(t_paths *paths)
+{
+	
+	while (--(paths->curr_path) > -1)
+		t_path_free(paths->path_arr[paths->curr_path]);
+	free(paths->path_arr);
+	free(paths);
 }
