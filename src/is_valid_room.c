@@ -37,7 +37,7 @@ static int	is_room_name_unique(char *name, t_input *input)
 
 static int	is_integer(char *s, int n)
 {
-	int		len;
+	size_t	len;
 
 	len = ft_strlen(s);
 	if ((s[0] != '-' && !ft_isdigit(s[0])) || len != ft_ilen(n))
