@@ -33,10 +33,6 @@ src/paths_tech.c \
 src/merge_paths.c \
 src/t_path.c
 
-
-
-
-
 HEAD = ./src/filler.h
 OBJECTS = $(SOURCES:%.c=%.o)
 CC = gcc 
