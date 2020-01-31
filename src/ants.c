@@ -23,7 +23,7 @@ t_ant	*ft_ants_creator()
 }
 
 void	ft_ant_reporting(char *name, char *room)
-{
+{	
 	printf("%s-%s ", name, room);
 }
 

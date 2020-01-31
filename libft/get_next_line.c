@@ -3,84 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.21-school.ru>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/19 13:16:53 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/09/18 14:20:36 by edrowzee         ###   ########.fr       */
+/*   Created: 2019/10/06 15:10:51 by clala             #+#    #+#             */
+/*   Updated: 2019/12/10 19:04:24 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_check_for_line_end(char *result, char **fd_array, int *flag)
+static void		copy_to_heapfd(char **heapfd, char *stack)
 {
-	while (*result != '\0')
+	char		*tmp;
+	size_t		len;
+
+	if (!*heapfd)
 	{
-		if (*result == '\n')
-		{
-			*result = '\0';
-			result++;
-			if (*result != '\0')
-				if ((*fd_array = ft_strdup(result)) == NULL)
-				{
-					flag[0] = -1;
-					return (0);
-				}
-			return (1);
-		}
-		result++;
+		*heapfd = ft_strdup(stack);
+		return ;
 	}
-	return (0);
+	len = ft_strlen(*heapfd);
+	tmp = *heapfd;
+	*heapfd = ft_strnew(len + BUFF_SIZE);
+	if (*heapfd)
+	{
+		ft_memcpy(*heapfd, (const void *)tmp, len);
+		ft_memcpy(*heapfd + len, (const void *)stack, BUFF_SIZE + 1);
+	}
+	free(tmp);
 }
 
-static char		*ft_malloc_str(char *result, char *buf)
+static void		get_line_from_heapfd(char **heapfd, char **line,
+		char *n, int len_before_n)
 {
-	char *temp;
+	char		*tmp;
+	size_t		len_n;
 
-	if (result == NULL)
+	if (!(*line = ft_strnew(len_before_n + 1)))
+		return ;
+	ft_memcpy(*line, *heapfd, len_before_n);
+	tmp = *heapfd;
+	len_n = ft_strlen(n);
+	*heapfd = ft_strnew(len_n);
+	ft_memcpy(*heapfd, n + 1, len_n - 1);
+	free(tmp);
+}
+
+int				get_next_line(int const fd, char **line)
+{
+	static char	*heap[11000];
+	char		stack[BUFF_SIZE + 1];
+	int			r;
+	char		*n;
+
+	if ((read(fd, stack, 0) < 0) || fd < 0 || fd > 11000)
+		return (-1);
+	if (!(*line = NULL) && !heap[fd])
+		heap[fd] = ft_strnew(0);
+	while (!(ft_strchr(heap[fd], '\n')) && (r = read(fd, stack, BUFF_SIZE)))
 	{
-		if ((result = (char *)ft_memalloc(ft_strlen(buf) + 1)) == NULL)
-			return (NULL);
-		ft_strcpy(result, buf);
+		stack[r] = '\0';
+		copy_to_heapfd(&heap[fd], stack);
+		ft_strclr(stack);
 	}
+	if ((n = ft_strchr(heap[fd], '\n')))
+		get_line_from_heapfd(&heap[fd], line, n, n - heap[fd]);
 	else
 	{
-		if ((temp = malloc(ft_strlen(result) + 1)) == NULL)
-			return (NULL);
-		ft_strcpy(temp, result);
-		free(result);
-		if ((result = ft_strjoin(temp, buf)) == NULL)
-			return (NULL);
-		free(temp);
+		*line = heap[fd];
+		heap[fd] = NULL;
 	}
-	return (result);
-}
-
-int				get_next_line(const int fd, char **line)
-{
-	static char	*fd_array[1025];
-	char		buf[BUFF_SIZE + 1];
-	int			read_size;
-	int			flag[1];
-
-	if ((flag[0] = 0) || fd < 0 || line == NULL || read(fd, buf, 0) < 0)
-		return (-1);
-	if (!(*line = NULL) && fd_array[fd] != NULL)
-	{
-		MALLCHECK((*line = ft_strdup(fd_array[fd])));
-		free(fd_array[fd]);
-		fd_array[fd] = NULL;
-		if (ft_check_for_line_end(*line, &fd_array[fd], flag))
-			return (1);
-		MALLCKECK_INT(flag[0]);
-	}
-	while ((read_size = read(fd, buf, BUFF_SIZE)))
-	{
-		buf[read_size] = '\0';
-		MALLCHECK((*line = ft_malloc_str(*line, buf)));
-		if (ft_check_for_line_end(*line, &fd_array[fd], flag))
-			return (1);
-		MALLCKECK_INT(flag[0]);
-	}
-	return (read_size == 0 && fd_array[fd] == NULL && *line == NULL) ? 0 : 1;
+	if (!r && !heap[fd] && *line[0] == '\0')
+		ft_strdel(line);
+	return (*line ? 1 : 0);
 }

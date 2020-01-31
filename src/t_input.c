@@ -7,7 +7,9 @@ void			t_input_print(t_input *input)
 	i = -1;
 	while (++i < input->current)
 	{
-		ft_printf("%s\n", input->rows[i]);
+		ft_putstr(input->rows[i]);
+		ft_putchar('\n');
+		//ft_printf("%s\n", input->rows[i]);
 	}
 }
 
