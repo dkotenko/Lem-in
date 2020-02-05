@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   int_funcs.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/15 17:47:48 by clala             #+#    #+#             */
+/*   Updated: 2020/02/05 21:06:17 by clala            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lem-in.h"
 #include "../libft/libft.h"
 
 int		*copy_int_array(int *arr, int size)
-{	
-	int i;
-	int *new;
+{
+	int	i;
+	int	*new;
 
 	new = (int *)malloc(sizeof(int) * (size + 1));
 	ft_fill_mem(new, size + 1, -1);
@@ -17,9 +29,9 @@ int		*copy_int_array(int *arr, int size)
 	return (new);
 }
 
-int     nbr_in_array_pos(int number, int *arr, int size)
+int		nbr_in_array_pos(int number, int *arr, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < size)
@@ -31,10 +43,10 @@ int     nbr_in_array_pos(int number, int *arr, int size)
 	return (-1);
 }
 
-int     nbr_in_links_pos(t_array *arr , int curr, int link)
+int		nbr_in_links_pos(t_array *arr, int curr, int link)
 {
-	int link_index;
-	int i;
+	int	link_index;
+	int	i;
 
 	link_index = arr->rooms[curr]->s_lnk.links[link];
 	i = 0;
@@ -47,9 +59,10 @@ int     nbr_in_links_pos(t_array *arr , int curr, int link)
 	return (-1);
 }
 
-int 	get_common_vertices_nbr(t_path *path1, t_path *path2, int path1_ind1, int path2_ind1)
+int		get_common_vertices_nbr(t_path *path1, t_path *path2,
+							int path1_ind1, int path2_ind1)
 {
-	int 	i;
+	int	i;
 
 	i = 0;
 	while (path1->path[path1_ind1] == path2->path[path2_ind1])
@@ -66,6 +79,3 @@ int		ft_free(void *val)
 	free(val);
 	return (1);
 }
-
-
-

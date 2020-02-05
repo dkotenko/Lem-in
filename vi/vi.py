@@ -1,10 +1,11 @@
 import pygame
 from enum import Enum
+import sys
 
 WIDTH = 1800
 HEIGHT = 800
 FPS = 60
-SPEED = 20
+SPEED = 80
 OFFSET = 50
 TURN_PARTS = 4
 QUANT = TURN_PARTS * FPS
@@ -31,7 +32,6 @@ BULLET_IMG.fill(pygame.Color('aquamarine2'))
 
 #LEMIN VARS
 TURN = 0
-
 
 class Rooms:
 	def __init__(self):
@@ -190,26 +190,40 @@ def input_to_dict2(lst):
 		d[ant_name].append(room_name)
 	return d
 
-def get_input():
-	#str = sys.stdin.read()
-	f = open("input.txt", "r")
-	str = f.read()
-	f.close()
-	return str
+def get_input():	
+	if sys.argv == 2:	
+		f = open(sys.argv[1], "r")
+		s = f.read()
+		f.close()
+	else:
+		s = sys.stdin.read()
+	return s
 
-def get_paths(str):
-	lines = str.split()
+def get_paths(s):	
+	lines = s.split()	
 	paths_input = list(input_to_dict2(lines).values())
-	paths_unique = list(set(map(tuple, paths_input)))
+	paths_unique = list(set(map(tuple, paths_input)))	
 	return paths_unique
 
+def	handle_error(error):
+	print(handle_error)
+	exit()
+	return 
+
+def get_ants_number(input):
+	first_row = input[:input.find(' ')]	
+	if first_row != "ERROR":
+		number = int(input[:input.find('\n')])
+	else:
+		handle_error(input[:input.find('\n')])
+	return number
 
 
 # Создаем игру и окно
 pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-SPHERE_IMG = pygame.image.load("preview1.jpg").convert_alpha()
+#SPHERE_IMG = pygame.image.load("preview1.jpg").convert_alpha()
 pygame.display.set_caption("1")
 clock = pygame.time.Clock()
 #все спрайты
@@ -220,7 +234,10 @@ rooms = Rooms()
 
 #создаем объект Paths
 input_str = get_input()
+ants_number = get_ants_number(input_str)
+input_str = input_str[input_str.find('\nL1-') + 1 : ]
 paths_list = get_paths(input_str)
+
 paths_list.sort(key=lambda x: len(x))
 rooms_list = get_rooms_from_paths(paths_list)
 paths = Paths(paths_list)
@@ -283,16 +300,13 @@ def get_ants_first_room_n_turn(ants_number, input):
 #добавляем муравьев в группу спрайтов муравьев, не используется
 ant_sprites = pygame.sprite.Group()
 
-ants_number = 230
-
 ants_first_room_list, ants_first_turn = \
 	get_ants_first_room_n_turn(ants_number, input)
 ants = Ants()
-for i in range(ants_number):
-	
+for i in range(ants_number):	
 	ant = ants.add_ant(ants_first_turn[i],
 			  paths.get_path_by_1st_room(ants_first_room_list[i]),
-			  room_start)
+			  room_start)	
 	ant_sprites.add(ant)
 	all_sprites.add(ant)
 
