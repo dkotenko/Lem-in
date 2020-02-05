@@ -1,7 +1,22 @@
 #include "../includes/lem-in.h"
 
 #include <time.h>
-int    main(int argc, char **argv)
+
+static int	ft_path_limit(t_array *arr)
+{
+	int		min;
+
+	min = INT_MAX;
+	if (min > arr->rooms[arr->start]->s_lnk.cur_size)
+		min = arr->rooms[arr->start]->s_lnk.cur_size;
+	if (min > arr->rooms[arr->finish]->s_lnk.cur_size)
+		min = arr->rooms[arr->finish]->s_lnk.cur_size;
+	if (min > arr->ants)
+		min = arr->ants;
+	return (min);
+}
+
+int			main(int argc, char **argv)
 {
 	/*// SPEED TEST
 	clock_t start, end;
@@ -13,11 +28,11 @@ int    main(int argc, char **argv)
 //	t_array	*arr_not_expanded;
 	t_paths	*paths;
 	t_paths	*prev;
-	t_input *input;
+	t_input	*input;
 	
-	int i;
-	int 	path_counter;
-	int path_limit;
+	int		i;
+	int		path_counter;
+	int		path_limit;
 
 	i = 0;
 	arr = NULL;
@@ -27,7 +42,7 @@ int    main(int argc, char **argv)
 	ft_reader(argc, argv, input, arr);
 	t_input_print(input);	
 	paths = create_t_paths();
-//	arr_not_expanded = get_copy_t_array(arr);
+//	arr_not_expanded = t_array_copy(arr);
 	path_counter = 0;
 	path_limit = ft_path_limit(arr);
 	arr->base = arr->current;

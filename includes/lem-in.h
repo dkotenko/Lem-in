@@ -131,7 +131,7 @@ t_paths				*create_t_paths();
 int					*copy_int_array(int *arr, int size);
 t_path				*copy_t_path(t_path *path);
 t_paths				*copy_t_paths(t_paths *paths);
-t_array				*get_copy_t_array(t_array *arr);
+t_array				*t_array_copy(t_array *arr);
 t_room				*copy_room_mod(t_room **rooms, int i);
 int 				room_in_no_expanded(t_array *arr_not_expanded, t_room *room);
 int 				get_origin_room(int room_nb, t_array *arr);
@@ -140,13 +140,12 @@ int 				nbr_in_links_pos(t_array *arr , int curr, int link);
 void				add_path_to_no_expanded(t_array *arr_not_expanded, t_array *arr, t_path *path);
 void				delete_double_links(t_array *arr);
 void				delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges);
-t_deleted_edges		*create_deleted_edges(int size);
+t_deleted_edges		*t_deleted_edges_create(int size);
 void				restore_edges_bf(t_array *arr, t_deleted_edges *edges);
 void				t_deleted_edges_free(t_deleted_edges **edges);
 void				handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths);
 void				ft_reader(int argc, char **argv, t_input *input, t_array *arr);
 int					ft_free(void *val);
-int					ft_path_limit(t_array *arr);
 int					merge_paths(t_array *arr, t_paths *paths);
 int 				t_path_has_duplicates(t_path *path);
 void				t_array_free(t_array *arr);
@@ -162,8 +161,7 @@ int					is_valid_link(char *s, t_input *input, t_array *arr);
 void				ft_reader(int argc, char **argv, t_input *input, t_array *arr);
 
 size_t				ft_ilen(int n);
-int					ft_free(void *val);
-
+void		t_room_free(t_room *room);
 void				t_htables_init(t_input *input, int size, t_htable_cmp *cmp, t_htable_hash *hash);
 void				t_htables_free(t_htables *ht);
 

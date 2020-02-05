@@ -6,13 +6,12 @@
 #    By: clala <clala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/15 16:58:10 by clala             #+#    #+#              #
-#    Updated: 2020/01/30 23:32:38 by clala            ###   ########.fr        #
+#    Updated: 2020/02/05 20:52:10 by clala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 SOURCES = src/ants.c\
-src/clala.c \
 src/expand_graph.c\
 src/find_path_bf.c \
 src/find_path_dfs.c \
@@ -31,7 +30,13 @@ src/t_input.c \
 src/graph_tech.c \
 src/paths_tech.c \
 src/merge_paths.c \
-src/t_path.c
+src/t_path.c \
+src/t_paths.c \
+src/t_deleted_edges.c \
+src/handle_paths.c \
+src/t_array.c \
+src/t_room.c \
+src/int_funcs.c
 
 HEAD = ./src/filler.h
 OBJECTS = $(SOURCES:%.c=%.o)

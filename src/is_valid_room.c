@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.c                                            :+:      :+:    :+:   */
+/*   is_valid_room.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/01/19 17:40:13 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/05 20:44:27 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ void		check_room_name(char **arr_split, t_input *input, t_array *arr)
 }
 
 int			is_valid_room(char *s, t_input *input, t_array *arr)
-{	
-	//если не будет хватать строк для функции, нужно переделать 
-	//ft_free2dchar в int функцию и вставлять в условие
-
+{
 	char	**arr_split;
 	int		x;
 	int		y;
@@ -84,8 +81,7 @@ int			is_valid_room(char *s, t_input *input, t_array *arr)
 	ft_split_free(arr_split))
 		handle_error("Room`s coords are not integers", input, arr);	
 	if (!is_room_name_unique(arr_split[0], input) && ft_split_free(arr_split))
-		handle_error("Room with the same name already exists", input, arr);
-	//ft_free2dchararr(arr_split, 3);
+		handle_error("Room with the same name already exists", input, arr);	
 	if (!is_room_coords_unique(ft_strchr(s, ' ') + 1, input) &&
 	ft_split_free(arr_split))
 		handle_error("Room with the same name coords exists", input, arr);

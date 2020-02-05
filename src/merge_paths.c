@@ -1,10 +1,10 @@
 #include "includes/lem-in.h"
 
-static t_path		*join_free_t_path(t_path **path1, t_path **path2)
+static t_path	*join_free_t_path(t_path **path1, t_path **path2)
 {
-	t_path	*new;
-	int 	i;
-	int 	j;
+	t_path		*new;
+	int			i;
+	int			j;
 	
 	i = 0;
 	new = t_path_create((*path1)->size + (*path2)->size);
@@ -25,10 +25,10 @@ static t_path		*join_free_t_path(t_path **path1, t_path **path2)
 	return (new);
 }
 
-static t_path		*slice_t_path(t_path *path, int start, int end)
+static t_path	*slice_t_path(t_path *path, int start, int end)
 {
-	t_path	*new;
-	int 	i;
+	t_path		*new;
+	int			i;
 
 	if (end < start || start < 0)
 	{
@@ -42,17 +42,17 @@ static t_path		*slice_t_path(t_path *path, int start, int end)
 		new->path[i] = path->path[start];
 		i++;
 		start++;
-	}	
-	//printf("size: %d\n", new->size);
+	}
 	return (new);
 }
 
 static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int path2_ind1, t_array *arr)
 {
-	t_path	*temp1;
-	t_path	*temp2;
-	t_path *slice_temp1;
-	t_path *slice_temp2;
+	t_path		*temp1;
+	t_path		*temp2;
+	t_path		*slice_temp1;
+	t_path		*slice_temp2;
+
 	temp1 = *path1;
 	temp2 = *path2;
 	if (arr->current > 20000000)
@@ -69,12 +69,12 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 	t_path_free(temp2);	
 }
 
-static int 	get_index_of_intersection_in_path(t_path *path1, t_path *path2, t_array *arr)
+static int	get_index_of_intersection_in_path(t_path *path1, t_path *path2, t_array *arr)
 {
-	int	i;
-	int j;
-	int p1_orig;
-	int p2_orig;
+	int			i;
+	int			j;
+	int			p1_orig;
+	int			p2_orig;
 
 	i = 0;
 	while (++i < path1->size - 1)
@@ -92,13 +92,13 @@ static int 	get_index_of_intersection_in_path(t_path *path1, t_path *path2, t_ar
 	return (0);
 }
 
-int		merge_paths(t_array *arr, t_paths *paths)
+int			merge_paths(t_array *arr, t_paths *paths)
 {
-	int	i;
-	int j;
-	int p1_ind1;
-	int p2_ind1;
-	int switched;
+	int			i;
+	int			j;
+	int			p1_ind1;
+	int			p2_ind1;
+	int			switched;
 
 	switched = 0;
 	i = -1;
@@ -106,15 +106,12 @@ int		merge_paths(t_array *arr, t_paths *paths)
 	{
 		j = i;
 		while (++j < paths->curr_path)
-		{
-			p1_ind1 = get_index_of_intersection_in_path(paths->path_arr[i],
-					paths->path_arr[j], arr);
-			if (p1_ind1)
+		{			
+			if ((p1_ind1 = get_index_of_intersection_in_path(paths->path_arr[i],
+					paths->path_arr[j], arr)))
 			{
 				p2_ind1 = get_index_of_intersection_in_path(paths->path_arr[j],
-															paths->path_arr[i], arr);
-				/*p2_ind1 = nbr_in_array_pos(paths->path_arr[i]->path[p1_ind1],
-						paths->path_arr[j]->path, paths->path_arr[j]->size);*/
+															paths->path_arr[i], arr);				
 				merge_int_paths(&paths->path_arr[i], &paths->path_arr[j],
 								p1_ind1, p2_ind1, arr);
 				switched = 1;

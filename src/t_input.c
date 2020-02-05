@@ -1,19 +1,18 @@
 #include "../includes/lem-in.h"
 
-void			t_input_print(t_input *input)
+void		t_input_print(t_input *input)
 {
-	int			i;
+	int		i;
 
 	i = -1;
 	while (++i < input->current)
 	{
 		ft_putstr(input->rows[i]);
-		ft_putchar('\n');
-		//ft_printf("%s\n", input->rows[i]);
+		ft_putchar('\n');		
 	}
 }
 
-void			t_input_write(char *s, t_input *input)
+void		t_input_write(char *s, t_input *input)
 {
 	if (input->current == input->max)
 		t_input_malloc(&input);
@@ -22,7 +21,7 @@ void			t_input_write(char *s, t_input *input)
 	input->lines_counter++;
 }
 
-void			t_input_malloc(t_input **input)
+void		t_input_malloc(t_input **input)
 {
 	static int	size = ARR_INIT_SIZE;
 
@@ -62,7 +61,7 @@ char		**t_input_rows_copy(char **rows, int size)
 	return (new_rows);
 }
 
-void	t_input_free(t_input *input)
+void		t_input_free(t_input *input)
 {	
 	t_htables_free(input->ht);
 	while (--(input->current) > -1)

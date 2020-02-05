@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lemin.c                                            :+:      :+:    :+:   */
+/*   is_valid_link.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/01/19 17:40:13 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/05 20:44:18 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static		int rooms_in_link_exists(char **splitted, t_input *input)
 	if (t_htable_find(hash_1room,splitted[0], input->ht->names) &&
 			t_htable_find(hash_2room,splitted[1], input->ht->names))
 		return (1);
-	return (0);
-	//ft_free2dchararr(&splitted, 2);
+	return (0);	
 }
 
 static void	check_links_are_unique(char *s, t_input *input, t_array *arr)
