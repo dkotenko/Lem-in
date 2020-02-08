@@ -22,6 +22,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+BEIGE = (235, 200, 178)
 
 BG_COLOR = pygame.Color('gray12')
 PLAYER_IMG = pygame.Surface((30, 50), pygame.SRCALPHA)
@@ -32,23 +33,27 @@ BULLET_IMG = pygame.Surface((9, 15))
 BULLET_IMG.fill(pygame.Color('aquamarine2'))
 
 
-SPEED_LIST = [60, 15, 5, 3]
-SPEED_CHOICE = 0
-SPEED = SPEED_LIST[SPEED_CHOICE]
+
 
 class Speed():
-	def __init__(self):
-		self.speed_list = [1, 2, 4, 8, 12]
+	def __init__(self):		
+		self.speed_tuple = ((60, 0.25), (15, 1), (5, 3), (3, 5))
 		self.speed_choice = 2
-		self.speed = speed_list[speed_choice]
+		self.speed = self.speed_tuple[self.speed_choice][0]
+		self.delta_turn = self.speed_tuple[self.speed_choice][1]
 
 	def speed_increase(self):
-		if self.speed_choice < len(self.speed_list) - 1:
+		if self.speed_choice < len(self.speed_tuple) - 1:
 			self.speed_choice += 1
+			print(self.speed_choice)
 
 	def speed_decrease(self):
 		if self.speed_choice > 0:
 			self.speed_choice -= 1
+			print(self.speed_choice)	
+
+	def get_speed(self):
+		return 'x%.2f' % self.delta_turn
 
 	def __repr__(self):
 		return 'SPEED = %d' % self.speed
@@ -75,7 +80,7 @@ class Room(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.name = name
 		self.image = pygame.Surface((size, size))
-		self.image.fill(GREEN)
+		self.image.fill(WHITE)
 		self.rect = self.image.get_rect(x = pos_x, y = pos_y)
 		pass
 
@@ -162,16 +167,16 @@ class Ant(pygame.sprite.Sprite):
 		self.turn = turn
 		self.current_way = 0
 		self.image = pygame.Surface((5, 5))
-		self.image.fill(RED)
+		self.image.fill(BLACK)
 		self.rect = self.image.get_rect(center = (20,20))
 		self.rect.x = start_room.rect.x
 		self.rect.y = start_room.rect.y
 
 	def update(self):
 		#print(self.turn, TURN)
-		if (TURN >= self.turn):
+		if (int(TURN) >= self.turn):
 			self.current_way += 1			
-			if self.current_way * QUANT // SPEED >= self.path.way_size:
+			if self.current_way * QUANT // speed.speed >= self.path.way_size:
 				self.turn = 0x7fffffff
 				self.kill()
 				return
@@ -179,7 +184,7 @@ class Ant(pygame.sprite.Sprite):
 				self.current_way = 0
 				return
 			self.rect.x, self.rect.y = \
-				self.path.way[self.current_way * QUANT // SPEED]
+				self.path.way[self.current_way * QUANT // speed.speed]
 			self.rect.x += room_size / 2
 			self.rect.y += room_size / 2
 
@@ -237,6 +242,8 @@ def get_ants_number(input):
 		handle_error(input[:input.find('\n')])
 	return number
 
+
+speed = Speed()
 
 # Создаем игру и окно
 pygame.init()
@@ -340,12 +347,12 @@ prev_time = 0
 #отобразить все изменения в одной функции
 def draw_game():	
 	all_sprites.update()
-	screen.fill(BLACK)
-	screen.blit(text_to_screen('TURN', WHITE),(50,50))
-	screen.blit(text_to_screen(str(TURN), WHITE),(150,50))
-	screen.blit(text_to_screen('SPEED', WHITE),(250,50))
-	screen.blit(text_to_screen(str(SPEED), WHITE),(400,50))
-	screen.blit(text_to_screen('TIME', WHITE),(550,50))
+	screen.fill(BEIGE)
+	screen.blit(text_to_screen('TURN', BLACK),(50,50))
+	screen.blit(text_to_screen(str(int(TURN)), WHITE),(150,50))
+	screen.blit(text_to_screen('SPEED', BLACK),(250,50))
+	screen.blit(text_to_screen(speed.get_speed(), WHITE),(400,50))
+	screen.blit(text_to_screen('TIME', BLACK),(550,50))
 	screen.blit(text_to_screen(str(TIME_IN_SECONDS), WHITE),(650,50))
 	all_sprites.draw(screen)
 	pygame.display.flip()
@@ -377,10 +384,10 @@ while running:
 					STATE = 'running'
 
 	#клавиши увеличения/уменьшения скорости игры, не работают
-			#elif event.key == pygame.K_EQUALS:
-			 #	SPEED += 1
-			#elif event.key == pygame.K_MINUS:
-			#	SPEED -= 1
+			elif event.key == pygame.K_EQUALS:
+				speed.speed_increase()
+			elif event.key == pygame.K_MINUS:
+				speed.speed_decrease()
 
 	#клавиши следующего/предыдущено хода по нажатию/удержанию, не работают
 	# keys = pygame.key.get_pressed()
@@ -411,14 +418,12 @@ while running:
 	
 	
 	if time_since_enter // (1000) > prev_time:
-		TIME_IN_SECONDS += 1
-
-		#if ant_sprites and not TIME_IN_SECONDS % (SPEED /): 
-		
-		
-		if ant_sprites and (TIME_IN_SECONDS // (QUANT / SPEED) == int(TIME_IN_SECONDS / (QUANT / SPEED))):
-			TURN += 1
+		TIME_IN_SECONDS += 1                                                                                                                               
 		prev_time = time_since_enter // (1000)
+
+	if ant_sprites:
+		TURN += speed.delta_turn / FPS
+		
 	
 	
 	
