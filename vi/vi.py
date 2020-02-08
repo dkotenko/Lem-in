@@ -4,7 +4,7 @@ import sys
 
 WIDTH = 1800
 HEIGHT = 800
-FPS = 30
+FPS = 15
 OFFSET = 50
 TURN_PARTS = 4
 TIME_IN_SECONDS = 0
@@ -32,13 +32,13 @@ BULLET_IMG = pygame.Surface((9, 15))
 BULLET_IMG.fill(pygame.Color('aquamarine2'))
 
 
-SPEED_LIST = [4, 8, 16, 32, 64]
-SPEED_CHOICE = 1
+SPEED_LIST = [60, 15, 5, 3]
+SPEED_CHOICE = 0
 SPEED = SPEED_LIST[SPEED_CHOICE]
 
 class Speed():
 	def __init__(self):
-		self.speed_list = [1, 2, 4, 8, 16]
+		self.speed_list = [1, 2, 4, 8, 12]
 		self.speed_choice = 2
 		self.speed = speed_list[speed_choice]
 
@@ -52,9 +52,6 @@ class Speed():
 
 	def __repr__(self):
 		return 'SPEED = %d' % self.speed
-
-
-
 
 class Rooms:
 	def __init__(self):
@@ -173,8 +170,8 @@ class Ant(pygame.sprite.Sprite):
 	def update(self):
 		#print(self.turn, TURN)
 		if (TURN >= self.turn):
-			self.current_way += 1
-			if self.current_way * SPEED >= self.path.way_size:
+			self.current_way += 1			
+			if self.current_way * QUANT // SPEED >= self.path.way_size:
 				self.turn = 0x7fffffff
 				self.kill()
 				return
@@ -182,7 +179,7 @@ class Ant(pygame.sprite.Sprite):
 				self.current_way = 0
 				return
 			self.rect.x, self.rect.y = \
-				self.path.way[self.current_way * SPEED]
+				self.path.way[self.current_way * QUANT // SPEED]
 			self.rect.x += room_size / 2
 			self.rect.y += room_size / 2
 
@@ -310,7 +307,7 @@ def get_ants_first_room_n_turn(ants_number, input):
 	lines = input_str.splitlines()
 	l = 1
 	lines_counter = 0
-	turn_counter = 1
+	turn_counter = 0
 	ants_first_room_list = []
 	ants_first_turn = []
 	for line in lines:
@@ -346,6 +343,10 @@ def draw_game():
 	screen.fill(BLACK)
 	screen.blit(text_to_screen('TURN', WHITE),(50,50))
 	screen.blit(text_to_screen(str(TURN), WHITE),(150,50))
+	screen.blit(text_to_screen('SPEED', WHITE),(250,50))
+	screen.blit(text_to_screen(str(SPEED), WHITE),(400,50))
+	screen.blit(text_to_screen('TIME', WHITE),(550,50))
+	screen.blit(text_to_screen(str(TIME_IN_SECONDS), WHITE),(650,50))
 	all_sprites.draw(screen)
 	pygame.display.flip()
 	return
@@ -356,6 +357,7 @@ def text_to_screen(text, color):
 #вывод текста
 myfont = pygame.font.SysFont('arialboldttf', 30)
 
+seconds_counter = 0
 # Цикл игры
 running = True
 while running:
@@ -375,10 +377,10 @@ while running:
 					STATE = 'running'
 
 	#клавиши увеличения/уменьшения скорости игры, не работают
-			# elif event.key == pygame.K_EQUALS:
-			# 	SPEED += 1
-			# elif event.key == pygame.K_MINUS:
-			# 	SPEED -= 1
+			#elif event.key == pygame.K_EQUALS:
+			 #	SPEED += 1
+			#elif event.key == pygame.K_MINUS:
+			#	SPEED -= 1
 
 	#клавиши следующего/предыдущено хода по нажатию/удержанию, не работают
 	# keys = pygame.key.get_pressed()
@@ -405,12 +407,20 @@ while running:
 	#счетчик ходов
 	start_time = pygame.time.get_ticks() if not start_time else start_time
 	time_since_enter = pygame.time.get_ticks() - start_time
-	print(time_since_enter // 1000, TURN)	
+	#print(time_since_enter // 1000, TURN)	
+	
 	
 	if time_since_enter // (1000) > prev_time:
-		if ant_sprites:		
+		TIME_IN_SECONDS += 1
+
+		#if ant_sprites and not TIME_IN_SECONDS % (SPEED /): 
+		
+		
+		if ant_sprites and (TIME_IN_SECONDS // (QUANT / SPEED) == int(TIME_IN_SECONDS / (QUANT / SPEED))):
 			TURN += 1
 		prev_time = time_since_enter // (1000)
+	
+	
 	
 	
 
