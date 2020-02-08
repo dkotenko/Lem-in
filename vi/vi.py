@@ -4,11 +4,14 @@ import sys
 
 WIDTH = 1800
 HEIGHT = 800
-FPS = 60
-SPEED = 80
+FPS = 30
 OFFSET = 50
 TURN_PARTS = 4
+TIME_IN_SECONDS = 0
 QUANT = TURN_PARTS * FPS
+#LEMIN VARS
+TURN = 0
+
 
 STATE = 'running'
 
@@ -29,9 +32,29 @@ BULLET_IMG = pygame.Surface((9, 15))
 BULLET_IMG.fill(pygame.Color('aquamarine2'))
 
 
+SPEED_LIST = [4, 8, 16, 32, 64]
+SPEED_CHOICE = 1
+SPEED = SPEED_LIST[SPEED_CHOICE]
 
-#LEMIN VARS
-TURN = 0
+class Speed():
+	def __init__(self):
+		self.speed_list = [1, 2, 4, 8, 16]
+		self.speed_choice = 2
+		self.speed = speed_list[speed_choice]
+
+	def speed_increase(self):
+		if self.speed_choice < len(self.speed_list) - 1:
+			self.speed_choice += 1
+
+	def speed_decrease(self):
+		if self.speed_choice > 0:
+			self.speed_choice -= 1
+
+	def __repr__(self):
+		return 'SPEED = %d' % self.speed
+
+
+
 
 class Rooms:
 	def __init__(self):
@@ -56,9 +79,7 @@ class Room(pygame.sprite.Sprite):
 		self.name = name
 		self.image = pygame.Surface((size, size))
 		self.image.fill(GREEN)
-		self.rect = self.image.get_rect()
-		self.rect.centerx = pos_x
-		self.rect.centery = pos_y
+		self.rect = self.image.get_rect(x = pos_x, y = pos_y)
 		pass
 
 
@@ -94,7 +115,7 @@ class Path:
 		self.way = []
 		self.way_size = 0
 
-	def count_way_coords(self, start_room):
+	def count_way_coords(self, start_room, room_start):
 		way_coords = []
 		room_base = start_room
 		for room in self.rooms:
@@ -160,9 +181,10 @@ class Ant(pygame.sprite.Sprite):
 			elif self.current_way < 0:
 				self.current_way = 0
 				return
-
 			self.rect.x, self.rect.y = \
 				self.path.way[self.current_way * SPEED]
+			self.rect.x += room_size / 2
+			self.rect.y += room_size / 2
 
 def get_rooms_from_paths(paths_list):
 	rooms_list = [list(x) for x in set(tuple(x) for x in paths_list)]
@@ -241,22 +263,26 @@ paths_list = get_paths(input_str)
 paths_list.sort(key=lambda x: len(x))
 rooms_list = get_rooms_from_paths(paths_list)
 paths = Paths(paths_list)
+
+#размер комнаты в зависимости от количества путей
+room_size = (WIDTH - 4 * OFFSET) / (paths.max_path_size - 2) / 10
+room_size = room_size if room_size <= 30 else 30
+
 #ROOM_START ROOM_END
 
 end_room_name = paths_list[0][-1]
-room_start = Room("start", OFFSET, HEIGHT / 2, 10)
-room_end = rooms.add_room(end_room_name, WIDTH - OFFSET, HEIGHT / 2, 10)
+room_start = Room("start", OFFSET, HEIGHT / 2, room_size)
+room_end = rooms.add_room(end_room_name, WIDTH - OFFSET, HEIGHT / 2, room_size)
 room_sprites.add(room_start)
 all_sprites.add(room_start)
 room_sprites.add(room_end)
 all_sprites.add(room_end)
 
 
-#размер комнаты в зависимости от количества путей
-room_size = (WIDTH - 4 * OFFSET) / (paths.max_path_size - 2) / 10
-i = 0
+
 
 # создаем объекты путей и комнат
+i = 0
 for path_list in paths_list:
 	path_len = len(path_list)
 	j = 0
@@ -276,7 +302,7 @@ for path_list in paths_list:
 		path_obj.add_room(room_new)
 	i += 1
 	path_obj.add_room(room_end)
-	path_obj.count_way_coords(room_start)
+	path_obj.count_way_coords(room_start, room_size)
 
 
 #создаем муравьев
@@ -297,7 +323,7 @@ def get_ants_first_room_n_turn(ants_number, input):
 				ants_first_turn.append(turn_counter)
 				l += 1
 	return ants_first_room_list, ants_first_turn
-#добавляем муравьев в группу спрайтов муравьев, не используется
+#добавляем муравьев в группу спрайтов муравьев, группы спрайтов не используется
 ant_sprites = pygame.sprite.Group()
 
 ants_first_room_list, ants_first_turn = \
@@ -311,16 +337,24 @@ for i in range(ants_number):
 	all_sprites.add(ant)
 
 #время в игре
-start_time =  pygame.time.get_ticks()
+start_time =  0
 prev_time = 0
 
 #отобразить все изменения в одной функции
-def draw_game():
+def draw_game():	
 	all_sprites.update()
 	screen.fill(BLACK)
+	screen.blit(text_to_screen('TURN', WHITE),(50,50))
+	screen.blit(text_to_screen(str(TURN), WHITE),(150,50))
 	all_sprites.draw(screen)
 	pygame.display.flip()
 	return
+
+def text_to_screen(text, color):
+	text_on_screen = myfont.render(text, False, color)
+	return text_on_screen
+#вывод текста
+myfont = pygame.font.SysFont('arialboldttf', 30)
 
 # Цикл игры
 running = True
@@ -363,17 +397,26 @@ while running:
 		all_sprites.draw(screen)
 		continue
 
-	# Рендеринг
+	# Рендеринг	
 	draw_game()
-
+	
 	# Держим цикл на правильной скорости
 	clock.tick(FPS)
 	#счетчик ходов
+	start_time = pygame.time.get_ticks() if not start_time else start_time
 	time_since_enter = pygame.time.get_ticks() - start_time
+	print(time_since_enter // 1000, TURN)	
+	
+	if time_since_enter // (1000) > prev_time:
+		if ant_sprites:		
+			TURN += 1
+		prev_time = time_since_enter // (1000)
+	
+	
 
-	if time_since_enter // (1000 * TURN_PARTS // SPEED) > prev_time:
-		TURN += 1
-		prev_time = time_since_enter // (1000 * TURN_PARTS // SPEED)
+
+
+	
 #выход
 pygame.quit()
 
