@@ -1,4 +1,16 @@
-#include "../includes/lem-in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   paths_tech.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/12 13:44:09 by edrowzee          #+#    #+#             */
+/*   Updated: 2020/02/12 13:44:10 by edrowzee         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/lemin.h"
 #include "../libft/libft.h"
 
 void	ft_fill_mem(int *arr, int size, int num)
@@ -25,15 +37,12 @@ void	curr_size_to_size(t_paths *paths)
 	}
 }
 
-int		ft_calc_path_time(t_array **arr, t_paths *paths)
+int		ft_calc_path_time(t_array **arr, t_paths *paths, int i, int j)
 {
-	int i;
-	int j;
 	int min_path;
 	int min_path_num;
 	int max_time;
 
-	i = -1;
 	max_time = 0;
 	curr_size_to_size(paths);
 	while (++i < (*arr)->ants)

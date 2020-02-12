@@ -1,13 +1,24 @@
-#include "includes/lem-in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_path.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/12 13:59:50 by edrowzee          #+#    #+#             */
+/*   Updated: 2020/02/12 13:59:51 by edrowzee         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/lemin.h"
 
 int			t_path_has_duplicates(t_path *path)
 {
-	int 	i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = -1;
-
-	while(++i < path->size)
+	while (++i < path->size)
 	{
 		j = i;
 		while (++j < path->size)
@@ -52,8 +63,9 @@ void		t_path_free(t_path *path)
 void		ft_path_sort(t_path *path)
 {
 	int	temp[path->size];
-	int i;
-	int j;
+	int	i;
+	int	j;
+
 	i = 0;
 	j = path->size - 1;
 	while (i < path->size)

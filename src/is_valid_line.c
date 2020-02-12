@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lemin.h"
 
 static int		is_valid_status_ants(char *s, t_input *input, t_array *arr)
 {

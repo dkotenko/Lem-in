@@ -23,6 +23,7 @@ src/is_valid_room.c \
 src/main.c \
 src/print_debug.c \
 src/read_input.c \
+src/read_input2.c \
 src/reader.c \
 src/t_htable.c \
 src/t_htables.c \

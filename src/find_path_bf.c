@@ -1,10 +1,22 @@
-#include "../includes/lem-in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_path_bf.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/12 13:25:14 by edrowzee          #+#    #+#             */
+/*   Updated: 2020/02/12 13:25:15 by edrowzee         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/lemin.h"
 #include "../libft/libft.h"
 
 static t_path	*find_path_bf_new_ret(t_array **arr)
 {
-	t_path 	*result;
-	int 	i;
+	t_path	*result;
+	int		i;
 	int		len;
 
 	result = (t_path *)malloc(sizeof(t_path));
@@ -28,18 +40,23 @@ static t_path	*find_path_bf_new_ret(t_array **arr)
 	return (result);
 }
 
-static void		find_path_bf_new_cycle2(t_array **arr, int *is_weight_modify, int i, int j)
+static void		find_path_bf_new_cycle2(t_array **arr,
+		int *is_weight_modify, int i, int j)
 {
-	if ((*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order > (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j])
+	if ((*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order >
+		(*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j])
 	{
 		if ((*arr)->rooms[i]->s_lnk.weights[j] == 0)
 		{
-			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order;
-			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = (*arr)->rooms[i]->src;
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order =
+					(*arr)->rooms[i]->order;
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src =
+					(*arr)->rooms[i]->src;
 		}
 		else
 		{
-			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order = (*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j];
+			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->order =
+				(*arr)->rooms[i]->order + (*arr)->rooms[i]->s_lnk.weights[j];
 			(*arr)->rooms[(*arr)->rooms[i]->s_lnk.links[j]]->src = i;
 		}
 		*is_weight_modify = 1;

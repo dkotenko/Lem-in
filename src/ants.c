@@ -1,61 +1,55 @@
-#include "../includes/lem-in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ants.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/12 12:40:23 by edrowzee          #+#    #+#             */
+/*   Updated: 2020/02/12 12:40:25 by edrowzee         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/lemin.h"
 #include "../libft/libft.h"
 
-t_ant	*ft_ants_creator()
+void	ft_parade_cyc(t_array **arr, t_paths *paths,
+		t_ant *ants, int *is_all_finished)
 {
-	static int	num = 1;
-	char		let[2];
-	char 		*numb;
-	t_ant		*clone;
+	static int	order = 1;
 
-	let[0] = 'L';
-	let[1] = '\0';
-	numb = ft_itoa(num);
-	clone = (t_ant*)malloc(sizeof(t_ant));
-	clone->name = ft_strjoin(let, numb);
-	num++;
-	clone->position = 0;
-	clone->order = -1;
-	clone->path = -1;
-	clone->next = NULL;
-	free(numb);
-	return (clone);
-}
-
-void	ft_ant_reporting(char *name, char *room)
-{	
-	printf("%s-%s ", name, room);
+	while (ants->next != NULL)
+	{
+		if (ants->order == order && ants->position
+		< paths->path_arr[ants->path]->size - 1)
+		{
+			ants->position += 1;
+			ants->order += 1;
+			ft_printf("%s-%s ", ants->name, (*arr)->rooms[paths->
+					path_arr[ants->path]->path[ants->position]]->name);
+			*is_all_finished = 0;
+		}
+		ants = ants->next;
+	}
+	order++;
 }
 
 void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 {
 	t_ant	*first_ant;
-	int		order;
-	int 	is_all_finished;
+	int		is_all_finished;
 
-	order = 1;
 	first_ant = ants;
 	is_all_finished = 0;
 	ft_paths_sort(paths);
-	printf("\n");
+	ft_printf("\n");
 	while (!is_all_finished)
 	{
 		is_all_finished = 1;
 		ants = first_ant;
-		while (ants->next != NULL)
-		{
-			if (ants->order == order && ants->position < paths->path_arr[ants->path]->size - 1)
-			{
-				ants->position += 1;
-				ants->order += 1;
-				ft_ant_reporting(ants->name, (*arr)->rooms[paths->path_arr[ants->path]->path[ants->position]]->name);
-				is_all_finished = 0;
-			}
-			ants = ants->next;
-		}
-		order++;
+		ft_parade_cyc(arr, paths, ants, &is_all_finished);
 		if (!is_all_finished)
-			printf("\n");
+			ft_printf("\n");
 	}
 	exit(1);
 }
@@ -63,8 +57,8 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 void	ft_list_sort(t_ant *ants)
 {
 	t_ant	*start;
-	int 	path;
-	int 	order;
+	int		path;
+	int		order;
 
 	start = ants;
 	while (ants->next != NULL)
@@ -84,45 +78,46 @@ void	ft_list_sort(t_ant *ants)
 	}
 }
 
-void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths)
+void	ft_ants_cyc(t_paths *paths, int *min_path, int *min_path_num)
+{
+	int j;
+
+	*min_path = 1000000;
+	*min_path_num = -1;
+	j = -1;
+	while (++j < paths->curr_path)
+	{
+		if (paths->path_arr[j]->curr_size < *min_path)
+		{
+			*min_path = paths->path_arr[j]->curr_size;
+			*min_path_num = j;
+		}
+	}
+	if (*min_path_num == -1)
+	{
+		ft_printf("Error with shortest path\n");
+		exit(1);
+	}
+}
+
+void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths, int i)
 {
 	t_ant	*ants;
 	t_ant	*first_ant;
-	int 	i;
-	int		j;
-	int 	min_path;
-	int 	min_path_num;
+	int		min_path;
+	int		min_path_num;
 
 	curr_size_to_size(paths);
 	ants = ft_ants_creator();
 	first_ant = ants;
-	i = 0;
-
-	while (i < (*arr)->ants)
+	while (++i < (*arr)->ants)
 	{
-		j = 0;
-		min_path = 1000000;
-		while (j < paths->curr_path)
-		{
-			if (paths->path_arr[j]->curr_size < min_path)
-			{
-				min_path = paths->path_arr[j]->curr_size;
-				min_path_num = j;
-			}
-			j++;
-		}
+		ft_ants_cyc(paths, &min_path, &min_path_num);
 		paths->path_arr[min_path_num]->curr_size += 1;
 		ants->path = min_path_num;
 		ants->order = paths->path_arr[min_path_num]->order;
 		paths->path_arr[min_path_num]->order += 1;
-		ants->next = ft_ants_creator(); // !!!! создаётся на 1 муравья больше чем надо и это ок
-		ants = ants->next;
-		i++;
-	}
-	ants = first_ant;
-	while (ants->next != NULL)
-	{
-			//printf("name: %s, p:%d, o:%d\n", ants->name, ants->path, ants->order);
+		ants->next = ft_ants_creator();
 		ants = ants->next;
 	}
 	ants = first_ant;

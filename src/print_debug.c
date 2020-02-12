@@ -1,4 +1,4 @@
-#include "../includes/lem-in.h"
+#include "../includes/lemin.h"
 #include "../libft/libft.h"
 
 void	ft_print_bf_matrix(int **matrix, int **path, t_array **arr)

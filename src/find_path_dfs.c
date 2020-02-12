@@ -1,4 +1,16 @@
-#include "../includes/lem-in.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_path_dfs.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/12 13:26:26 by edrowzee          #+#    #+#             */
+/*   Updated: 2020/02/12 13:26:28 by edrowzee         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/lemin.h"
 #include "../libft/libft.h"
 
 static t_path	*create_t_path(t_array **arr, int i)
@@ -26,17 +38,14 @@ static void		modify_t_path(t_array **arr, t_path **path)
 	result->curr_size = result->size;
 }
 
-t_path			*ft_find_path_dfs(t_array **arr)
+t_path			*ft_find_path_dfs(t_array **arr, int j, int k)
 {
 	t_path		*result;
 	static int	i = -1;
-	int			j;
-	int			k;
 
 	if (i == -1)
 		i = (*arr)->rooms[(*arr)->start]->s_lnk.cur_size - 1;
 	result = create_t_path(arr, i);
-	j = 1;
 	while (result->path[j] != (*arr)->finish)
 	{
 		k = -1;
@@ -45,8 +54,9 @@ t_path			*ft_find_path_dfs(t_array **arr)
 			if ((*arr)->rooms[result->path[j]]->s_lnk.weights[k] != -2)
 			{
 				j++;
-				result->path[j] = (*arr)->rooms[result->path[j - 1]]->s_lnk.links[k];
-				break;
+				result->path[j] =
+						(*arr)->rooms[result->path[j - 1]]->s_lnk.links[k];
+				break ;
 			}
 		}
 	}

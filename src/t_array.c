@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/lem-in.h"
+#include "../includes/lemin.h"
 
 void		t_array_free(t_array *arr)
 {

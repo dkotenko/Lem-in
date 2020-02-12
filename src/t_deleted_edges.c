@@ -1,4 +1,4 @@
-#include "includes/lem-in.h"
+#include "../includes/lemin.h"
 
 t_deleted_edges	*t_deleted_edges_create(int size)
 {

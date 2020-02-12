@@ -1,4 +1,4 @@
-#include "includes/lem-in.h"
+#include "../includes/lemin.h"
 
 static t_path	*join_free_t_path(t_path **path1, t_path **path2)
 {

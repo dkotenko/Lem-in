@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/lem-in.h"
+#include "../includes/lemin.h"
 
 void				delete_edges_bf(t_array *arr, t_path *path, t_deleted_edges *edges)
 {
@@ -85,7 +85,7 @@ void				handle_paths(t_array *arr_not_expanded, t_array *arr, t_paths *paths)
 	while (++i < paths->curr_path)
 	{
 		tmp = paths->path_arr[i];
-		paths->path_arr[i] = ft_find_path_dfs(&arr_not_expanded);
+		paths->path_arr[i] = ft_find_path_dfs(&arr_not_expanded, 1, -1);
 		if (!paths->path_arr[i])
 		{
 			paths->curr_path = i;

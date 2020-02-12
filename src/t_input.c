@@ -1,4 +1,4 @@
-#include "../includes/lem-in.h"
+#include "../includes/lemin.h"
 
 void		t_input_print(t_input *input)
 {

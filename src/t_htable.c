@@ -1,4 +1,4 @@
-#include "../includes/lem-in.h"
+#include "../includes/lemin.h"
 
 int				cmp_func(const void* a, const void* b)
 {

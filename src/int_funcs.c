@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem-in.h"
+#include "../includes/lemin.h"
 #include "../libft/libft.h"
 
 int		*copy_int_array(int *arr, int size)

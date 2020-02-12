@@ -1,4 +1,4 @@
-#include "../includes/lem-in.h"
+#include "../includes/lemin.h"
 
 void	t_htables_init(t_input *input, int size, t_htable_cmp *cmp, t_htable_hash *hash)
 {
