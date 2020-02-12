@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEMIN_LEM_IN_H
-# define LEMIN_LEM_IN_H
+#ifndef LEMIN_LEMIN_H
+# define LEMIN_LEMIN_H
 
 # include <stdlib.h>
 # include <unistd.h>
