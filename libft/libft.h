@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 16:31:52 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/11/18 13:32:05 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:55 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,25 +21,8 @@
 # include "libft_compat.h"
 
 # define BUFF_SIZE 100
-# define MALLCHECK(x) if (x == NULL) return (-1)
-# define MALLCKECK_INT(x) if (x == -1) return (-1)
-
 # ifndef REAL_FLOAT
 #  define REAL_FLOAT 0
-# endif
-
-# if !REAL_FLOAT
-#  define REAL double
-#  define EPSILON .0000000000001
-#  define SIN(x) sin(x)
-#  define COS(x) cos(x)
-#  define TAN(x) tan(x)
-# else
-#  define REAL float
-#  define EPSILON .00001f
-#  define SIN(x) sinf(x)
-#  define COS(x) cosf(x)
-#  define TAN(x) tanf(x)
 # endif
 
 typedef struct		s_list
@@ -55,7 +38,6 @@ typedef	struct		s_btree
 	struct s_btree	*right;
 	void			*item;
 }					t_btree;
-
 
 int					ft_atoi(const char *str);
 void				ft_bzero(void *destination, size_t n);
@@ -131,8 +113,8 @@ t_btree				*ft_btree_create_node(void *item);
 void				ft_btree_insert_data(t_btree **root, void *item,
 		int (*cmpf)(void *, void *));
 int					get_next_line(const int fd, char **line);
-char				*ft_ultoa_buf(char *s, ulong n, uint base);
-char				*ft_itoa_buf(char *s, long long int n, uint base);
+char				*ft_ultoa_buf(char *s, ULONG n, UINT base);
+char				*ft_itoa_buf(char *s, long long int n, UINT base);
 char				*ft_ftoa_buf(char *s, long double n, int decimals);
 char				*ft_toupper_inplace(char *s);
 char				*ft_strrev(char *str);
@@ -142,12 +124,12 @@ void				ft_swap(void **a, void **b);
 void				ft_swap_int(int *a, int *b);
 void				ft_swap_char(char *a, char *b);
 void				ft_swap_double(double *a, double *b);
-ullong				ft_ullpow(ullong a, ullong b);
-uint				ft_count_int_digits(long long int n, uint base);
+ULLONG				ft_ullpow(ULLONG a, ULLONG b);
+UINT				ft_count_int_digits(long long int n, UINT base);
 int					ft_printf(const char *format, ...);
 int					ft_printf_ap(int fd, const char *format, va_list ap);
 int					ft_fprintf(int fd, const char *format, ...);
-char				*ft_ultoa_buf(char *s, ulong n, uint base);
-ullong				ft_ullpow(ullong a, ullong b);
+char				*ft_ultoa_buf(char *s, ULONG n, UINT base);
+ULLONG				ft_ullpow(ULLONG a, ULLONG b);
 
 #endif

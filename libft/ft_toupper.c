@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 14:29:37 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/09/05 14:29:56 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:42:00 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char		*ft_toupper_inplace(char *s)
 {
-	char *p;
+	char	*p;
 
 	p = s;
 	while ((*p = (char)ft_toupper(*p)))
@@ -22,7 +22,7 @@ char		*ft_toupper_inplace(char *s)
 	return (s);
 }
 
-int	ft_toupper(int c)
+int			ft_toupper(int c)
 {
 	if (c >= 'a' && c <= 'z')
 		c -= 32;

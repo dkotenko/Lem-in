@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   conversion.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:21:57 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/10/16 13:44:56 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:55 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ static void	ft_printf_conversion_uox(char *b, t_printf_arg *v,
 			t_printf_spec *s, va_list *ap)
 {
 	if (!ft_strcmp(s->modifiers, "ll"))
-		v->u = va_arg(*ap, ullong);
+		v->u = va_arg(*ap, ULLONG);
 	else if (!ft_strcmp(s->modifiers, "l"))
-		v->u = va_arg(*ap, ulong);
+		v->u = va_arg(*ap, ULONG);
 	else if (!ft_strcmp(s->modifiers, "hh"))
-		v->u = (unsigned char)va_arg(*ap, uint);
+		v->u = (unsigned char)va_arg(*ap, UINT);
 	else if (!ft_strcmp(s->modifiers, "h"))
-		v->u = (unsigned short int)va_arg(*ap, uint);
+		v->u = (unsigned short int)va_arg(*ap, UINT);
 	else if (!ft_strcmp(s->modifiers, ""))
-		v->u = va_arg(*ap, uint);
-	convert_uint(b, v->u, s);
+		v->u = va_arg(*ap, UINT);
+	convert_UINT(b, v->u, s);
 }
 
 static void	ft_printf_conversion_fp(char *b, t_printf_arg *v,
@@ -60,7 +60,7 @@ static void	ft_printf_conversion_fp(char *b, t_printf_arg *v,
 	}
 	else
 	{
-		v->u = (ulong)va_arg(*ap, void*);
+		v->u = (ULONG)va_arg(*ap, void*);
 		if (v->u || s->precision)
 			ft_ultoa_buf(b, v->u, 16);
 		while ((int)ft_strlen(b) < s->precision)

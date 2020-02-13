@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksticks <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 15:44:05 by ksticks           #+#    #+#             */
-/*   Updated: 2019/10/17 15:44:07 by ksticks          ###   ########.fr       */
+/*   Updated: 2020/02/13 21:03:00 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,12 @@ int		ft_pow(int a, int b)
 	return (r);
 }
 
-ullong	ft_ullpow(ullong a, ullong b)
+ULLONG	ft_ullpow(ULLONG a, ULLONG b)
 {
-	ullong r;
+	ULLONG r;
 
 	r = 1;
 	while (b--)
 		r *= a;
-	return (r);
-}
-
-REAL	ft_fpow(REAL a, int b)
-{
-	REAL r;
-
-	r = 1.;
-	while (b > 0)
-	{
-		r *= a;
-		b--;
-	}
-	while (b < 0)
-	{
-		r /= a;
-		b++;
-	}
 	return (r);
 }

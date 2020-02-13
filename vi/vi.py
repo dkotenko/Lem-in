@@ -217,10 +217,10 @@ def input_to_dict2(lst):
 def get_input():	
 	if sys.argv == 2:	
 		f = open(sys.argv[1], "r")
-		s = f.read()
+		s = f.read()		
 		f.close()
 	else:
-		s = sys.stdin.read()
+		s = sys.stdin.read()		
 	return s
 
 def get_paths(s):	
@@ -235,11 +235,14 @@ def	handle_error(error):
 	return 
 
 def get_ants_number(input):
-	first_row = input[:input.find(' ')]	
-	if first_row != "ERROR":
-		number = int(input[:input.find('\n')])
-	else:
-		handle_error(input[:input.find('\n')])
+	first_row = ''
+	if not input:
+		input = sys.stderr.read()
+		first_row = input[:input.find(' ')]	
+		if first_row != "ERROR":
+			exit()
+		else:
+			handle_error(input[:input.find('\n')])
 	return number
 
 

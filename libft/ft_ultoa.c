@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ultoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksticks <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 15:47:51 by ksticks           #+#    #+#             */
-/*   Updated: 2019/10/17 15:47:57 by ksticks          ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:55 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-static size_t	count_digits(ulong n, uint base)
+static size_t	count_digits(ULONG n, UINT base)
 {
-	uint i;
+	UINT i;
 
 	if (n == 0)
 		return (1);
@@ -28,7 +28,7 @@ static size_t	count_digits(ulong n, uint base)
 	return (i);
 }
 
-char			*ft_ultoa_buf(char *s, ulong n, uint base)
+char			*ft_ultoa_buf(char *s, ULONG n, UINT base)
 {
 	size_t	d;
 	char	c;
@@ -51,7 +51,7 @@ char			*ft_ultoa_buf(char *s, ulong n, uint base)
 	return (s);
 }
 
-char			*ft_ultoa(ulong n)
+char			*ft_ultoa(ULONG n)
 {
 	size_t	d;
 	char	*s;
@@ -63,7 +63,7 @@ char			*ft_ultoa(ulong n)
 	return (s);
 }
 
-char			*ft_ultoa_base(ulong n, uint base)
+char			*ft_ultoa_base(ULONG n, UINT base)
 {
 	size_t	d;
 	char	*s;

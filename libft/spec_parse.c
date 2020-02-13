@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   spec_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:22:26 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/10/16 12:29:49 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:55 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static int		parse_field_width(char **s)
 	return (r);
 }
 
-static uint		parse_flags(char **s)
+static UINT		parse_flags(char **s)
 {
-	uint flags;
+	UINT flags;
 
 	flags = 0;
 	while (**s && ft_strchr("#0+- ", **s))

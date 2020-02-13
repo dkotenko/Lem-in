@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ftoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksticks <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 15:23:42 by ksticks           #+#    #+#             */
-/*   Updated: 2019/10/17 15:23:45 by ksticks          ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:23 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include "libft.h"
 
-static ullong		mod(long double a, int b)
+static ULLONG		mod(long double a, int b)
 {
 	if (a > (long double)ULLONG_MAX)
 		return (0);
-	return (((ullong)a) % b);
+	return (((ULLONG)a) % b);
 }
 
 static long double	round_to_even(long double x, int decimals, int base)
@@ -27,7 +27,7 @@ static long double	round_to_even(long double x, int decimals, int base)
 	pow = (long double)ft_ullpow(base, decimals);
 	if (mod((x > 0 ? x : -x) * pow, 2))
 		return (x + .5 / pow);
-	if (.5 / pow + (long double)((ullong)(x * pow)) / pow - x)
+	if (.5 / pow + (long double)((ULLONG)(x * pow)) / pow - x)
 		return (x + .5 / pow);
 	return (x);
 }

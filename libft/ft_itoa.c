@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksticks <ksticks@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/09 18:45:24 by ksticks           #+#    #+#             */
-/*   Updated: 2019/09/17 19:13:05 by ksticks          ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:55 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-uint		ft_count_int_digits(long long int n, uint base)
+UINT		ft_count_int_digits(long long int n, UINT base)
 {
-	uint i;
+	UINT i;
 
 	if (n == 0)
 		return (1);
@@ -32,9 +32,9 @@ uint		ft_count_int_digits(long long int n, uint base)
 	return (i);
 }
 
-char		*ft_itoa_buf(char *s, long long int n, uint base)
+char		*ft_itoa_buf(char *s, long long int n, UINT base)
 {
-	uint	d;
+	UINT	d;
 	char	c;
 	int		rem;
 
@@ -71,9 +71,9 @@ char		*ft_itoa(long long int n)
 	return (s);
 }
 
-char		*ft_itoa_base(long long int n, uint base)
+char		*ft_itoa_base(long long int n, UINT base)
 {
-	uint	d;
+	UINT	d;
 	char	*s;
 
 	if (base < 2 || base > 32)

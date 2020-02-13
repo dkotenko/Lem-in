@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/02/13 20:06:18 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/13 20:34:40 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int				merge_paths(t_array *arr, t_paths *paths)
 				p2_ind1 = get_index_of_intersection_in_path(paths->path_arr[j],
 													paths->path_arr[i], arr);
 				merge_int_paths(&paths->path_arr[i], &paths->path_arr[j],
-								p1_ind1, p2_ind1, arr);
+								p1_ind1, p2_ind1);
 				switched = 1;
 			}
 		}

@@ -1,7 +1,7 @@
 #!/bin/bash
 for filename in $1/*; do
 	echo $filename
-	./lem-in < $filename > output.txt
+	./lem-in < $filename
 done
 	
 

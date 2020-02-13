@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:22:18 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/10/16 12:31:43 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 21:01:09 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_printf_ap(int fd, const char *format, va_list ap)
 		r += write(fd, ptr1, ptr - ptr1);
 		spec = parse_printf_spec(&ptr);
 		if (spec.type)
-			r += ft_printf_conversion(fd, MAKE_VA_LIST_PTR(ap), spec);
+			r += ft_printf_conversion(fd, (va_list*)(ap), spec);
 		ptr1 = ptr;
 	}
 	r += ft_putstr_fd(ptr1, fd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:21:57 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/10/16 13:49:37 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:50:55 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void			prepend_str(char *buff, const char *s)
 	ft_memcpy(buff, s, len);
 }
 
-char			*convert_uint(char *b, ullong v, t_printf_spec *s)
+char			*convert_UINT(char *b, ULLONG v, t_printf_spec *s)
 {
 	if (s->type == 'u')
 		ft_ultoa_buf(b, v, 10);

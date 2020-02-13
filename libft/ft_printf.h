@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:33:20 by edrowzee          #+#    #+#             */
-/*   Updated: 2019/10/16 13:48:38 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 21:01:21 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,9 @@
 #  define HAVE_VA_LIST_AS_ARRAY
 # endif
 
-# ifdef HAVE_VA_LIST_AS_ARRAY
-#  define MAKE_VA_LIST_PTR(ap) ((va_list*)(ap))
-# else
-#  define MAKE_VA_LIST_PTR(ap) (&(ap))
-# endif
-
 typedef	struct	s_printf_spec
 {
-	uint			flags;
+	UINT			flags;
 	size_t			field_width;
 	char			type;
 	unsigned char	prefix_w;
@@ -47,7 +41,7 @@ typedef union	u_printf_arg
 {
 	long double		f;
 	long long int	d;
-	ullong			u;
+	ULLONG			u;
 }				t_printf_arg;
 
 t_printf_spec	parse_printf_spec(char **ptr);

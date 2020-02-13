@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_compat.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksticks <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 16:31:42 by ksticks           #+#    #+#             */
-/*   Updated: 2019/10/17 16:31:43 by ksticks          ###   ########.fr       */
+/*   Updated: 2020/02/13 20:51:56 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,36 @@
 # include "limits.h"
 # ifdef _WIN32
 #  include <io.h>
-#  define read _read
+#  define READ _read
 # else
 #  include <unistd.h>
 # endif
 
-# ifndef ulong
+# ifndef ULONG
 
-typedef unsigned long		t_ulong;
-#  define ulong t_ulong
-
-# endif
-
-# ifndef ullong
-
-typedef unsigned long long	t_ullong;
-#  define ullong t_ullong
+typedef unsigned long		t_ULONG;
+#  define ULONG t_ULONG
 
 # endif
 
-# ifndef uint
+# ifndef ULLONG
 
-typedef unsigned int		t_uint;
-#  define uint t_uint
+typedef unsigned long long	t_ULLONG;
+#  define ULLONG t_ULLONG
 
 # endif
 
-# ifndef byte
+# ifndef UINT
+
+typedef unsigned int		t_UINT;
+#  define UINT t_UINT
+
+# endif
+
+# ifndef BYTE
 
 typedef unsigned char		t_byte;
-#  define byte t_byte
+#  define BYTE t_byte
 
 # endif
 
@@ -60,9 +60,9 @@ typedef unsigned char		t_byte;
 # endif
 
 # ifndef STDOUT_FILENO
-#  define	STDIN_FILENO	0
-#  define	STDOUT_FILENO	1
-#  define	STDERR_FILENO	2
+#  define STDIN_FILENO	0
+#  define STDOUT_FILENO	1
+#  define STDERR_FILENO	2
 # endif
 
 # ifndef LITTLE_ENDIAN

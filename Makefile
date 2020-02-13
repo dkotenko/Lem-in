@@ -6,7 +6,7 @@
 #    By: clala <clala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/15 16:58:10 by clala             #+#    #+#              #
-#    Updated: 2020/02/13 19:58:27 by clala            ###   ########.fr        #
+#    Updated: 2020/02/13 20:35:25 by clala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ src/read_input.c \
 src/read_input2.c \
 src/reader.c \
 src/t_htable.c \
+src/t_htable2.c \
 src/t_htables.c \
 src/t_input.c \
 src/graph_tech.c \
