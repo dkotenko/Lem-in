@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lem-in.h                                           :+:      :+:    :+:   */
+/*   lemin.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 14:17:43 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/12 14:17:44 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:33:08 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct		s_array
 	int				finish;
 	int				ants;
 	t_room			**rooms;
-	int 			path_limit;
+	int				path_limit;
 
 }					t_array;
 
@@ -90,14 +90,6 @@ typedef struct		s_paths
 	int				time;
 }					t_paths;
 
-typedef struct		s_deleted_edges
-{
-	int				*edge_indexes;
-	int				*edge_rooms;
-	int				curr_size;
-	int				size;
-}					t_deleted_edges;
-
 typedef struct		s_htables
 {
 	t_htable		*names;
@@ -117,12 +109,6 @@ typedef struct		s_input
 	t_htables		*ht;
 }					t_input;
 
-void				print_t_links(t_links *s_lnk, t_array *arr);
-void				print_t_array_rooms_with_links(t_array *arr);
-void				print_t_path(t_path *path, t_array *arr);
-void				print_t_paths(t_paths *paths, t_array *arr);
-void				print_path(t_paths *paths, t_array *arr);
-void				ft_print_bf_matrix(int **matrix, int **path, t_array **arr);
 int					ft_split_free(char **split);
 t_room				**ft_rooms_copy(t_room **rooms, int size);
 void				ft_arr_malloc(t_array **arr);
@@ -147,16 +133,7 @@ int					room_in_no_expanded(t_array *arr_not_expanded,
 int					get_origin_room(int room_nb, t_array *arr);
 int					nbr_in_array_pos(int number, int *arr, int size);
 int					nbr_in_links_pos(t_array *arr, int curr, int link);
-void				add_path_to_no_expanded(t_array *arr_not_expanded,
-					t_array *arr, t_path *path);
 void				delete_double_links(t_array *arr);
-void				delete_edges_bf(t_array *arr, t_path *path,
-					t_deleted_edges *edges);
-t_deleted_edges		*t_deleted_edges_create(int size);
-void				restore_edges_bf(t_array *arr, t_deleted_edges *edges);
-void				t_deleted_edges_free(t_deleted_edges **edges);
-void				handle_paths(t_array *arr_not_expanded, t_array *arr,
-					t_paths *paths);
 void				ft_reader(int argc, char **argv, t_input *input,
 					t_array *arr);
 int					ft_free(void *val);
