@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   t_input.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/15 17:47:48 by clala             #+#    #+#             */
+/*   Updated: 2020/02/13 19:47:56 by clala            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lemin.h"
 
 void		t_input_print(t_input *input)
@@ -8,7 +20,7 @@ void		t_input_print(t_input *input)
 	while (++i < input->current)
 	{
 		ft_putstr(input->rows[i]);
-		ft_putchar('\n');		
+		ft_putchar('\n');
 	}
 }
 
@@ -62,10 +74,10 @@ char		**t_input_rows_copy(char **rows, int size)
 }
 
 void		t_input_free(t_input *input)
-{	
+{
 	t_htables_free(input->ht);
 	while (--(input->current) > -1)
 		free(input->rows[input->current]);
 	free(input->rows);
-	free(input);	
+	free(input);
 }

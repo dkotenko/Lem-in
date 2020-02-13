@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   read_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 13:47:19 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/12 13:47:20 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:09:33 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
 #include "../libft/libft.h"
 
-int		ft_split_free(char **split)
+int				ft_split_free(char **split)
 {
-	int i;
+	int			i;
 
 	if (!split)
 		return (0);
@@ -30,7 +30,7 @@ int		ft_split_free(char **split)
 	return (1);
 }
 
-t_room	**ft_rooms_copy(t_room **rooms, int size)
+t_room			**ft_rooms_copy(t_room **rooms, int size)
 {
 	int		i;
 	t_room	**new_rooms;
@@ -70,7 +70,7 @@ void			ft_arr_malloc(t_array **arr)
 	return ;
 }
 
-int		*ft_int_arr_realloc(int *arr, int new_size)
+int				*ft_int_arr_realloc(int *arr, int new_size)
 {
 	int	*new_arr;
 	int	i;
@@ -86,7 +86,7 @@ int		*ft_int_arr_realloc(int *arr, int new_size)
 	return (new_arr);
 }
 
-void	ft_links_push(t_links *s_lnk, int push, int weight)
+void			ft_links_push(t_links *s_lnk, int push, int weight)
 {
 	if (s_lnk->links == NULL)
 	{

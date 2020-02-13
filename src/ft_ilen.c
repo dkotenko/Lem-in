@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ilen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clala <clala@student.21-school.ru>         +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 17:47:48 by clala             #+#    #+#             */
-/*   Updated: 2019/11/26 20:27:04 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/13 20:15:29 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
 
-t_ant	*ft_ants_creator(void)
+t_ant			*ft_ants_creator(void)
 {
 	static int	num = 1;
 	char		let[2];
@@ -33,9 +33,9 @@ t_ant	*ft_ants_creator(void)
 	return (clone);
 }
 
-size_t		ft_ilen(int n)
+size_t			ft_ilen(int n)
 {
-	size_t	i;
+	size_t		i;
 
 	i = 0;
 	if (n <= 0)

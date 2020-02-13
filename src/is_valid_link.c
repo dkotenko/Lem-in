@@ -6,23 +6,23 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/02/05 20:44:18 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/13 20:12:32 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lemin.h"
 
-static		int rooms_in_link_exists(char **splitted, t_input *input)
+static int	rooms_in_link_exists(char **splitted, t_input *input)
 {
-	int hash_1room;
-	int hash_2room;
+	int		hash_1room;
+	int		hash_2room;
 
 	hash_1room = input->ht->names->hash(splitted[0], input->ht->names->size);
 	hash_2room = input->ht->names->hash(splitted[1], input->ht->names->size);
-	if (t_htable_find(hash_1room,splitted[0], input->ht->names) &&
-			t_htable_find(hash_2room,splitted[1], input->ht->names))
+	if (t_htable_find(hash_1room, splitted[0], input->ht->names) &&
+			t_htable_find(hash_2room, splitted[1], input->ht->names))
 		return (1);
-	return (0);	
+	return (0);
 }
 
 static void	check_links_are_unique(char *s, t_input *input, t_array *arr)
@@ -31,7 +31,7 @@ static void	check_links_are_unique(char *s, t_input *input, t_array *arr)
 	char	*hyphen;
 	int		i;
 	int		j;
-	
+
 	reverse = ft_strnew(ft_strlen(s));
 	hyphen = ft_strchr(s, '-');
 	i = -1;
@@ -44,11 +44,10 @@ static void	check_links_are_unique(char *s, t_input *input, t_array *arr)
 	if (t_htable_find(input->ht->links->hash(s, input->ht->links->size),
 		s, input->ht->links))
 		handle_error("Link already exists", input, arr);
-
 	if (t_htable_find(input->ht->links->hash(reverse, input->ht->links->size),
 		reverse, input->ht->links))
 		handle_error("Reverse link exists", input, arr);
-	free(reverse);	
+	free(reverse);
 }
 
 void		check_link_name(char *s, t_input *input, t_array *arr)
@@ -56,7 +55,7 @@ void		check_link_name(char *s, t_input *input, t_array *arr)
 	int		i;
 
 	i = -1;
-	while(s[++i])
+	while (s[++i])
 	{
 		if (!ft_isalnum(s[i]) && s[i] != '-' && s[i] != '_')
 			handle_error("Invalid character in link", input, arr);

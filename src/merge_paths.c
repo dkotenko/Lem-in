@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   merge_paths.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
+/*   Updated: 2020/02/13 20:06:18 by clala            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/lemin.h"
 
 static t_path	*join_free_t_path(t_path **path1, t_path **path2)
@@ -5,7 +17,7 @@ static t_path	*join_free_t_path(t_path **path1, t_path **path2)
 	t_path		*new;
 	int			i;
 	int			j;
-	
+
 	i = 0;
 	new = t_path_create((*path1)->size + (*path2)->size);
 	while (i < (*path1)->size)
@@ -21,7 +33,7 @@ static t_path	*join_free_t_path(t_path **path1, t_path **path2)
 		j++;
 	}
 	t_path_free(*path1);
-	t_path_free(*path2);	
+	t_path_free(*path2);
 	return (new);
 }
 
@@ -36,7 +48,7 @@ static t_path	*slice_t_path(t_path *path, int start, int end)
 		return (NULL);
 	}
 	i = 0;
-	new = t_path_create(end - start);	
+	new = t_path_create(end - start);
 	while (start < end)
 	{
 		new->path[i] = path->path[start];
@@ -46,7 +58,8 @@ static t_path	*slice_t_path(t_path *path, int start, int end)
 	return (new);
 }
 
-static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int path2_ind1, t_array *arr)
+static void		merge_int_paths(t_path **path1, t_path **path2,
+							int path1_ind1, int path2_ind1)
 {
 	t_path		*temp1;
 	t_path		*temp2;
@@ -55,21 +68,20 @@ static void	merge_int_paths(t_path **path1, t_path **path2, int path1_ind1, int 
 
 	temp1 = *path1;
 	temp2 = *path2;
-	if (arr->current > 20000000)
-		printf("hello");	
-	slice_temp1 = slice_t_path(temp1,  0, path1_ind1);
+	slice_temp1 = slice_t_path(temp1, 0, path1_ind1);
 	slice_temp2 = slice_t_path(temp2, nbr_in_array_pos(
-			temp1->path[path1_ind1], temp2->path, temp2->size), temp2->size);	
-	*path1 = join_free_t_path(&slice_temp1, &slice_temp2);	
-	slice_temp1 = slice_t_path(temp2, 0, path2_ind1);	
+			temp1->path[path1_ind1], temp2->path, temp2->size), temp2->size);
+	*path1 = join_free_t_path(&slice_temp1, &slice_temp2);
+	slice_temp1 = slice_t_path(temp2, 0, path2_ind1);
 	slice_temp2 = slice_t_path(temp1, nbr_in_array_pos(
-			temp2->path[path2_ind1], temp1->path, temp1->size), temp1->size);	
+			temp2->path[path2_ind1], temp1->path, temp1->size), temp1->size);
 	*path2 = join_free_t_path(&slice_temp1, &slice_temp2);
 	t_path_free(temp1);
-	t_path_free(temp2);	
+	t_path_free(temp2);
 }
 
-static int	get_index_of_intersection_in_path(t_path *path1, t_path *path2, t_array *arr)
+static int		get_index_of_intersection_in_path(t_path *path1,
+								t_path *path2, t_array *arr)
 {
 	int			i;
 	int			j;
@@ -92,7 +104,7 @@ static int	get_index_of_intersection_in_path(t_path *path1, t_path *path2, t_arr
 	return (0);
 }
 
-int			merge_paths(t_array *arr, t_paths *paths)
+int				merge_paths(t_array *arr, t_paths *paths)
 {
 	int			i;
 	int			j;
@@ -106,12 +118,12 @@ int			merge_paths(t_array *arr, t_paths *paths)
 	{
 		j = i;
 		while (++j < paths->curr_path)
-		{			
+		{
 			if ((p1_ind1 = get_index_of_intersection_in_path(paths->path_arr[i],
 					paths->path_arr[j], arr)))
 			{
 				p2_ind1 = get_index_of_intersection_in_path(paths->path_arr[j],
-															paths->path_arr[i], arr);				
+													paths->path_arr[i], arr);
 				merge_int_paths(&paths->path_arr[i], &paths->path_arr[j],
 								p1_ind1, p2_ind1, arr);
 				switched = 1;

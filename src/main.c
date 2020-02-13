@@ -27,8 +27,6 @@ static int	ft_path_limit(t_array *arr)
 	return (min);
 }
 
-
-
 static int	paths_work(t_paths **paths, t_paths **prev, int *path_counter)
 {
 	if (*path_counter && (*paths)->time > (*prev)->time)

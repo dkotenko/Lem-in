@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/01/30 23:20:28 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/13 20:01:08 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ void		ft_reader(int argc, char **argv, t_input *input, t_array *arr)
 		fd = 0;
 	if (fd == -1)
 		handle_error("Can`t open map file", input, arr);
-	if	(read(fd, s, 0))
+	if (read(fd, s, 0))
 		handle_error("Can`t read map file", input, arr);
-
 	ft_read_data(fd, input, arr);
 }

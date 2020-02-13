@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_input.c                                       :+:      :+:    :+:   */
+/*   read_input2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 13:47:19 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/12 13:47:20 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:00:43 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	ft_create_room(t_array **arr, char **split, char *s, t_input *input)
 	char	*coords_restored;
 
 	room = (t_room*)malloc(sizeof(t_room));
-	room->name = NULL;
 	room->name = ft_strdup(split[0]);
 	room->x = ft_atoi(split[1]);
 	room->y = ft_atoi(split[2]);
@@ -37,6 +36,7 @@ void	ft_create_room(t_array **arr, char **split, char *s, t_input *input)
 	room->src = -1;
 	room->s_lnk.room_copy = -1;
 	room->s_lnk.links = NULL;
+	room->s_lnk.weights = NULL;
 	room->s_lnk.is_copy = 0;
 	ft_arr_push(arr, room);
 	if (input->prev_status == STATUS_IS_START)
