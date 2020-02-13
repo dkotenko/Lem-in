@@ -61,6 +61,7 @@ typedef struct		s_array
 	int				finish;
 	int				ants;
 	t_room			**rooms;
+	int 			path_limit;
 
 }					t_array;
 

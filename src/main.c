@@ -27,16 +27,7 @@ static int	ft_path_limit(t_array *arr)
 	return (min);
 }
 
-void		validate_input(t_array *arr, int argc, char **argv)
-{
-	t_input	*input;
 
-	input = NULL;
-	t_input_malloc(&input);
-	ft_reader(argc, argv, input, arr);
-	t_input_print(input);
-	t_input_free(input);
-}
 
 static int	paths_work(t_paths **paths, t_paths **prev, int *path_counter)
 {
@@ -54,7 +45,7 @@ static int	paths_work(t_paths **paths, t_paths **prev, int *path_counter)
 
 static int	graph_work(t_array *arr, t_paths *paths)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (i < paths->curr_path)
@@ -75,27 +66,30 @@ static int	graph_work(t_array *arr, t_paths *paths)
 	return (1);
 }
 
+static void	validate_input(t_array *arr, int argc, char **argv, t_input *input)
+{
+	t_input_malloc(&input);
+	ft_reader(argc, argv, input, arr);
+	t_input_print(input);
+}
+
 int			main(int argc, char **argv)
 {
 	t_array	*arr;
 	t_paths	*paths;
 	t_paths	*prev;
 	int		path_counter;
-	int		path_limit;
-	t_input	*input; //commit this
+	t_input	*input;
 
 	arr = NULL;
 	ft_arr_malloc(&arr);
-	input = NULL; //commit this
-	t_input_malloc(&input); //commit this
-	ft_reader(argc, argv, input, arr); //commit this
-	t_input_print(input); //commit this
-//	validate_input(arr, argc, argv); //uncommit this
+	input = NULL;
+	validate_input(arr, argc, argv, input);
 	paths = create_t_paths();
 	path_counter = 0;
-	path_limit = ft_path_limit(arr);
+	arr->path_limit = ft_path_limit(arr);
 	arr->base = arr->current;
-	while (path_counter < path_limit)
+	while (path_counter < arr->path_limit)
 	{
 		if (path_counter)
 			prev = copy_t_paths(paths);
@@ -105,7 +99,5 @@ int			main(int argc, char **argv)
 			break ;
 	}
 	ft_ants_prepare_to_parade(&arr, paths, -1);
-	t_paths_free(paths);
-	t_input_free(input); //commit this
 	exit(0);
 }

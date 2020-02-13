@@ -61,7 +61,7 @@ static void	ft_read_data(int fd, t_input *input, t_array *arr)
 		ft_split_free(split);
 	}
 	if (input->status != STATUS_LINKS)
-		handle_error("NO LINKS", input, arr);
+		handle_error("No links in map file", input, arr);
 }
 
 void		ft_reader(int argc, char **argv, t_input *input, t_array *arr)
@@ -71,13 +71,15 @@ void		ft_reader(int argc, char **argv, t_input *input, t_array *arr)
 
 	s = NULL;
 	if (argc > 2)
-		handle_error("args", input, arr);
+		handle_error("Too many arguments", input, arr);
 	if (argc == 2)
 		fd = open(argv[1], O_RDONLY);
 	else
 		fd = 0;
-	if ((fd == -1 && handle_error("fd", input, arr)) ||
-		(read(fd, s, 0) && handle_error("read", input, arr)))
-		return ;
+	if (fd == -1)
+		handle_error("Can`t open map file", input, arr);
+	if	(read(fd, s, 0))
+		handle_error("Can`t read map file", input, arr);
+
 	ft_read_data(fd, input, arr);
 }

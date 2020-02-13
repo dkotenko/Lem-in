@@ -39,7 +39,6 @@ src/t_array.c \
 src/t_room.c \
 src/int_funcs.c
 
-HEAD = ./src/filler.h
 OBJECTS = $(SOURCES:%.c=%.o)
 CC = gcc 
 FLAGS = -Wall -Wextra -Werror

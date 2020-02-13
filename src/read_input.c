@@ -46,7 +46,7 @@ t_room	**ft_rooms_copy(t_room **rooms, int size)
 	return (new_rooms);
 }
 
-void	ft_arr_malloc(t_array **arr)
+void			ft_arr_malloc(t_array **arr)
 {
 	static int	size = ARR_INIT_SIZE;
 
@@ -56,12 +56,16 @@ void	ft_arr_malloc(t_array **arr)
 		(*arr)->rooms = (t_room**)malloc(sizeof(t_room*) * size);
 		(*arr)->max = size;
 		(*arr)->current = 0;
+		while ((*arr)->current < size)
+			(*arr)->rooms[(*arr)->current++] = NULL;
+		(*arr)->current = 0;
 	}
 	if ((*arr)->current == (*arr)->max)
 	{
 		size *= 2;
 		(*arr)->rooms = ft_rooms_copy((*arr)->rooms, (*arr)->max);
-		(*arr)->max *= 2;
+		while ((*arr)->max < size)
+			(*arr)->rooms[(*arr)->max++] = NULL;
 	}
 	return ;
 }

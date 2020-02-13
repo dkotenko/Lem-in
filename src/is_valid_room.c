@@ -81,10 +81,10 @@ int			is_valid_room(char *s, t_input *input, t_array *arr)
 	ft_split_free(arr_split))
 		handle_error("Room`s coords are not integers", input, arr);	
 	if (!is_room_name_unique(arr_split[0], input) && ft_split_free(arr_split))
-		handle_error("Room with the same name already exists", input, arr);	
+		handle_error("Room with the same name already exists", input, arr);
 	if (!is_room_coords_unique(ft_strchr(s, ' ') + 1, input) &&
 	ft_split_free(arr_split))
-		handle_error("Room with the same name coords exists", input, arr);
+		handle_error("Room with the same coords exists", input, arr);
 	ft_split_free(arr_split);
 	return (1);	
 }

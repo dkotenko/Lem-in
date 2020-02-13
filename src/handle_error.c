@@ -17,6 +17,6 @@ int	handle_error(char *s, t_input *input, t_array *arr)
 	ft_fprintf(2, "ERROR in line %d: %s\n", input->lines_counter, s);
 	t_input_free(input);
 	t_array_free(arr);	
-	exit(1);
+	exit(0);
 	return (1);
 }
