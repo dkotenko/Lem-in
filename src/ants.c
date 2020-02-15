@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 12:40:23 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/15 14:25:56 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:37:40 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,5 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths, int i)
 	ants = first_ant;
 	ft_list_sort(ants);
 	ft_ants_parade(arr, ants, paths);
+	t_array_free(*arr);
 }

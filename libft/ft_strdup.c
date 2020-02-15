@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 12:07:29 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/13 20:17:23 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:35:59 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strdup(const char *src)
 	{
 		i++;
 	}
-	result = (char*)malloc(sizeof(char) * i + 1);
+	result = (char*)malloc(sizeof(char) * (i + 1));
 	if (result == NULL)
 		return (NULL);
 	i = 0;

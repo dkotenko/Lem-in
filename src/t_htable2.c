@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 17:47:48 by clala             #+#    #+#             */
-/*   Updated: 2020/02/13 19:42:44 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:33:59 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ void			t_htable_free(t_htable *table)
 		if (table->table[i])
 			free(table->table[i]);
 	}
+	free(table->table);
 	free(table);
 }
