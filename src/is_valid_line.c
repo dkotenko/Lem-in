@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 13:39:55 by clala             #+#    #+#             */
-/*   Updated: 2020/02/13 20:14:26 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:56:45 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ static int		is_valid_status_ants(char *s, t_input *input, t_array *arr)
 
 	number = ft_atoi(s);
 	if (!ft_isdigit(s[0]) || ft_ilen(number) != ft_strlen(s))
-		handle_error("Invalid number of ants", input, arr);
+	{		
+		handle_error("Invalid number of ants", input, arr);		
+	}
 	else if (!number)
+	{		
 		handle_error("There are no ants", input, arr);
+	}
 	input->status = STATUS_BEFORE_START;
 	return (1);
 }
