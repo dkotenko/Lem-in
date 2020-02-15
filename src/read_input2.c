@@ -55,7 +55,7 @@ void	ft_cpy_room_data(t_room *dst, t_room *src, int ds, int sr)
 	int i;
 
 	i = 0;
-	dst->name = ft_strjoin("#", src->name);
+	dst->name = NULL;
 	dst->x = src->x;
 	dst->y = src->y;
 	dst->s_lnk.links = (int*)malloc(sizeof(int) * src->s_lnk.max_size);

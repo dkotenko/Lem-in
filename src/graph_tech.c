@@ -57,7 +57,6 @@ void	ft_delete_room(t_room *room)
 {
 	free(room->s_lnk.links);
 	free(room->s_lnk.weights);
-	free(room->name);
 	free(room);
 }
 
