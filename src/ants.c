@@ -51,15 +51,6 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 		if (!is_all_finished)
 			ft_printf("\n");
 	}
-	while (ants->next != NULL)
-	{
-		first_ant = ants->next;
-		free(ants->name);
-		free(ants);
-		ants = first_ant;
-	}
-	free(ants);
-	t_array_free(*arr);
 	exit(0);
 }
 
@@ -132,5 +123,4 @@ void	ft_ants_prepare_to_parade(t_array **arr, t_paths *paths, int i)
 	ants = first_ant;
 	ft_list_sort(ants);
 	ft_ants_parade(arr, ants, paths);
-	t_array_free(*arr);
 }
