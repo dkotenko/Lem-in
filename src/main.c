@@ -22,6 +22,11 @@ static int	ft_path_limit(t_array *arr)
 		min = arr->rooms[arr->start]->s_lnk.cur_size;
 	if (min > arr->rooms[arr->finish]->s_lnk.cur_size)
 		min = arr->rooms[arr->finish]->s_lnk.cur_size;
+	if (min == 0)
+	{
+		ft_printf("Error: no paths in graph\n");
+		exit(1);
+	}
 	if (min > arr->ants)
 		min = arr->ants;
 	return (min);
@@ -53,6 +58,11 @@ static int	graph_work(t_array *arr, t_paths *paths)
 		i++;
 	}
 	paths->path_arr[paths->curr_path] = find_path_bf_new(&arr);
+	if (paths->curr_path == 0 && !paths->path_arr[paths->curr_path])
+	{
+		ft_printf("Error: no paths found\n");
+		exit(1);
+	}
 	if (!paths->path_arr[paths->curr_path])
 		return (0);
 	ft_replace_cpy_in_path(&arr, paths->path_arr[paths->curr_path]);

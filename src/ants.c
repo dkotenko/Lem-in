@@ -95,7 +95,7 @@ void	ft_ants_cyc(t_paths *paths, int *min_path, int *min_path_num)
 	}
 	if (*min_path_num == -1)
 	{
-		ft_printf("Error with shortest path\n");
+		ft_printf("Error: some problems with shortest path\n");
 		exit(1);
 	}
 }
