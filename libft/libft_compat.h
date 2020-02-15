@@ -23,22 +23,22 @@
 
 # ifndef ULONG
 
-typedef unsigned long		t_ULONG;
-#  define ULONG t_ULONG
+typedef unsigned long		t_ulong;
+#  define ULONG t_ulong
 
 # endif
 
 # ifndef ULLONG
 
-typedef unsigned long long	t_ULLONG;
-#  define ULLONG t_ULLONG
+typedef unsigned long long	t_ullong;
+#  define ULLONG t_ullong
 
 # endif
 
 # ifndef UINT
 
-typedef unsigned int		t_UINT;
-#  define UINT t_UINT
+typedef unsigned int		t_uint;
+#  define UINT t_uint
 
 # endif
 

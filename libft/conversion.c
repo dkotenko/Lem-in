@@ -44,7 +44,7 @@ static void	ft_printf_conversion_uox(char *b, t_printf_arg *v,
 		v->u = (unsigned short int)va_arg(*ap, UINT);
 	else if (!ft_strcmp(s->modifiers, ""))
 		v->u = va_arg(*ap, UINT);
-	convert_UINT(b, v->u, s);
+	convert_uint(b, v->u, s);
 }
 
 static void	ft_printf_conversion_fp(char *b, t_printf_arg *v,
