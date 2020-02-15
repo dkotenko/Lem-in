@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ants.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 12:40:23 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/12 12:40:25 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/15 14:25:56 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,15 @@ void	ft_ants_parade(t_array **arr, t_ant *ants, t_paths *paths)
 		if (!is_all_finished)
 			ft_printf("\n");
 	}
-	exit(0);
+	while (ants->next)
+	{
+		first_ant = ants->next;
+		free(ants->name);
+		free(ants);
+		ants = first_ant;
+	}
+	free(ants->name);
+	free(ants);
 }
 
 void	ft_list_sort(t_ant *ants)

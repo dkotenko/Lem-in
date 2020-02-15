@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edrowzee <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 14:06:05 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/12 14:06:07 by edrowzee         ###   ########.fr       */
+/*   Updated: 2020/02/15 14:20:05 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ static int	graph_work(t_array *arr, t_paths *paths)
 	return (1);
 }
 
-static void	validate_input(t_array *arr, int argc, char **argv, t_input *input)
+static void	validate_input(t_array *arr, int argc, char **argv, t_input **input)
 {
-	t_input_malloc(&input);
-	ft_reader(argc, argv, input, arr);
-	t_input_print(input);
+	t_input_malloc(input);
+	ft_reader(argc, argv, *input, arr);
+	t_input_print(*input);
 }
 
 int			main(int argc, char **argv)
@@ -92,7 +92,7 @@ int			main(int argc, char **argv)
 	arr = NULL;
 	ft_arr_malloc(&arr);
 	input = NULL;
-	validate_input(arr, argc, argv, input);
+	validate_input(arr, argc, argv, &input);
 	paths = create_t_paths();
 	path_counter = 0;
 	arr->path_limit = ft_path_limit(arr);
@@ -106,6 +106,7 @@ int			main(int argc, char **argv)
 		if (paths_work(&paths, &prev, &path_counter) == 0)
 			break ;
 	}
-	ft_ants_prepare_to_parade(&arr, paths, -1);
+	ft_ants_prepare_to_parade(&arr, paths, -1);	
+	t_input_free(input);
 	exit(0);
 }

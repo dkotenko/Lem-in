@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 17:47:48 by clala             #+#    #+#             */
-/*   Updated: 2020/02/13 19:47:56 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:27:40 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char		**t_input_rows_copy(char **rows, int size)
 }
 
 void		t_input_free(t_input *input)
-{
+{	
 	t_htables_free(input->ht);
 	while (--(input->current) > -1)
 		free(input->rows[input->current]);
