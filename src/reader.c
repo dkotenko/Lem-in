@@ -30,7 +30,7 @@ static void	ft_read_ants(int fd, t_input *input, t_array *arr)
 
 	s = NULL;
 	get_next_line(fd, &s);
-	while (!is_line_informative(s) && input->lines_counter++)
+	while (!is_line_informative(s) && input->lines_counter++ && ft_free(s))
 		get_next_line(fd, &s);
 	is_valid_line(s, input, arr);
 	t_input_write(s, input);
