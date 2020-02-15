@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 14:06:05 by edrowzee          #+#    #+#             */
-/*   Updated: 2020/02/15 14:20:05 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:46:58 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int			main(int argc, char **argv)
 		if (paths_work(&paths, &prev, &path_counter) == 0)
 			break ;
 	}
-	ft_ants_prepare_to_parade(&arr, paths, -1);	
+	ft_ants_prepare_to_parade(&arr, paths, -1);
 	t_input_free(input);
 	exit(0);
 }

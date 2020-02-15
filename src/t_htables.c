@@ -6,7 +6,7 @@
 /*   By: clala <clala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/15 17:47:48 by clala             #+#    #+#             */
-/*   Updated: 2020/02/15 14:34:32 by clala            ###   ########.fr       */
+/*   Updated: 2020/02/15 14:45:59 by clala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void			t_htables_init(t_input *input, int size, t_htable_cmp *cmp,
 void			t_htables_free(t_htables *ht)
 {
 	t_htable_free(ht->names);
-	free(ht->links->table);
-	free(ht->links);
+	t_htable_free(ht->links);	
 	free(ht->coords->table);
 	free(ht->coords);
 	free(ht);
