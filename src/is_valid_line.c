@@ -18,11 +18,11 @@ static int		is_valid_status_ants(char *s, t_input *input, t_array *arr)
 
 	number = ft_atoi(s);
 	if (!ft_isdigit(s[0]) || ft_ilen(number) != ft_strlen(s))
-	{		
-		handle_error("Invalid number of ants", input, arr);		
+	{
+		handle_error("Invalid number of ants", input, arr);
 	}
 	else if (!number)
-	{		
+	{
 		handle_error("There are no ants", input, arr);
 	}
 	input->status = STATUS_BEFORE_START;

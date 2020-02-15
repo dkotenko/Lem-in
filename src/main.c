@@ -101,9 +101,8 @@ int			main(int argc, char **argv)
 	{
 		if (path_counter)
 			prev = copy_t_paths(paths);
-		if (graph_work(arr, paths) == 0)
-			break ;
-		if (paths_work(&paths, &prev, &path_counter) == 0)
+		if (graph_work(arr, paths) == 0 || paths_work(&paths,
+				&prev, &path_counter) == 0)
 			break ;
 	}
 	ft_ants_prepare_to_parade(&arr, paths, -1);

@@ -23,7 +23,7 @@ void			t_htables_init(t_input *input, int size, t_htable_cmp *cmp,
 void			t_htables_free(t_htables *ht)
 {
 	t_htable_free(ht->names);
-	t_htable_free(ht->links);	
+	t_htable_free(ht->links);
 	free(ht->coords->table);
 	free(ht->coords);
 	free(ht);

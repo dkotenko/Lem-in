@@ -45,12 +45,12 @@ static void	ft_read_data(int fd, t_input *input, t_array *arr)
 	temp = NULL;
 	ft_read_ants(fd, input, arr);
 	while (get_next_line(fd, &temp))
-	{		
+	{
 		if (!is_line_informative(temp) && (input->status != STATUS_IS_START &&
 			input->status != STATUS_IS_END) && input->lines_counter++ &&
 			ft_free(temp))
 			continue ;
-		input->prev_status = input->status;		
+		input->prev_status = input->status;
 		is_valid_line(temp, input, arr);
 		split = (temp[0] == '#') ? NULL : ft_strsplit(temp, ' ');
 		if (split && split[1] == NULL)
