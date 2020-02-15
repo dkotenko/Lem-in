@@ -39,6 +39,7 @@ class Speed():
 	def __init__(self, speed_val):		
 		self.speed_tuple = ((60, 0.25), (15, 1), (5, 3), (3, 5))
 		self.speed_choice = speed_val
+		print('speed arg = ' + str(self.speed_choice), ', speed x' + str(self.speed_tuple[self.speed_choice][1]))
 		self.speed = self.speed_tuple[self.speed_choice][0]
 		self.delta_turn = self.speed_tuple[self.speed_choice][1]
 
@@ -248,13 +249,16 @@ def get_ants_number(input):
 
 speed_val = 2
 if len(sys.argv) != 2:	
-	print ('invalid speed arg. Pass a number from 0 to 4')
+	print ('invalid speed arg. Pass a number from 0 to 3')
 	exit()
 else:
 	try:
 		speed_val = int(sys.argv[1])
+		if speed_val not in range(0,4):
+			print('argument passed not in ragne 0-3. Speed arg set to 2 (x3)')
+			speed_val = 2		
 	except ValueError:
-		print ('Please enter speed value as INT from 0 to 4')
+		print ('Please enter speed value as INT from 0 to 3')
 		exit()
 speed = Speed(speed_val)
 
