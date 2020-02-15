@@ -36,9 +36,9 @@ BULLET_IMG.fill(pygame.Color('aquamarine2'))
 
 
 class Speed():
-	def __init__(self):		
+	def __init__(self, speed_val):		
 		self.speed_tuple = ((60, 0.25), (15, 1), (5, 3), (3, 5))
-		self.speed_choice = 2
+		self.speed_choice = speed_val
 		self.speed = self.speed_tuple[self.speed_choice][0]
 		self.delta_turn = self.speed_tuple[self.speed_choice][1]
 
@@ -237,16 +237,26 @@ def	handle_error(error):
 def get_ants_number(input):
 	first_row = ''
 	if not input:
-		input = sys.stderr.read()
+		exit()		
 		first_row = input[:input.find(' ')]	
 		if first_row != "ERROR":
 			exit()
 		else:
-			handle_error(input[:input.find('\n')])
+			handle_error()
+	number = int(input[:input.find('\n')])
 	return number
 
-
-speed = Speed()
+speed_val = 2
+if len(sys.argv) != 2:	
+	print ('invalid speed arg. Pass a number from 0 to 4')
+	exit()
+else:
+	try:
+		speed_val = int(sys.argv[1])
+	except ValueError:
+		print ('Please enter speed value as INT from 0 to 4')
+		exit()
+speed = Speed(speed_val)
 
 # Создаем игру и окно
 pygame.init()
@@ -387,10 +397,10 @@ while running:
 					STATE = 'running'
 
 	#клавиши увеличения/уменьшения скорости игры, не работают
-			elif event.key == pygame.K_EQUALS:
-				speed.speed_increase()
+			elif event.key == pygame.K_EQUALS:				
+				speed.speed_choice += 1
 			elif event.key == pygame.K_MINUS:
-				speed.speed_decrease()
+				speed.speed_choice -= 1
 
 	#клавиши следующего/предыдущено хода по нажатию/удержанию, не работают
 	# keys = pygame.key.get_pressed()
