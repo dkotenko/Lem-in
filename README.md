@@ -19,4 +19,4 @@ Here we have n = 6 object to provide. And there is a situation when we could not
 **How to run Python Visualizer**  
 ./lem-in "inputfile" | Python3 vi/vi.py  
 ![](<img/viz.png>)  
-Python Visualization
+Pic. 2. Python Visualization
